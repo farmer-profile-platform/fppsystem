@@ -1,8 +1,10 @@
 <template>
   <div>
-    <el-button icon="el-icon-plus" plain type="primary" size="small"
-      >Add New Farmer</el-button
-    >
+    <router-link to="/add-farmer">
+      <el-button icon="el-icon-plus" plain type="primary" size="small"
+        >Add New Farmer</el-button
+      >
+    </router-link>
 
     <el-card class="mt-4">
       <el-table

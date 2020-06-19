@@ -4,6 +4,7 @@ import VueRouter from "vue-router";
 import Main from "@/containers/Main.vue";
 import Dashboard from "@/views/Dashboard.vue";
 import Farmers from "@/views/Farmers";
+import AddFarmer from "@/views/AddFarmer"
 import Login from "@/views/Login";
 
 Vue.use(VueRouter);
@@ -24,6 +25,11 @@ const routes = [
         path: "/farmers",
         name: "Farmers Profile List",
         component: Farmers
+      },
+      {
+        path: "/add-farmer",
+        name: "Add Farmer",
+        component: AddFarmer
       }
     ]
   },

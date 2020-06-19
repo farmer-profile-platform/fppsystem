@@ -17,8 +17,8 @@
       </el-col>
       <el-col :span="15">
         <div class="login_signIn">
-          <div>
-            <img src="" alt="logo" />
+          <div id="login_logo">
+            <img src="../assets/images/fpplogo.png" alt="logo" width="310px" />
           </div>
           <div>
             <h2 class="mt-4 mb-3">Authorized Log In</h2>
@@ -26,6 +26,7 @@
             <el-form :model="loginForm" :rules="rules" ref="loginForm">
               <el-form-item prop="email">
                 <el-input
+                  size="large"
                   clearable
                   v-model="loginForm.email"
                   placeholder="example@email.com"
@@ -56,7 +57,9 @@
             </el-form>
           </div>
         </div>
-        <p class="px-5">
+        <br />
+        <br />
+        <p style="text-align:center;">
           Only authorized company staff will have access. Log In details is
           therefore 'Requested'
         </p>

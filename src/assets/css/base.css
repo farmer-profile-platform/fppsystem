@@ -16,9 +16,21 @@ h2 {
   font-size: 28px;
 }
 
+h3 {
+  font-size: 15px;
+}
+
 h1 {
   font-size: 35px;
   font-weight: bold;
+}
+
+hr {
+  border: 1px solid rgb(240, 240, 240);
+}
+
+a {
+  text-decoration: none;
 }
 
 .mt-1 {
@@ -61,7 +73,11 @@ h1 {
 
 .px-5 {
   padding-left: 160px;
-  padding-right: 150px;
+  padding-right: 160px;
+}
+
+.align_center {
+  text-align: center;
 }
 
 #app {
@@ -72,13 +88,18 @@ h1 {
 }
 
 .login_signIn {
-  width: 330px;
-  margin: 100px auto;
+  width: 350px;
+  margin: 80px auto;
+}
+
+.login_signIn #login_logo {
+  text-align: center;
 }
 
 .login_background {
   height: 100vh;
-  background-image: url("../images/farmer.jpg");
+  background-image: url('../images/farmer.jpg');
+  background-size: cover;
   padding: 90px;
   display: flex;
   flex-direction: column;
@@ -90,8 +111,12 @@ h1 {
 }
 
 .login_text h1 {
-  font-size: 50px;
+  font-size: 55px;
   font-weight: bold;
+}
+
+.login_text p {
+  font-size: 17px;
 }
 
 .login_forgot_pass {
@@ -102,9 +127,75 @@ h1 {
   width: 100%;
 }
 
-@media (min-width: 1200px) {
-  .login_text h1 {
-    font-size: 40px;
-    font-weight: bold;
-  }
+.sidebar {
+  padding: 0 20px;
 }
+
+.sidebar_top_logo {
+  margin-top: 20px;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.sidebar_top_logo p {
+  margin-top: 20px;
+  color: rgb(184, 181, 181);
+}
+
+.sidebar_userInfo #user_photo {
+  float: left;
+  margin-right: 10px;
+}
+
+.sidebar_userInfo #user_name b {
+  font-size: 16px;
+}
+
+.sidebar_userInfo .logout {
+  float: right;
+  margin-top: -15px;
+  margin-right: 20px;
+}
+
+.el-menu {
+  border-right: none !important;
+}
+
+.el-menu-item {
+  height: 50px !important;
+  line-height: 50px !important;
+  padding-left: 0 !important;
+}
+
+.el-menu-item a {
+  color: #2fa512 !important;
+}
+
+.el-header {
+  background: #e6e6e6 !important;
+  text-align: right;
+  font-size: 12px;
+  height: 50px !important;
+  line-height: 50px;
+}
+
+.sidebar_activities {
+  margin-top: 50px;
+}
+
+.sidebar_activity {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.sidebar_footer {
+  margin-top: 50px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.el-button--text {
+  color: rgb(184, 181, 181) !important;
+}
+
+@media (min-width: 1200px) {}

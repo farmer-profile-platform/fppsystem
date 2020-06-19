@@ -1,7 +1,9 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+
 import Main from "@/containers/Main.vue";
 import Dashboard from "@/views/Dashboard.vue";
+import Farmers from "@/views/Farmers";
 import Login from "@/views/Login";
 
 Vue.use(VueRouter);
@@ -17,6 +19,11 @@ const routes = [
         path: "/dashboard",
         name: "dashboard",
         component: Dashboard
+      },
+      {
+        path: "/farmers",
+        name: "farmers",
+        component: Farmers
       }
     ]
   },

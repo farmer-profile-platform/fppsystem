@@ -1,10 +1,11 @@
 <template>
   <div>
-    <el-container>
+    <el-container style="height: 100vh;">
       <Sidebar />
 
       <el-container>
         <el-header>
+          <h3>{{ pageTitle }}</h3>
           <Header />
         </el-header>
 
@@ -25,6 +26,17 @@ export default {
   components: {
     Sidebar,
     Header,
+  },
+  data: () => ({
+    pageTitle: '',
+  }),
+  watch: {
+    $route(to) {
+      this.pageTitle = to.name;
+    },
+  },
+  created() {
+    this.pageTitle = this.$route.name;
   },
 };
 </script>

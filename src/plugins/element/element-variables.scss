@@ -13,4 +13,53 @@ $--color-info: rgb(126, 126, 123);
 /* icon font path, required */
 $--font-path: '~element-ui/lib/theme-chalk/fonts';
 
-@import "~element-ui/packages/theme-chalk/src/index";
+@import '~element-ui/packages/theme-chalk/src/index';
+
+// .el-table {
+//   background-color: transparent;
+//   border-collapse: separate !important;
+//   border-spacing: 0 1em !important;
+
+//   .el-table__header-wrapper {
+//     display: none;
+//   }
+// }
+
+.el-button--text {
+  color: rgb(184, 181, 181);
+}
+
+.el-main {
+  background: #e6e6e6;
+}
+
+.el-header {
+  background: #e6e6e6;
+  font-size: 12px;
+  height: 45px !important;
+  border-bottom: 1px solid rgb(199, 198, 198);
+  line-height: 40px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.el-menu {
+  border-right: none;
+}
+
+.el-menu-item {
+  height: 50px;
+  line-height: 50px;
+  padding-left: 0 !important;
+
+  a {
+    color: #2fa512;
+    font-weight: bold;
+  }
+}
+
+.el-button--primary.is-plain {
+  color: #2fa512;
+  background: white;
+  border-color: whitesmoke;
+}

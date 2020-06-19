@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="mb-2">Recent Activities</h3>
+    <h4 class="mb-2">Recent Activities</h4>
     <el-tag type="info" class="sidebar_activity">
       <span>Bashiru Ahmed</span>
       <span style="float:right;">Added</span>

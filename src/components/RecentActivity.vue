@@ -3,15 +3,15 @@
     <h4 class="mb-2">Recent Activities</h4>
     <el-tag type="info" class="sidebar_activity">
       <span>Bashiru Ahmed</span>
-      <span style="float:right;">Added</span>
+      <span :style="`float:right; color:#2fa512;`">Added</span>
     </el-tag>
     <el-tag type="info" class="sidebar_activity">
-      <span id="name">Alison Barker</span>
-      <span id="action">Deleted</span>
+      <span>Alison Barker</span>
+      <span :style="`float:right; color:#ff4949;`">Deleted</span>
     </el-tag>
     <el-tag type="info" class="sidebar_activity">
-      <span id="name">Alison Barker</span>
-      <span id="action">Deleted</span>
+      <span>Bernard Kwabena</span>
+      <span :style="`float:right; color:#f7ba2a;`">Printed</span>
     </el-tag>
 
     <div class="align_center">
@@ -19,3 +19,14 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  name: 'RecentActivity',
+  data() {
+    return {
+      action: true,
+    };
+  },
+};
+</script>

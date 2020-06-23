@@ -57,7 +57,13 @@
         </el-table-column>
         <el-table-column align="right">
           <template slot-scope="props">
-            <el-dropdown>
+            <el-button
+              type="primary"
+              plain
+              size="mini"
+              icon="el-icon-download"
+            ></el-button>
+            <el-dropdown class="ml-1">
               <i class="el-icon-more fa-rotate-45"></i>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>

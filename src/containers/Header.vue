@@ -11,3 +11,9 @@
     <span>Tom</span>
   </div>
 </template>
+
+<script>
+export default {
+  name: 'Header',
+};
+</script>

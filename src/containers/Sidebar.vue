@@ -1,7 +1,7 @@
 <template>
-  <el-aside class="sidebar" style="width: 330px;">
+  <el-aside class="sidebar" style="width: 350px;">
     <div class="sidebar_top_logo">
-      <img src="../assets/images/fpplogo.png" alt="logo" width="170px" />
+      <img src="../assets/images/fpplogo.png" alt="logo" width="175px" />
       <p>Authorized Personnel</p>
     </div>
     <div class="sidebar_userInfo mb-3">
@@ -67,7 +67,7 @@
 import RecentActivity from '@/components/RecentActivity';
 
 export default {
-  name: 'sidebar',
+  name: 'Sidebar',
   components: {
     RecentActivity,
   },

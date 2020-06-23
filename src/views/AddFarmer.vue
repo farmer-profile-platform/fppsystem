@@ -11,7 +11,7 @@
       <el-tabs v-model="activeTab" class="mt-4 px-2" stretch>
         <el-tab-pane label="Personal Bio" name="personal">
           <el-row :gutter="20">
-            <el-col :span="5">
+            <el-col :span="6">
               <el-form-item label="Title">
                 <el-select
                   v-model="addFamerDetails.title"
@@ -126,61 +126,451 @@
               <el-form-item label="ID Number">
                 <el-input v-model="addFamerDetails.id_number" />
               </el-form-item>
+            </el-col> </el-row
+          ><br />
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <div class="d-flex">
+                <div>
+                  <img
+                    src="../assets/images/charl.png"
+                    alt="photo"
+                    style="width:50px; margin-right: 20px"
+                  />
+                </div>
+                <div>
+                  <input type="file" ref="file" style="display: none" />
+                  <el-button @click="$refs.file.click()" type="text">
+                    <b style="color:#2fa512;"> Upload Photo</b></el-button
+                  >
+                  <p>
+                    Photo should be in standard format JPG, PNG and no more than
+                    2MB
+                  </p>
+                  <br />
+                  <el-button type="danger" size="mini">Remove Photo</el-button>
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="12">
+              <div class="d-flex">
+                <div>
+                  <img
+                    src="../assets/images/finger.png"
+                    alt="photo"
+                    style="width:50px; margin-right: 20px"
+                  />
+                </div>
+                <div>
+                  <input type="file" ref="file" style="display: none" />
+                  <el-button @click="$refs.file.click()" type="text">
+                    <b style="color:#2fa512;">
+                      Upload Thumbprint / Signature</b
+                    ></el-button
+                  >
+                  <p>
+                    Photo should be in standard format JPG, PNG and no more than
+                    2MB
+                  </p>
+                  <br />
+                  <el-button type="danger" size="mini"
+                    >Remove Finger print</el-button
+                  >
+                </div>
+              </div>
+            </el-col> </el-row
+          ><br />
+          <div class="mt-3 d-flex">
+            <el-button class="full-width">Cancel and reset form</el-button>
+            <el-button
+              class="full-width"
+              type="primary"
+              @click="handleContinue('household')"
+              >Save and Continue</el-button
+            >
+          </div>
+        </el-tab-pane>
+
+        <!-- House Hold information -->
+        <el-tab-pane label="Household Info" name="household">
+          <h3 class="mb-1">Spouse</h3>
+          <el-row :gutter="20">
+            <el-col :span="7">
+              <el-form-item label="Spouse First Name">
+                <el-input v-model="addFamerDetails.spouse.firstName" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="7">
+              <el-form-item label="Spouse First Name">
+                <el-input v-model="addFamerDetails.spouse.lastName" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="7">
+              <el-form-item label="Date of Birth">
+                <el-date-picker
+                  type="date"
+                  placeholder="Date of birth"
+                  style="width: 100%; margin-top:-12px"
+                  v-model="addFamerDetails.spouse.dob"
+                >
+                </el-date-picker>
+              </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20">
-            <el-col :span="12">
-              <el-upload
-                class="upload-demo"
-                action="https://jsonplaceholder.typicode.com/posts/"
-                :on-preview="handlePreview"
-                :on-remove="handleRemove"
-                list-type="picture"
-              >
-                <el-button size="mini" type="info"
-                  >Click to upload photo</el-button
-                >
-                <div slot="tip" class="el-upload__tip">
-                  Photo should be in standard format JPG, PNG and no more than
-                  2MB
-                </div>
-              </el-upload>
+            <el-col :span="7">
+              <el-form-item label="Phone Number">
+                <el-input
+                  v-model="addFamerDetails.spouse.phone"
+                  placeholder="(054) 54153324"
+                />
+              </el-form-item>
             </el-col>
-            <el-col :span="12">
-              <el-upload
-                class="upload-demo"
-                action="https://jsonplaceholder.typicode.com/posts/"
-                :on-preview="handlePreview"
-                :on-remove="handleRemove"
-                list-type="picture"
-              >
-                <el-button size="mini" type="info"
-                  >Click to upload thumbprint/Signature</el-button
+            <el-col :span="7">
+              <el-form-item label="National ID Type">
+                <el-select
+                  v-model="addFamerDetails.spouse.national_id"
+                  placeholder="Select"
+                  style="width:100%; margin-top:-12px"
                 >
-                <div slot="tip" class="el-upload__tip">
-                  Photo should be in standard format JPG, PNG and no more than
-                  2MB
-                </div>
-              </el-upload>
+                  <el-option
+                    v-for="item in idcardTypes"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="7">
+              <el-form-item label="ID Number">
+                <el-input v-model="addFamerDetails.spouse.id_number" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="3">
+              <div class="button-add-details">
+                <i
+                  class="el-icon-circle-plus"
+                  style="color: grey; font-size: 20px;"
+                ></i>
+                <br />
+                <el-button type="text" size="mini">Add Spouse</el-button>
+              </div>
             </el-col>
           </el-row>
-          <el-form-item style="text-align: right" class="mt-3">
-            <el-button type="" size="small">Cancel and reset form</el-button>
-            <el-button type="primary" size="small" @click="handleContinue"
+          <hr />
+          <br />
+          <h3 class="mb-1">Children</h3>
+          <el-row :gutter="20">
+            <el-col :span="7">
+              <el-form-item label="Number of Children">
+                <el-input-number
+                  v-model="addFamerDetails.num_children"
+                  :min="0"
+                  :max="10"
+                />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="10">
+              <el-form-item label="Child's Name">
+                <el-input v-model="addFamerDetails.children.name" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="10">
+              <el-form-item label="Date of Birth">
+                <el-date-picker
+                  type="date"
+                  placeholder="Date of birth"
+                  style="width: 100%; margin-top:-12px"
+                  v-model="addFamerDetails.children.dob"
+                >
+                </el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col :span="3">
+              <div class="button-add-details">
+                <i
+                  class="el-icon-circle-plus"
+                  style="color: grey; font-size: 20px;"
+                ></i>
+                <br />
+                <el-button type="text" size="mini">Add Children</el-button>
+              </div>
+            </el-col>
+          </el-row>
+          <br />
+          <div class="mt-3 d-flex">
+            <el-button class="full-width">Cancel and reset form</el-button>
+            <el-button
+              class="full-width"
+              type="primary"
+              @click="handleContinue('farm')"
               >Save and Continue</el-button
             >
-          </el-form-item>
+          </div>
         </el-tab-pane>
-        <el-tab-pane label="Household Info" name="household"
-          >Household Info</el-tab-pane
-        >
+
+        <!-- Farm Information -->
         <el-tab-pane label="Farm Info" name="farm">
-          Farm Info
+          <h3 class="mb-1">Farm History</h3>
+          <el-row :gutter="20">
+            <el-col :span="5">
+              <el-form-item label="Years of Farming">
+                <el-input-number
+                  v-model="addFamerDetails.years_farming"
+                  :min="0"
+                  :max="10"
+                />
+              </el-form-item>
+            </el-col>
+            <el-col :span="9">
+              <el-form-item label="Type of Farmland Ownership">
+                <el-input v-model="addFamerDetails.farmLandOwnershipType" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="9">
+              <el-form-item label="Total number of Farmland Cultivated">
+                <el-input v-model="addFamerDetails.num_farmLands">
+                  <template slot="append">acres</template>
+                </el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <hr />
+          <br />
+          <h3 class="mb-1">Crop</h3>
+          <el-row :gutter="20">
+            <el-col :span="10">
+              <el-form-item label="Crop Name">
+                <el-input v-model="addFamerDetails.harvestYield.crop_name" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="10">
+              <el-form-item label="Acres">
+                <el-input v-model="addFamerDetails.harvestYield.acres" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <br />
+            <h3 class="ml-1 mb-1">Harvest Yield</h3>
+            <el-col :span="5">
+              <el-form-item label="Year">
+                <el-input
+                  v-model="addFamerDetails.harvestYield.years"
+                  placeholder="2013"
+                />
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item label="Major Season">
+                <el-input
+                  v-model="addFamerDetails.harvestYield.years"
+                  placeholder="In bags"
+                />
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item label="Minor Season">
+                <el-input
+                  v-model="addFamerDetails.harvestYield.years"
+                  placeholder="In bags"
+                />
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item label="Minor Season">
+                <el-input
+                  v-model="addFamerDetails.harvestYield.years"
+                  placeholder="In bags"
+                />
+              </el-form-item>
+            </el-col>
+            <el-col :span="4">
+              <div class="button-add-details">
+                <i
+                  class="el-icon-circle-plus"
+                  style="color: grey; font-size: 20px;"
+                ></i>
+                <br />
+                <el-button type="text" size="mini">Add Year</el-button>
+              </div>
+            </el-col>
+          </el-row>
+          <br />
+          <div>
+            <el-button icon="el-icon-plus" type="info" class="full-width"
+              >Add Crop</el-button
+            >
+          </div>
+          <br />
+          <div class="mt-3 d-flex">
+            <el-button class="full-width">Cancel and reset form</el-button>
+            <el-button
+              class="full-width"
+              type="primary"
+              @click="handleContinue('income')"
+              >Save and Continue</el-button
+            >
+          </div>
         </el-tab-pane>
+
+        <!-- Farm yield Income -->
         <el-tab-pane label="Farm Yield Income" name="income">
-          Farm Yield Income
+          <h3 class="mb-1">Crop</h3>
+          <el-row :gutter="20">
+            <el-col :span="10">
+              <el-form-item label="Crop Name">
+                <el-input v-model="addFamerDetails.harvestYield.crop_name" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="10">
+              <el-form-item label="Acres">
+                <el-input v-model="addFamerDetails.harvestYield.acres" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <br />
+            <h3 class="ml-1 mb-1">Yield Income</h3>
+            <el-col :span="5">
+              <el-form-item label="Year">
+                <el-input
+                  v-model="addFamerDetails.harvestYield.years"
+                  placeholder="2013"
+                />
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item label="Major Season">
+                <el-input
+                  v-model="addFamerDetails.harvestYield.years"
+                  placeholder="In bags"
+                />
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item label="Minor Season">
+                <el-input
+                  v-model="addFamerDetails.harvestYield.years"
+                  placeholder="In bags"
+                />
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item label="Minor Season">
+                <el-input
+                  v-model="addFamerDetails.harvestYield.years"
+                  placeholder="In bags"
+                />
+              </el-form-item>
+            </el-col>
+            <el-col :span="4">
+              <div class="button-add-details">
+                <i
+                  class="el-icon-circle-plus"
+                  style="color: grey; font-size: 20px;"
+                ></i>
+                <br />
+                <el-button type="text" size="mini">Add Year</el-button>
+              </div>
+            </el-col>
+          </el-row>
+          <br />
+          <div>
+            <el-button icon="el-icon-plus" type="info" class="full-width"
+              >Add Crop</el-button
+            >
+          </div>
+          <br />
+          <div class="mt-3 d-flex">
+            <el-button class="full-width">Cancel</el-button>
+            <el-button
+              class="full-width"
+              type="primary"
+              @click="handleContinue('bank')"
+              >Save and Continue</el-button
+            >
+          </div>
         </el-tab-pane>
-        <el-tab-pane label="Bank Details" name="bank">Bank Details</el-tab-pane>
+        <el-tab-pane label="Bank Details" name="bank">
+          <h3 class="mb-1">Banks Details</h3>
+          <el-row :gutter="20">
+            <el-col :span="10">
+              <el-form-item label="Bank Name">
+                <el-input v-model="addFamerDetails.bank.name" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="10">
+              <el-form-item label="Branch">
+                <el-input v-model="addFamerDetails.bank.branch" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="10">
+              <el-form-item label="Account Name">
+                <el-input v-model="addFamerDetails.bank.acc_name" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="10">
+              <el-form-item label="Account Number">
+                <el-input v-model="addFamerDetails.bank.acc_number" />
+              </el-form-item>
+            </el-col>
+
+            <el-col :span="4">
+              <div class="button-add-details">
+                <i
+                  class="el-icon-circle-plus"
+                  style="color: grey; font-size: 20px;"
+                ></i>
+                <br />
+                <el-button type="text" size="mini">Add Bank</el-button>
+              </div>
+            </el-col>
+          </el-row>
+          <hr />
+          <br />
+          <h3 class="mb-1">Mobile Money Details</h3>
+          <el-row :gutter="20">
+            <el-col :span="10">
+              <el-form-item label="Phone Number">
+                <el-input v-model="addFamerDetails.momo.phone" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="10">
+              <el-form-item label="Name">
+                <el-input v-model="addFamerDetails.momo.name" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="4">
+              <div class="button-add-details">
+                <i
+                  class="el-icon-circle-plus"
+                  style="color: grey; font-size: 20px;"
+                ></i>
+                <br />
+                <el-button type="text" size="mini">Add MoMo</el-button>
+              </div>
+            </el-col>
+          </el-row>
+          <br />
+          <div class="mt-3 d-flex">
+            <el-button class="full-width" icon="el-icon-cancel"
+              >Cancel</el-button
+            >
+            <el-button
+              class="full-width"
+              type="primary"
+              @click="handleContinue('bank')"
+              >Save and Continue</el-button
+            >
+          </div>
+        </el-tab-pane>
       </el-tabs>
     </el-form>
   </div>
@@ -211,45 +601,47 @@ export default {
         num_children: 0,
         years_farming: 0,
         farmLandOwnershipType: '',
-        num_farmLands: 0,
+        num_farmLands: '',
         spouse: [
           {
-            firstName: 'Margaret',
-            lastName: 'Opong',
-            dob: '2020-06-17',
-            phone: '(111) 111-1111',
-            national_id: 'Ghana Card',
-            id_number: '5d713995',
+            firstName: '',
+            lastName: '',
+            dob: '',
+            phone: '',
+            national_id: '',
+            id_number: '',
           },
         ],
         children: [
           {
-            name: 'Charles Akwasi',
-            dob: '2010-06-17',
+            name: '',
+            dob: '',
           },
         ],
-        crops: [
+        harvestYield: [
           {
-            name: 'Maize',
-            acres: '1',
+            crop_name: '',
+            acres: '',
             years: [
               {
-                year: '2014',
-                major_season_harvest: '6 bags',
-                minor_season_harvest: '5 bag',
-                yearly_harvest: '16 bags',
-                major_season_income: '40000',
-                minor_season_income: '20000',
-                yearly_income: '50000',
+                year: '',
+                major_season_harvest: '',
+                minor_season_harvest: '',
+                yearly_harvest: '',
               },
+            ],
+          },
+        ],
+        yieldIncome: [
+          {
+            crop_name: '',
+            acres: '',
+            years: [
               {
-                year: '2018',
-                major_season_harvest: '6 bags',
-                minor_season_harvest: '5 bag',
-                yearly_harvest: '16 bags',
-                major_season_income: '40000',
-                minor_season_income: '20000',
-                yearly_income: '50000',
+                year: '',
+                major_season_income: '',
+                minor_season_income: '',
+                yearly_income: '',
               },
             ],
           },
@@ -257,15 +649,15 @@ export default {
         bank: [
           {
             name: '',
-            branch: 'Accra',
-            acc_name: 'Mansah Minaj',
-            acc_number: '020203431287',
+            branch: '',
+            acc_name: '',
+            acc_number: '',
           },
         ],
         momo: [
           {
-            phone: '0933382334',
-            name: 'Ama Amponsah',
+            phone: '',
+            name: '',
           },
         ],
       },
@@ -296,8 +688,8 @@ export default {
     handlePreview(file) {
       console.log(file);
     },
-    handleContinue() {
-      this.activeTab = 'household';
+    handleContinue(nextTab) {
+      this.activeTab = nextTab;
     },
   },
 };

@@ -66,11 +66,18 @@
             <el-dropdown class="ml-1">
               <i class="el-icon-more fa-rotate-45"></i>
               <el-dropdown-menu slot="dropdown">
+                <router-link to="/farmer-profile">
+                  <el-dropdown-item>
+                    <i class="el-icon-user" style="margin-right: 10px"></i>
+                    View Profile</el-dropdown-item
+                  >
+                </router-link>
+
                 <el-dropdown-item>
-                  <i class="el-icon-user" style="margin-right: 10px"></i>
-                  View Profile</el-dropdown-item
+                  <i class="el-icon-s-flag" style="margin-right: 10px"></i>
+                  Input Farmer Support</el-dropdown-item
                 >
-                <el-dropdown-item @click="deleteFarmer(props.row.id)">
+                <el-dropdown-item @click="deleteFarmer(props.row.id)" divided>
                   <i class="el-icon-delete" style="margin-right: 10px"></i>
                   Delete</el-dropdown-item
                 >

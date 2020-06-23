@@ -57,6 +57,14 @@ a {
   margin-top: 45px;
 }
 
+.mt-5 {
+  margin-top: 50px;
+}
+
+.mb-0 {
+  margin-bottom: 5px;
+}
+
 .mb-1 {
   margin-bottom: 10px;
 }
@@ -73,6 +81,14 @@ a {
   margin-left: 10px;
 }
 
+.pt-1 {
+  padding-top: 20px;
+}
+
+.pt-0 {
+  padding-top: 10px;
+}
+
 .px-1 {
   padding-left: 10px;
   padding-right: 10px;
@@ -86,6 +102,11 @@ a {
 .px-5 {
   padding-left: 160px;
   padding-right: 160px;
+}
+
+.py-1 {
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .align_center {
@@ -214,6 +235,16 @@ a {
 
 .full-width {
   width: 100%;
+}
+
+.profile-tab-bg {
+  background-color: rgb(199, 235, 197);
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.profile-tab-bg p {
+  font-size: 12px;
 }
 
 @media (min-width: 1200px) {}

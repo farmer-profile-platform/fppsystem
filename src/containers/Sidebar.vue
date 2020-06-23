@@ -28,7 +28,7 @@
       <el-menu-item index="2">
         <router-link to="/farmers">
           <i class="el-icon-user-solid"></i>
-          Farmer Profile
+          Farmers Profile
         </router-link>
       </el-menu-item>
       <hr />

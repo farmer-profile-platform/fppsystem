@@ -185,7 +185,7 @@
                 <p>Years of Farming</p>
                 <h5>12 years</h5>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="5">
                 <p>Type of Farmland Ownership</p>
                 <h5>Self owned</h5>
               </el-col>
@@ -193,7 +193,7 @@
                 <p>Total Number of Farmland Cultivated (acres)</p>
                 <h5>10 Acres</h5>
               </el-col>
-              <el-col :span="6"> </el-col> </el-row
+              <el-col :span="3"> </el-col> </el-row
             ><br />
             <hr />
             <h3 class="mb-1 mt-1">Harvest Yield</h3>
@@ -369,6 +369,24 @@
               <el-col :span="6">
                 <p>Swift Code</p>
                 <h5>UBG2334</h5>
+              </el-col>
+              <el-col :span="3"> </el-col>
+            </el-row>
+            <br />
+            <hr />
+            <h5 class="mb-1 mt-1">Mobile Money</h5>
+            <el-row type="flex" justify="space-between" class="mt-1">
+              <el-col :span="6">
+                <p>MoMo Number</p>
+                <h5>0245655556</h5>
+              </el-col>
+              <el-col :span="6">
+                <p>Account Name</p>
+                <h5>John taylor</h5>
+              </el-col>
+              <el-col :span="6">
+                <p>Network</p>
+                <h5>MTN</h5>
               </el-col>
               <el-col :span="3"> </el-col>
             </el-row>

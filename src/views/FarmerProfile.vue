@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-card>
+    <el-card v-loading="loading">
       <el-row type="flex" class="row-bg" justify="space-between">
         <el-col :span="8" class="d-flex">
           <div>
@@ -12,8 +12,9 @@
           </div>
 
           <div>
-            <h4 class="mb-0">John Taylor Asiedu Jnr</h4>
-            <p style="font-size: 12px;">Nkoranza, Bono East Region</p>
+            <h4 class="mb-0">{{ farmer.name }}</h4>
+            <p style="font-size: 12px;">{{ farmer.hometown }}</p>
+            <p style="font-size: 12px;">{{ farmer.phone }}</p>
             <el-button type="text" size="mini">
               <i class="el-icon-star-on" style="color:gold; font-size:18px"></i>
               4.3</el-button
@@ -38,19 +39,19 @@
           >
             <el-col :span="5">
               <p>Title</p>
-              <h5>Mr.</h5>
+              <h5>{{ farmer.title }}</h5>
             </el-col>
             <el-col :span="6">
               <p>First Name</p>
-              <h5>Charles</h5>
+              <h5>{{ farmer.firstName }}</h5>
             </el-col>
             <el-col :span="6">
               <p>Last Name</p>
-              <h5>Kwabena</h5>
+              <h5>{{ farmer.lastName }}</h5>
             </el-col>
             <el-col :span="6">
               <p>AKA</p>
-              <h5>Atialogogo</h5>
+              <h5>{{ farmer.aka }}</h5>
             </el-col>
           </el-row>
           <el-row
@@ -64,15 +65,15 @@
             </el-col>
             <el-col :span="6">
               <p>Phone Number</p>
-              <h5>09388229334</h5>
+              <h5>{{ farmer.phone }}</h5>
             </el-col>
             <el-col :span="6">
               <p>Email Address</p>
-              <h5>j.taylor@gmail.com</h5>
+              <h5>{{ farmer.email }}</h5>
             </el-col>
             <el-col :span="6">
               <p>Home Town</p>
-              <h5>Kumasi Abetifi</h5>
+              <h5>{{ farmer.hometown }}</h5>
             </el-col>
           </el-row>
           <el-row
@@ -82,20 +83,17 @@
           >
             <el-col :span="5">
               <p>Nationality</p>
-              <h5>Nationality</h5>
-            </el-col>
-            <el-col :span="6">
-              <p>Phone Number</p>
-              <h5>09388229334</h5>
+              <h5>{{ farmer.nationality }}</h5>
             </el-col>
             <el-col :span="6">
               <p>Community of Residence</p>
-              <h5>Nkoranza</h5>
+              <h5>{{ farmer.townOfResidence }}</h5>
             </el-col>
             <el-col :span="6">
               <p>Residential Address</p>
-              <h5>1A/2 Nkoranza</h5>
+              <h5>{{ farmer.res_address }}</h5>
             </el-col>
+            <el-col :span="6"></el-col>
           </el-row>
           <el-row
             type="flex"
@@ -104,17 +102,17 @@
           >
             <el-col :span="5">
               <p>FBO Membership Position</p>
-              <h5>FBO Position</h5>
+              <h5>{{ farmer.fbo_position }}</h5>
               <br />
               <p>National ID Type</p>
-              <h5>Voters ID</h5>
+              <h5>{{ farmer.national_id }}</h5>
             </el-col>
             <el-col :span="6">
               <p>Name of FBO Membership</p>
-              <h5>FBO Membership</h5>
+              <h5>{{ farmer.fboMember_name }}</h5>
               <br />
               <p>ID Number</p>
-              <h5>45567890223</h5>
+              <h5>{{ farmer.id_number }}</h5>
             </el-col>
             <el-col :span="6">
               <p>Signature/Thumbprint</p>
@@ -129,52 +127,59 @@
         </el-collapse-item>
         <el-collapse-item title="Household Info" name="2">
           <div class="profile-tab-bg pt-0">
+            <!-- Spouse Information -->
             <h3 class="mb-1">Spouse</h3>
-            <el-row type="flex" justify="space-between">
-              <el-col :span="5">
-                <p>Spouse Name</p>
-                <h5>Agnes Taylor</h5>
-              </el-col>
-              <el-col :span="6">
-                <p>Phone Number</p>
-                <h5>09388229334</h5>
-              </el-col>
-              <el-col :span="6">
-                <p>Age</p>
-                <h5>46 Years</h5>
-              </el-col>
-              <el-col :span="6"> </el-col> </el-row
-            ><br />
-            <el-row type="flex" justify="space-between">
-              <el-col :span="5">
-                <p>National ID Type</p>
-                <h5>Voters ID</h5>
-              </el-col>
-              <el-col :span="6">
-                <p>ID Number</p>
-                <h5>44567800230</h5>
-              </el-col>
-              <el-col :span="6"> </el-col>
-              <el-col :span="6"> </el-col>
-            </el-row>
+            <div v-for="(spouse, index) in farmer.spouse" :key="index">
+              <el-row type="flex" justify="space-between">
+                <el-col :span="5">
+                  <p>Spouse Name</p>
+                  <h5>{{ spouse.firstName + ' ' + spouse.lastName }}</h5>
+                </el-col>
+                <el-col :span="6">
+                  <p>Phone Number</p>
+                  <h5>{{ spouse.phone }}</h5>
+                </el-col>
+                <el-col :span="6">
+                  <p>Age</p>
+                  <h5>{{ getuserAge(spouse.dob) }}</h5>
+                </el-col>
+                <el-col :span="6"> </el-col> </el-row
+              ><br />
+              <el-row type="flex" justify="space-between">
+                <el-col :span="5">
+                  <p>National ID Type</p>
+                  <h5>{{ spouse.national_id }}</h5>
+                </el-col>
+                <el-col :span="6">
+                  <p>ID Number</p>
+                  <h5>{{ spouse.id_number }}</h5>
+                </el-col>
+                <el-col :span="6"> </el-col>
+                <el-col :span="6"> </el-col>
+              </el-row>
+            </div>
             <br />
             <hr />
+
+            <!-- Children Information -->
             <h3 class="mb-1 mt-1">Children</h3>
             <p>Number of Children</p>
-            <h5>1</h5>
+            <h5>{{ farmer.num_children }}</h5>
 
-            <el-row type="flex" justify="space-between" class="mt-1">
-              <el-col :span="5">
-                <p>Child Name</p>
-                <h5>Mathew Taylor</h5>
-              </el-col>
-              <el-col :span="6">
-                <p>Age</p>
-                <h5>28 Years</h5>
-              </el-col>
-              <el-col :span="6"> </el-col>
-              <el-col :span="6"> </el-col>
-            </el-row>
+            <div v-for="children in farmer.children" :key="children.name">
+              <el-row type="flex" justify="space-between" class="mt-1">
+                <el-col :span="5">
+                  <p>Child Name</p>
+                  <h5>{{ children.name }}</h5>
+                </el-col>
+                <el-col :span="6">
+                  <p>Age</p>
+                  <h5>{{ getuserAge(children.dob) }} old</h5>
+                </el-col>
+                <el-col :span="6"> </el-col>
+                <el-col :span="6"> </el-col>
+              </el-row>
+            </div>
           </div>
         </el-collapse-item>
         <el-collapse-item title="Farm Info" name="3">
@@ -183,50 +188,58 @@
             <el-row type="flex" justify="space-between">
               <el-col :span="5">
                 <p>Years of Farming</p>
-                <h5>12 years</h5>
+                <h5>{{ farmer.years_farming }} years</h5>
               </el-col>
               <el-col :span="5">
                 <p>Type of Farmland Ownership</p>
-                <h5>Self owned</h5>
+                <h5>{{ farmer.farmLandOwnershipType }}</h5>
               </el-col>
               <el-col :span="8">
                 <p>Total Number of Farmland Cultivated (acres)</p>
-                <h5>10 Acres</h5>
+                <h5>{{ farmer.num_farmLands }}</h5>
               </el-col>
               <el-col :span="3"> </el-col> </el-row
             ><br />
             <hr />
             <h3 class="mb-1 mt-1">Harvest Yield</h3>
-            <el-row type="flex" justify="space-between" class="mt-1">
-              <el-col :span="5">
-                <p>Crop Name</p>
-                <h5>Millet</h5>
-              </el-col>
-              <el-col :span="6">
-                <p>Acres</p>
-                <h5>2 acres</h5>
-              </el-col>
-              <el-col :span="6"> </el-col>
-              <el-col :span="6"> </el-col>
-            </el-row>
-            <el-row type="flex" justify="space-between" class="mt-1">
-              <el-col :span="5">
-                <p>Year</p>
-                <h5>2016</h5>
-              </el-col>
-              <el-col :span="6">
-                <p>Major Season</p>
-                <h5>430 bags</h5>
-              </el-col>
-              <el-col :span="6">
-                <p>Minor Season</p>
-                <h5>190 bags</h5>
-              </el-col>
-              <el-col :span="6">
-                <p>Yearly</p>
-                <h5>630 bags</h5>
-              </el-col>
-            </el-row>
+            <div v-for="(harvest, index) in farmer.harvestYield" :key="index">
+              <el-row type="flex" justify="space-between" class="mt-1">
+                <el-col :span="5">
+                  <p>Crop Name</p>
+                  <h5>{{ harvest.crop_name }}</h5>
+                </el-col>
+                <el-col :span="6">
+                  <p>Acres</p>
+                  <h5>{{ harvest.acres }}</h5>
+                </el-col>
+                <el-col :span="6"> </el-col>
+                <el-col :span="6"> </el-col>
+              </el-row>
+              <el-row
+                type="flex"
+                justify="space-between"
+                class="mt-1"
+                v-for="years in harvest.years"
+                :key="years.year"
+              >
+                <el-col :span="5">
+                  <p>Year</p>
+                  <h5>{{ years.year }}</h5>
+                </el-col>
+                <el-col :span="6">
+                  <p>Major Season</p>
+                  <h5>{{ years.major_season_harvest }}</h5>
+                </el-col>
+                <el-col :span="6">
+                  <p>Minor Season</p>
+                  <h5>{{ years.minor_season_harvest }}</h5>
+                </el-col>
+                <el-col :span="6">
+                  <p>Yearly</p>
+                  <h5>{{ years.yearly_harvest }}</h5>
+                </el-col>
+              </el-row>
+            </div>
           </div>
         </el-collapse-item>
         <el-collapse-item title="Farm Yield Income" name="4">
@@ -405,6 +418,7 @@ export default {
   data() {
     return {
       activeTab: 'personal',
+      loading: false,
       farmer: {},
     };
   },
@@ -413,11 +427,14 @@ export default {
   },
   methods: {
     getFarmer(id) {
+      this.loading = true;
       farmersService
         .getFarmer(id)
         .then((response) => {
           this.farmer = response.data;
-          console.log(this.farmer);
+          this.farmer.name =
+            response.data.firstName + ' ' + response.data.lastName;
+          this.loading = false;
         })
         .catch((errors) => this.errorMessage(errors.error));
     },

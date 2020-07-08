@@ -16,5 +16,11 @@ export default {
         duration: 3000
       });
     },
+    getuserAge(dob) {
+      var diff_ms = Date.now() - new Date(dob).getTime();
+      var age_dt = new Date(diff_ms);
+
+      return Math.abs(age_dt.getUTCFullYear() - 1970);
+    },
   }
 }

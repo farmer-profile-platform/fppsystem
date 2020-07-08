@@ -12,7 +12,7 @@ export default {
       .catch((error) => Promise.reject(error))
   },
   getFarmer(id) {
-    let url = config.FARMERS_URL + id
+    let url = config.FARMERS_URL + '/' + id
     return apiService.get(url)
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error))

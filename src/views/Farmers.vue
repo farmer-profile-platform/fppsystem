@@ -110,7 +110,6 @@
     <div style="text-align: center;margin-top: 10px; padding-bottom:10px;">
       <el-pagination
         background
-        :hide-on-single-page="value"
         @current-change="handleCurrentChange"
         :current-page.sync="currentPage"
         :page-sizes="[20, 50, 100]"
@@ -155,7 +154,6 @@ export default {
     tableLoading: false,
     showAddFarmerModal: false,
     showInputSupportModal: false,
-    value: true,
     currentPage: 1,
     total: 0,
     search: '',
@@ -184,7 +182,6 @@ export default {
         el.name = el.firstName + ' ' + el.lastName;
       });
       this.tableData = table;
-      this.total = farmers.total;
     },
     deleteFarmer(id) {
       console.log(id);

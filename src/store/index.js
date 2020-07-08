@@ -1,11 +1,16 @@
-import Vue from "vue";
-import Vuex from "vuex";
+// store.js
+import Vue from 'vue'
+import Vuex from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
+import fppauth from './modules/authenticate'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
-export default new Vuex.Store({
-  state: {},
-  mutations: {},
-  actions: {},
-  modules: {}
-});
+export const store = new Vuex.Store({
+  modules: {
+    fppauth
+  },
+  plugins: [
+    createPersistedState()
+  ]
+})

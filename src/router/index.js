@@ -1,5 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+// import is from "is_js";
+// import { store } from "../store/";
+// import authService from "../api/auth";
 
 import Main from "@/containers/Main.vue";
 import Dashboard from "@/views/Dashboard.vue";
@@ -34,7 +37,7 @@ const routes = [
         component: AddFarmer
       },
       {
-        path: "/farmer-profile",
+        path: "/farmer-profile/:id",
         name: "Farmer Profile",
         component: FarmerProfile
       },
@@ -54,7 +57,10 @@ const routes = [
 
 const router = new VueRouter({
   base: process.env.BASE_URL,
+  linkActiveClass: "open active",
   routes
 });
+
+
 
 export default router;

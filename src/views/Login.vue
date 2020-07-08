@@ -87,6 +87,8 @@
 </template>
 
 <script>
+import authService from '../api/auth';
+
 export default {
   name: 'login',
   data() {
@@ -120,14 +122,45 @@ export default {
   },
   methods: {
     login() {
+      let self = this;
       this.btnLoading = true;
       this.$refs['loginForm'].validate((valid) => {
         if (valid) {
-          console.log('success', this.loginForm);
+          authService
+            .login(this.loginForm)
+            .then((response) => {
+              self.set_user(response);
+            })
+            .catch((errors) => {
+              self.errorMessage(errors.error);
+              self.btnLoading = false;
+            });
         } else {
-          console.log('Error logging in');
+          self.btnLoading = false;
+          return false;
         }
       });
+    },
+    set_user(res) {
+      let self = this;
+      this.$store
+        .dispatch('login', res)
+        .then(() => {
+          authService
+            .getLoggedInUser()
+            .then((response) => {
+              self.$store.dispatch('get_user', response.data);
+              self.btnLoading = false;
+              self.$router.push('/dashboard');
+            })
+            .catch((errors) => {
+              self.errorMessage(errors.error);
+              self.btnLoading = false;
+            });
+        })
+        .catch(() =>
+          this.errorMessage('Token unidentified, contact administrator')
+        );
     },
   },
 };

@@ -398,12 +398,29 @@
 </template>
 
 <script>
+import farmersService from '../api/farmers';
+
 export default {
   name: 'FarmerProfile',
   data() {
     return {
       activeTab: 'personal',
+      farmer: {},
     };
+  },
+  created() {
+    this.getFarmer(this.$route.params.id);
+  },
+  methods: {
+    getFarmer(id) {
+      farmersService
+        .getFarmer(id)
+        .then((response) => {
+          this.farmer = response.data;
+          console.log(this.farmer);
+        })
+        .catch((errors) => this.errorMessage(errors.error));
+    },
   },
 };
 </script>

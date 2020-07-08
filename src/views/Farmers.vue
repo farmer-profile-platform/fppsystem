@@ -27,11 +27,13 @@
               !search || data.name.toLowerCase().includes(search.toLowerCase())
           )
         "
-        :loading="tableLoading"
+        v-loading="tableLoading"
+        element-loading-text="Loading..."
+        element-loading-spinner="el-icon-loading"
         style="width: 100%"
       >
-        <el-table-column label="Basic Info" prop="date">
-          <template>
+        <el-table-column label="Basic Info">
+          <template slot-scope="props">
             <span style="float:left; margin-right: 10px;">
               <img
                 src="../assets/images/charl.png"
@@ -40,13 +42,15 @@
               />
             </span>
             <span>
-              <b style="font-weight:bold; font-size: 16px">Bernard Cudjoe</b>
+              <b style="font-weight:bold; font-size: 16px">{{
+                props.row.firstName + ' ' + props.row.lastName
+              }}</b>
               <br />
-              <span style="font-size:12px;">Nkronza, Brong Ahafo</span>
+              <span style="font-size:12px;">{{ props.row.hometown }}</span>
             </span>
           </template>
         </el-table-column>
-        <el-table-column label="Rating" prop="name">
+        <el-table-column label="Rating">
           <template>
             <el-button type="text" size="mini">
               <i class="el-icon-star-on" style="color:gold; font-size:18px"></i>
@@ -55,14 +59,15 @@
           </template>
         </el-table-column>
         <el-table-column label="Crop Information" width="310">
-          <template>
-            <el-button type="primary" round plain size="mini">Maize</el-button>
-            <el-button type="primary" round plain size="mini"
-              >30 acres</el-button
-            >
-            <el-button type="primary" round plain size="mini"
-              >GHc 20,000</el-button
-            >
+          <template slot-scope="props">
+            <span v-for="(crop, index) in props.row.harvestYield" :key="index">
+              <el-button type="primary" round plain size="mini">{{
+                crop.crop_name
+              }}</el-button>
+              <el-button type="primary" round plain size="mini"
+                >{{ crop.acres }} acres</el-button
+              >
+            </span>
           </template>
         </el-table-column>
         <el-table-column align="right">
@@ -76,7 +81,12 @@
             <el-dropdown class="ml-1">
               <i class="el-icon-more fa-rotate-45"></i>
               <el-dropdown-menu slot="dropdown">
-                <router-link to="/farmer-profile">
+                <router-link
+                  :to="{
+                    name: 'Farmer Profile',
+                    params: { id: props.row._id },
+                  }"
+                >
                   <el-dropdown-item>
                     <i class="el-icon-user" style="margin-right: 10px"></i>
                     View Profile</el-dropdown-item
@@ -132,6 +142,7 @@
 </template>
 
 <script>
+import farmersService from '../api/farmers';
 import AddNewFarmers from '../components/AddNewFarmers';
 
 export default {
@@ -140,37 +151,41 @@ export default {
     AddNewFarmers,
   },
   data: () => ({
-    tableData: [
-      {
-        date: '2016-05-03',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-      },
-      {
-        date: '2016-05-02',
-        name: 'John',
-        address: 'No. 189, Grove St, Los Angeles',
-      },
-      {
-        date: '2016-05-04',
-        name: 'Morgan',
-        address: 'No. 189, Grove St, Los Angeles',
-      },
-      {
-        date: '2016-05-01',
-        name: 'Jessy',
-        address: 'No. 189, Grove St, Los Angeles',
-      },
-    ],
-    tableLoading: true,
+    tableData: [],
+    tableLoading: false,
     showAddFarmerModal: false,
     showInputSupportModal: false,
     value: true,
     currentPage: 1,
-    total: 120,
+    total: 0,
     search: '',
   }),
+  created() {
+    this.getFarmers();
+  },
   methods: {
+    getFarmers() {
+      let self = this;
+      this.tableLoading = true;
+      farmersService
+        .getFarmers()
+        .then((response) => {
+          this.tableLoading = false;
+          this.tableData = response.data;
+        })
+        .catch((errors) => {
+          self.errorMessage(errors.error);
+          self.tableLoading = false;
+        });
+    },
+    loadFarmersTable(farmers) {
+      console.log(farmers.data);
+      let table = farmers.data.map(function(el) {
+        el.name = el.firstName + ' ' + el.lastName;
+      });
+      this.tableData = table;
+      this.total = farmers.total;
+    },
     deleteFarmer(id) {
       console.log(id);
     },

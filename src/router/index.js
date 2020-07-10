@@ -1,8 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-// import is from "is_js";
-// import { store } from "../store/";
-// import authService from "../api/auth";
+import is from "is_js";
+import { store } from "../store/";
+import authService from "../api/auth";
 
 import Main from "@/containers/Main.vue";
 import Dashboard from "@/views/Dashboard.vue";
@@ -61,6 +61,12 @@ const router = new VueRouter({
   routes
 });
 
-
+router.beforeEach((to, from, next) => {
+  let openViews = ["login"];
+  let canAccess =
+    is.inArray(to.name, openViews) ||
+    authService.validAuth(store.getters.userLoggedIn);
+  return canAccess ? next() : next("/login");
+});
 
 export default router;

@@ -2,7 +2,7 @@ function getApiUrl() {
   let hn = window.location.hostname
   if (hn === 'localhost') {
     return 'http://127.0.0.1:5000/api/v1/'
-  } else if (hn === 'apifarmerpro.herokuapp.com') {
+  } else if (hn === 'farmerspro.netlify.app') {
     return 'apifarmerpro.herokuapp.com/api/v1/'
   }
 

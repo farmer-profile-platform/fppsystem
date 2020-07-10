@@ -192,75 +192,101 @@
 
         <!-- House Hold information -->
         <el-tab-pane label="Household Info" name="household">
-          <h3 class="mb-1">Spouse</h3>
-          <el-row :gutter="20">
-            <el-col :span="7">
-              <el-form-item label="Spouse First Name">
-                <el-input v-model="addFamerDetails.spouse.firstName" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="7">
-              <el-form-item label="Spouse First Name">
-                <el-input v-model="addFamerDetails.spouse.lastName" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="7">
-              <el-form-item label="Date of Birth">
-                <el-date-picker
-                  type="date"
-                  placeholder="Date of birth"
-                  style="width: 100%; margin-top:-12px"
-                  v-model="addFamerDetails.spouse.dob"
-                >
-                </el-date-picker>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-col :span="7">
-              <el-form-item label="Phone Number">
-                <el-input
-                  v-model="addFamerDetails.spouse.phone"
-                  placeholder="(054) 54153324"
-                />
-              </el-form-item>
-            </el-col>
-            <el-col :span="7">
-              <el-form-item label="National ID Type">
-                <el-select
-                  v-model="addFamerDetails.spouse.national_id"
-                  placeholder="Select"
-                  style="width:100%; margin-top:-12px"
-                >
-                  <el-option
-                    v-for="item in idcardTypes"
-                    :key="item"
-                    :label="item"
-                    :value="item"
+          <h3 class="mb-1">Spouse ( {{ addFamerDetails.spouse.length }} )</h3>
+          <div v-for="(spouse, spIdx) in addFamerDetails.spouse" :key="spIdx">
+            <el-row :gutter="20">
+              <el-col :span="7">
+                <el-form-item label="Spouse First Name">
+                  <el-input v-model="spouse.firstName" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="7">
+                <el-form-item label="Spouse First Name">
+                  <el-input v-model="spouse.lastName" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="7">
+                <el-form-item label="Date of Birth">
+                  <el-date-picker
+                    type="date"
+                    placeholder="Date of birth"
+                    style="width: 100%; margin-top:-12px"
+                    v-model="spouse.dob"
                   >
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="7">
-              <el-form-item label="ID Number">
-                <el-input v-model="addFamerDetails.spouse.id_number" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="3">
-              <div class="button-add-details">
-                <i
-                  class="el-icon-circle-plus"
-                  style="color: grey; font-size: 20px;"
-                ></i>
-                <br />
-                <el-button type="text" size="mini">Add Spouse</el-button>
-              </div>
-            </el-col>
-          </el-row>
-          <hr />
+                  </el-date-picker>
+                </el-form-item>
+              </el-col>
+              <el-col :span="3">
+                <div class="button-add-details" v-if="spIdx > 0">
+                  <i
+                    class="el-icon-delete"
+                    style="color: red; font-size: 20px;"
+                  ></i>
+                  <br />
+                  <el-button
+                    type="text"
+                    size="mini"
+                    @click="addFamerDetails.spouse.splice(spIdx, 1)"
+                    >Delete</el-button
+                  >
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="7">
+                <el-form-item label="Phone Number">
+                  <el-input
+                    v-model="spouse.phone"
+                    placeholder="(054) 54153324"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :span="7">
+                <el-form-item label="National ID Type">
+                  <el-select
+                    v-model="spouse.national_id"
+                    placeholder="Select"
+                    style="width:100%; margin-top:-12px"
+                  >
+                    <el-option
+                      v-for="item in idcardTypes"
+                      :key="item"
+                      :label="item"
+                      :value="item"
+                    >
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="7">
+                <el-form-item label="ID Number">
+                  <el-input v-model="spouse.id_number" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="3">
+                <div class="button-add-details" v-if="spIdx < 1">
+                  <i
+                    class="el-icon-circle-plus"
+                    style="color: grey; font-size: 20px;"
+                  ></i>
+                  <br />
+                  <el-button
+                    type="text"
+                    size="mini"
+                    @click="addDuplicateField(addFamerDetails.spouse, 'spouse')"
+                    >Add Spouse</el-button
+                  >
+                </div>
+              </el-col>
+            </el-row>
+            <hr />
+          </div>
           <br />
-          <h3 class="mb-1">Children</h3>
+
+          <!-- Children Information -->
+          <h3 class="mb-1">
+            Children ( {{ addFamerDetails.children.length }} )
+          </h3>
           <el-row :gutter="20">
             <el-col :span="7">
               <el-form-item label="Number of Children">
@@ -272,34 +298,54 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row :gutter="20">
-            <el-col :span="10">
-              <el-form-item label="Child's Name">
-                <el-input v-model="addFamerDetails.children.name" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="10">
-              <el-form-item label="Date of Birth">
-                <el-date-picker
-                  type="date"
-                  placeholder="Date of birth"
-                  style="width: 100%; margin-top:-12px"
-                  v-model="addFamerDetails.children.dob"
+          <div v-for="(child, cIdx) in addFamerDetails.children" :key="cIdx">
+            <el-row :gutter="20">
+              <el-col :span="10">
+                <el-form-item label="Child's Name">
+                  <el-input v-model="child.name" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="10">
+                <el-form-item label="Date of Birth">
+                  <el-date-picker
+                    type="date"
+                    placeholder="Date of birth"
+                    style="width: 100%; margin-top:-12px"
+                    v-model="child.dob"
+                  >
+                  </el-date-picker>
+                </el-form-item>
+              </el-col>
+              <el-col :span="3">
+                <div
+                  class="button-add-details"
+                  v-if="cIdx < 1"
+                  @click="addDuplicateField(addFamerDetails.children, 'child')"
                 >
-                </el-date-picker>
-              </el-form-item>
-            </el-col>
-            <el-col :span="3">
-              <div class="button-add-details">
-                <i
-                  class="el-icon-circle-plus"
-                  style="color: grey; font-size: 20px;"
-                ></i>
-                <br />
-                <el-button type="text" size="mini">Add Children</el-button>
-              </div>
-            </el-col>
-          </el-row>
+                  <i
+                    class="el-icon-circle-plus"
+                    style="color: grey; font-size: 20px;"
+                  ></i>
+                  <br />
+                  <el-button type="text" size="mini">Add Children</el-button>
+                </div>
+                <div
+                  class="button-add-details"
+                  v-else
+                  @click="addFamerDetails.children.splice(cIdx, 1)"
+                >
+                  <i
+                    class="el-icon-delete"
+                    style="color: red; font-size: 20px;"
+                  ></i>
+                  <br />
+                  <el-button type="text" size="mini">Delete</el-button>
+                </div>
+              </el-col>
+            </el-row>
+            <hr />
+          </div>
+
           <br />
           <div class="mt-3 d-flex">
             <el-button class="full-width">Cancel and reset form</el-button>
@@ -316,7 +362,7 @@
         <el-tab-pane label="Farm Info" name="farm">
           <h3 class="mb-1">Farm History</h3>
           <el-row :gutter="20">
-            <el-col :span="5">
+            <el-col :span="7">
               <el-form-item label="Years of Farming">
                 <el-input-number
                   v-model="addFamerDetails.years_farming"
@@ -330,7 +376,7 @@
                 <el-input v-model="addFamerDetails.farmLandOwnershipType" />
               </el-form-item>
             </el-col>
-            <el-col :span="9">
+            <el-col :span="7">
               <el-form-item label="Total number of Farmland Cultivated">
                 <el-input v-model="addFamerDetails.num_farmLands">
                   <template slot="append">acres</template>
@@ -340,68 +386,107 @@
           </el-row>
           <hr />
           <br />
-          <h3 class="mb-1">Crop</h3>
-          <el-row :gutter="20">
-            <el-col :span="10">
-              <el-form-item label="Crop Name">
-                <el-input v-model="addFamerDetails.harvestYield.crop_name" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="10">
-              <el-form-item label="Acres">
-                <el-input v-model="addFamerDetails.harvestYield.acres" />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">
+          <h3 class="mb-1">
+            Crop ( {{ addFamerDetails.harvestYield.length }} )
+          </h3>
+          <div
+            v-for="(harvest, harvestIdx) in addFamerDetails.harvestYield"
+            :key="harvestIdx"
+          >
+            <el-row :gutter="20">
+              <el-col :span="10">
+                <el-form-item label="Crop Name">
+                  <el-input v-model="harvest.crop_name" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="10">
+                <el-form-item label="Acres">
+                  <el-input v-model="harvest.acres" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="4">
+                <div
+                  class="button-add-details"
+                  v-if="harvestIdx > 0"
+                  @click="addFamerDetails.harvestYield.splice(harvestIdx, 1)"
+                >
+                  <i
+                    class="el-icon-delete"
+                    style="color: red; font-size: 20px;"
+                  ></i>
+                  <br />
+                  <el-button type="text" size="mini">Delete Crop</el-button>
+                </div>
+              </el-col>
+            </el-row>
             <br />
-            <h3 class="ml-1 mb-1">Harvest Yield</h3>
-            <el-col :span="5">
-              <el-form-item label="Year">
-                <el-input
-                  v-model="addFamerDetails.harvestYield.years"
-                  placeholder="2013"
-                />
-              </el-form-item>
-            </el-col>
-            <el-col :span="5">
-              <el-form-item label="Major Season">
-                <el-input
-                  v-model="addFamerDetails.harvestYield.years"
-                  placeholder="In bags"
-                />
-              </el-form-item>
-            </el-col>
-            <el-col :span="5">
-              <el-form-item label="Minor Season">
-                <el-input
-                  v-model="addFamerDetails.harvestYield.years"
-                  placeholder="In bags"
-                />
-              </el-form-item>
-            </el-col>
-            <el-col :span="5">
-              <el-form-item label="Minor Season">
-                <el-input
-                  v-model="addFamerDetails.harvestYield.years"
-                  placeholder="In bags"
-                />
-              </el-form-item>
-            </el-col>
-            <el-col :span="4">
-              <div class="button-add-details">
-                <i
-                  class="el-icon-circle-plus"
-                  style="color: grey; font-size: 20px;"
-                ></i>
-                <br />
-                <el-button type="text" size="mini">Add Year</el-button>
-              </div>
-            </el-col>
-          </el-row>
+            <h4 class="ml-1 mb-1">Harvest Yield Info</h4>
+            <el-row :gutter="20" v-for="(year, i) in harvest.years" :key="i">
+              <el-col :span="5">
+                <el-form-item label="Year">
+                  <el-input v-model="year.year" placeholder="2013" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="5">
+                <el-form-item label="Major Season">
+                  <el-input
+                    v-model="year.major_season_harvest"
+                    placeholder="In bags"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :span="5">
+                <el-form-item label="Minor Season">
+                  <el-input
+                    v-model="year.minor_season_harvest"
+                    placeholder="In bags"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :span="5">
+                <el-form-item label="Yearly Harvest">
+                  <el-input
+                    v-model="year.yearly_harvest"
+                    placeholder="In bags"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :span="4">
+                <div
+                  class="button-add-details"
+                  v-if="i < 1"
+                  @click="addDuplicateField(harvest.years, 'years')"
+                >
+                  <i
+                    class="el-icon-circle-plus"
+                    style="color: grey; font-size: 20px;"
+                  ></i>
+                  <br />
+                  <el-button type="text" size="mini">Add Year</el-button>
+                </div>
+                <div
+                  class="button-add-details"
+                  v-else
+                  @click="harvest.years.splice(i, 1)"
+                >
+                  <i
+                    class="el-icon-delete"
+                    style="color: red; font-size: 20px;"
+                  ></i>
+                  <br />
+                  <el-button type="text" size="mini">Delete Year</el-button>
+                </div>
+              </el-col>
+            </el-row>
+            <hr />
+          </div>
           <br />
           <div>
-            <el-button icon="el-icon-plus" type="info" class="full-width"
+            <el-button
+              icon="el-icon-plus"
+              type="info"
+              class="full-width"
+              @click="addCropHarvest"
               >Add Crop</el-button
             >
           </div>
@@ -419,68 +504,110 @@
 
         <!-- Farm yield Income -->
         <el-tab-pane label="Farm Yield Income" name="income">
-          <h3 class="mb-1">Crop</h3>
-          <el-row :gutter="20">
-            <el-col :span="10">
-              <el-form-item label="Crop Name">
-                <el-input v-model="addFamerDetails.harvestYield.crop_name" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="10">
-              <el-form-item label="Acres">
-                <el-input v-model="addFamerDetails.harvestYield.acres" />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">
+          <h3 class="mb-1">
+            Crop ( {{ addFamerDetails.yieldIncome.length }} )
+          </h3>
+          <div
+            v-for="(yieldIncome, idx) in addFamerDetails.yieldIncome"
+            :key="idx"
+          >
+            <el-row :gutter="20">
+              <el-col :span="10">
+                <el-form-item label="Crop Name">
+                  <el-input v-model="yieldIncome.crop_name" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="10">
+                <el-form-item label="Acres">
+                  <el-input v-model="yieldIncome.acres" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="4">
+                <div
+                  class="button-add-details"
+                  v-if="idx > 0"
+                  @click="addFamerDetails.yieldIncome.splice(idx, 1)"
+                >
+                  <i
+                    class="el-icon-delete"
+                    style="color: red; font-size: 20px;"
+                  ></i>
+                  <br />
+                  <el-button type="text" size="mini">Delete Crop</el-button>
+                </div>
+              </el-col>
+            </el-row>
+
             <br />
-            <h3 class="ml-1 mb-1">Yield Income</h3>
-            <el-col :span="5">
-              <el-form-item label="Year">
-                <el-input
-                  v-model="addFamerDetails.harvestYield.years"
-                  placeholder="2013"
-                />
-              </el-form-item>
-            </el-col>
-            <el-col :span="5">
-              <el-form-item label="Major Season">
-                <el-input
-                  v-model="addFamerDetails.harvestYield.years"
-                  placeholder="In bags"
-                />
-              </el-form-item>
-            </el-col>
-            <el-col :span="5">
-              <el-form-item label="Minor Season">
-                <el-input
-                  v-model="addFamerDetails.harvestYield.years"
-                  placeholder="In bags"
-                />
-              </el-form-item>
-            </el-col>
-            <el-col :span="5">
-              <el-form-item label="Minor Season">
-                <el-input
-                  v-model="addFamerDetails.harvestYield.years"
-                  placeholder="In bags"
-                />
-              </el-form-item>
-            </el-col>
-            <el-col :span="4">
-              <div class="button-add-details">
-                <i
-                  class="el-icon-circle-plus"
-                  style="color: grey; font-size: 20px;"
-                ></i>
-                <br />
-                <el-button type="text" size="mini">Add Year</el-button>
-              </div>
-            </el-col>
-          </el-row>
+            <h4 class="ml-1 mb-1">Yield Income</h4>
+            <el-row
+              :gutter="20"
+              v-for="(year, yearindex) in yieldIncome.years"
+              :key="yearindex"
+            >
+              <el-col :span="5">
+                <el-form-item label="Year">
+                  <el-input v-model="year.year" placeholder="2013" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="5">
+                <el-form-item label="Major Season">
+                  <el-input
+                    v-model="year.major_season_income"
+                    placeholder="GHc"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :span="5">
+                <el-form-item label="Minor Season">
+                  <el-input
+                    v-model="year.minor_season_income"
+                    placeholder="GHc"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :span="5">
+                <el-form-item label="Yearly Income">
+                  <el-input v-model="year.yearly_income" placeholder="GHc" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="4">
+                <div
+                  class="button-add-details"
+                  v-if="yearindex < 1"
+                  @click="addDuplicateField(yieldIncome.years, 'years')"
+                >
+                  <i
+                    class="el-icon-circle-plus"
+                    style="color: grey; font-size: 20px;"
+                  ></i>
+                  <br />
+                  <el-button type="text" size="mini">Add Year</el-button>
+                </div>
+                <div
+                  class="button-add-details"
+                  v-else
+                  @click="yieldIncome.years.splice(yearindex, 1)"
+                >
+                  <i
+                    class="el-icon-delete"
+                    style="color: red; font-size: 20px;"
+                  ></i>
+                  <br />
+                  <el-button type="text" size="mini">Delete Year</el-button>
+                </div>
+              </el-col>
+            </el-row>
+            <hr />
+          </div>
+
           <br />
           <div>
-            <el-button icon="el-icon-plus" type="info" class="full-width"
+            <el-button
+              icon="el-icon-plus"
+              type="info"
+              class="full-width"
+              @click="addCropYieldIncome"
               >Add Crop</el-button
             >
           </div>
@@ -495,65 +622,133 @@
             >
           </div>
         </el-tab-pane>
-        <el-tab-pane label="Bank Details" name="bank">
-          <h3 class="mb-1">Banks Details</h3>
-          <el-row :gutter="20">
-            <el-col :span="10">
-              <el-form-item label="Bank Name">
-                <el-input v-model="addFamerDetails.bank.name" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="10">
-              <el-form-item label="Branch">
-                <el-input v-model="addFamerDetails.bank.branch" />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-col :span="10">
-              <el-form-item label="Account Name">
-                <el-input v-model="addFamerDetails.bank.acc_name" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="10">
-              <el-form-item label="Account Number">
-                <el-input v-model="addFamerDetails.bank.acc_number" />
-              </el-form-item>
-            </el-col>
 
-            <el-col :span="4">
-              <div class="button-add-details">
-                <i
-                  class="el-icon-circle-plus"
-                  style="color: grey; font-size: 20px;"
-                ></i>
-                <br />
-                <el-button type="text" size="mini">Add Bank</el-button>
-              </div>
-            </el-col>
-          </el-row>
-          <hr />
+        <!-- Bank Information -->
+        <el-tab-pane label="Bank Details" name="bank">
+          <h3 class="mb-1">
+            Banks Details ( {{ addFamerDetails.bank.length }} )
+          </h3>
+          <div
+            v-for="(bank, bankIndex) in addFamerDetails.bank"
+            :key="bankIndex"
+          >
+            <el-row :gutter="20">
+              <el-col :span="8">
+                <el-form-item label="Bank Name">
+                  <el-input v-model="bank.name" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="9">
+                <el-form-item label="Branch">
+                  <el-input v-model="bank.branch" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="7">
+                <el-form-item label="Swift Code">
+                  <el-input
+                    v-model="bank.swift_code"
+                    placeholder="Leave empty is not provide"
+                  />
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="10">
+                <el-form-item label="Account Name">
+                  <el-input v-model="bank.acc_name" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="10">
+                <el-form-item label="Account Number">
+                  <el-input v-model="bank.acc_number" />
+                </el-form-item>
+              </el-col>
+
+              <el-col :span="4">
+                <div
+                  class="button-add-details"
+                  v-if="bankIndex < 1"
+                  @click="addDuplicateField(addFamerDetails.bank, 'bank')"
+                >
+                  <i
+                    class="el-icon-circle-plus"
+                    style="color: grey; font-size: 20px;"
+                  ></i>
+                  <br />
+                  <el-button type="text" size="mini">Add Bank</el-button>
+                </div>
+                <div
+                  class="button-add-details"
+                  v-else
+                  @click="addFamerDetails.bank.splice(bankIndex, 1)"
+                >
+                  <i
+                    class="el-icon-delete"
+                    style="color: red; font-size: 20px;"
+                  ></i>
+                  <br />
+                  <el-button type="text" size="mini">Delete</el-button>
+                </div>
+              </el-col>
+            </el-row>
+            <hr />
+          </div>
           <br />
-          <h3 class="mb-1">Mobile Money Details</h3>
-          <el-row :gutter="20">
-            <el-col :span="10">
+          <!-- Mobile Money -->
+          <h3 class="mb-1">
+            Mobile Money Details ( {{ addFamerDetails.momo.length }} )
+          </h3>
+          <el-row
+            :gutter="20"
+            v-for="(momo, momoIndex) in addFamerDetails.momo"
+            :key="momoIndex"
+          >
+            <el-col :span="7">
               <el-form-item label="Phone Number">
-                <el-input v-model="addFamerDetails.momo.phone" />
+                <el-input v-model="momo.phone" />
               </el-form-item>
             </el-col>
-            <el-col :span="10">
+            <el-col :span="7">
               <el-form-item label="Name">
-                <el-input v-model="addFamerDetails.momo.name" />
+                <el-input v-model="momo.name" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="Network">
+                <el-select
+                  v-model="momo.network"
+                  style="width:100%; margin-top:-12px"
+                >
+                  <el-option label="MTN" value="MTN"></el-option>
+                  <el-option label="Tigo" value="Tigo"></el-option>
+                  <el-option label="Vodafone." value="Vodafone"></el-option>
+                </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="4">
-              <div class="button-add-details">
+              <div
+                class="button-add-details"
+                v-if="momoIndex < 1"
+                @click="addDuplicateField(addFamerDetails.momo, 'Momo')"
+              >
                 <i
                   class="el-icon-circle-plus"
                   style="color: grey; font-size: 20px;"
                 ></i>
                 <br />
                 <el-button type="text" size="mini">Add MoMo</el-button>
+              </div>
+              <div
+                class="button-add-details"
+                v-else
+                @click="addFamerDetails.momo.splice(momoIndex, 1)"
+              >
+                <i
+                  class="el-icon-delete"
+                  style="color: red; font-size: 20px;"
+                ></i>
+                <br />
+                <el-button type="text" size="mini">Delete</el-button>
               </div>
             </el-col>
           </el-row>
@@ -565,6 +760,7 @@
             <el-button
               class="full-width"
               type="primary"
+              :loading="btnLoading"
               @click="confirmFarmerAddition()"
               >Add a new famer</el-button
             >
@@ -576,6 +772,8 @@
 </template>
 
 <script>
+import farmersService from '../api/farmers';
+
 export default {
   name: 'AddNewFarmers',
   props: ['showModal'],
@@ -590,7 +788,7 @@ export default {
         phone: '',
         email: '',
         hometown: '',
-        nationality: '',
+        nationality: 'Ghanaian',
         townOfResidence: '',
         res_address: '',
         fbo_position: '',
@@ -647,14 +845,13 @@ export default {
             ],
           },
         ],
-        inputSupport: [{}],
         bank: [
           {
             name: '',
             branch: '',
             acc_name: '',
             acc_number: '',
-            swift_code: '',
+            swift_code: 'None',
           },
         ],
         momo: [
@@ -665,6 +862,7 @@ export default {
           },
         ],
       },
+      btnLoading: false,
       activeTab: 'personal',
       idcardTypes: [
         'Passport',
@@ -686,6 +884,14 @@ export default {
     };
   },
   methods: {
+    addCropHarvest() {
+      this.infoMessage('Added another crop');
+      this.addFamerDetails.harvestYield.push({ years: [{}] });
+    },
+    addCropYieldIncome() {
+      this.infoMessage('Added another crop');
+      this.addFamerDetails.yieldIncome.push({ years: [{}] });
+    },
     confirmFarmerAddition() {
       this.$confirm(
         'Are you sure you want add data to famers profile',
@@ -697,6 +903,7 @@ export default {
         }
       )
         .then(() => {
+          console.log(this.addFamerDetails);
           this.addFarmer();
         })
         .catch(() => {
@@ -704,7 +911,15 @@ export default {
         });
     },
     addFarmer() {
-      this.$emit('addedFarmer');
+      farmersService
+        .addFarmer(this.addFamerDetails)
+        .then(() => {
+          this.successNotification('Success', 'Farmer added successfully');
+          this.$emit('addedFarmer');
+        })
+        .catch((errors) => {
+          this.errorMessage(errors.error);
+        });
     },
     handleContinue(nextTab) {
       this.activeTab = nextTab;

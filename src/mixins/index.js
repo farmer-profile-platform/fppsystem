@@ -25,6 +25,17 @@ export default {
         duration: 3000
       });
     },
+    infoMessage(message) {
+      this.$message({
+        showClose: true,
+        message: message,
+        duration: 2000
+      });
+    },
+    addDuplicateField(dataArray, type) {
+      dataArray.push({});
+      this.infoMessage(`Added another ${type}`);
+    },
     getuserAge(dob) {
       var diff_ms = Date.now() - new Date(dob).getTime();
       var age_dt = new Date(diff_ms);

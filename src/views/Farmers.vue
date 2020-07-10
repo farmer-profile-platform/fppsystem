@@ -184,7 +184,6 @@ export default {
         });
     },
     loadFarmersTable(farmers) {
-      console.log(farmers.data);
       let table = farmers.data.map(function(el) {
         el.name = el.firstName + ' ' + el.lastName;
       });
@@ -215,12 +214,6 @@ export default {
     farmerAdded() {
       this.showAddFarmerModal = false;
       this.getFarmers();
-    },
-    handleEdit(index, row) {
-      console.log(index, row);
-    },
-    handleDelete(index, row) {
-      console.log(index, row);
     },
     handleCurrentChange(page) {
       this.currentPage = page;

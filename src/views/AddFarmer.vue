@@ -682,12 +682,6 @@ export default {
     };
   },
   methods: {
-    handleRemove(file) {
-      console.log(file);
-    },
-    handlePreview(file) {
-      console.log(file);
-    },
     handleContinue(nextTab) {
       this.activeTab = nextTab;
     },

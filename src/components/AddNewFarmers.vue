@@ -903,7 +903,6 @@ export default {
         }
       )
         .then(() => {
-          console.log(this.addFamerDetails);
           this.addFarmer();
         })
         .catch(() => {

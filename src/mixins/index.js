@@ -1,6 +1,12 @@
 import authService from "../api/auth";
+import { mapGetters } from "vuex"
 
 export default {
+  computed: {
+    ...mapGetters({
+      token: 'getToken',
+    })
+  },
   methods: {
     successMessage(message) {
       this.$message({
@@ -43,10 +49,13 @@ export default {
       return Math.abs(age_dt.getUTCFullYear() - 1970);
     },
     logout() {
-      authService.logout()
+      let self = this
+      authService.logout(this.token)
         .then(() => {
-          this.$store.dispatch('logout');
-          this.$route.push("/login")
+          self.$store.dispatch('logout');
+          self.$router.push("/login")
+        }).catch((errors) => {
+          console.log(errors)
         })
     }
   }

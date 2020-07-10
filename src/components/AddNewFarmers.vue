@@ -565,8 +565,8 @@
             <el-button
               class="full-width"
               type="primary"
-              @click="handleContinue('bank')"
-              >Save and Continue</el-button
+              @click="confirmFarmerAddition()"
+              >Add a new famer</el-button
             >
           </div>
         </el-tab-pane>
@@ -578,6 +578,7 @@
 <script>
 export default {
   name: 'AddNewFarmers',
+  props: ['showModal'],
   data() {
     return {
       addFamerDetails: {
@@ -646,18 +647,21 @@ export default {
             ],
           },
         ],
+        inputSupport: [{}],
         bank: [
           {
             name: '',
             branch: '',
             acc_name: '',
             acc_number: '',
+            swift_code: '',
           },
         ],
         momo: [
           {
             phone: '',
             name: '',
+            network: '',
           },
         ],
       },
@@ -682,6 +686,26 @@ export default {
     };
   },
   methods: {
+    confirmFarmerAddition() {
+      this.$confirm(
+        'Are you sure you want add data to famers profile',
+        'Warning',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning',
+        }
+      )
+        .then(() => {
+          this.addFarmer();
+        })
+        .catch(() => {
+          this.errorMessage('Farmer not added');
+        });
+    },
+    addFarmer() {
+      this.$emit('addedFarmer');
+    },
     handleContinue(nextTab) {
       this.activeTab = nextTab;
     },

@@ -1,3 +1,5 @@
+import authService from "../api/auth";
+
 export default {
   methods: {
     successMessage(message) {
@@ -6,6 +8,13 @@ export default {
         message: message,
         type: 'success',
         duration: 2000
+      });
+    },
+    successNotification(title, message) {
+      this.$notify({
+        title: title,
+        message: message,
+        type: 'success'
       });
     },
     errorMessage(message) {
@@ -22,5 +31,12 @@ export default {
 
       return Math.abs(age_dt.getUTCFullYear() - 1970);
     },
+    logout() {
+      authService.logout()
+        .then(() => {
+          this.$store.dispatch('logout');
+          this.$route.push("/login")
+        })
+    }
   }
 }

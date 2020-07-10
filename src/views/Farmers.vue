@@ -7,7 +7,7 @@
       plain
       type="primary"
       size="small"
-      @click="showAddFarmerModal = true"
+      @click="addFarmerModal"
       >Add New Farmer</el-button
     >
     <div>
@@ -24,7 +24,8 @@
         :data="
           tableData.filter(
             (data) =>
-              !search || data.name.toLowerCase().includes(search.toLowerCase())
+              !search ||
+              data.firstName.toLowerCase().includes(search.toLowerCase())
           )
         "
         v-loading="tableLoading"
@@ -97,10 +98,12 @@
                   <i class="el-icon-s-flag" style="margin-right: 10px"></i>
                   Input Farmer Support</el-dropdown-item
                 >
-                <el-dropdown-item @click="deleteFarmer(props.row.id)" divided>
-                  <i class="el-icon-delete" style="margin-right: 10px"></i>
-                  Delete</el-dropdown-item
-                >
+                <el-dropdown-item divided>
+                  <span @click="confirmDelete(props.row._id)">
+                    <i class="el-icon-delete" style="margin-right: 10px"></i>
+                    Delete
+                  </span>
+                </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </template>
@@ -126,7 +129,10 @@
         <h3>Add Farmer</h3>
         <p>Plaese fill all fields for accurate data reports.</p>
       </template>
-      <AddNewFarmers />
+      <AddNewFarmers
+        :showModal="showAddFarmerModal"
+        v-on:addedFarmer="farmerAdded"
+      />
     </el-dialog>
 
     <!-- Add farmer Input Support -->
@@ -155,7 +161,7 @@ export default {
     showAddFarmerModal: false,
     showInputSupportModal: false,
     currentPage: 1,
-    total: 0,
+    total: 3,
     search: '',
   }),
   created() {
@@ -170,6 +176,7 @@ export default {
         .then((response) => {
           this.tableLoading = false;
           this.tableData = response.data;
+          this.total = response.total;
         })
         .catch((errors) => {
           self.errorMessage(errors.error);
@@ -183,8 +190,31 @@ export default {
       });
       this.tableData = table;
     },
+    confirmDelete(id) {
+      this.$confirm('This will permanently delete farmer data', 'Warning', {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'warning',
+      })
+        .then(() => {
+          this.deleteFarmer(id);
+        })
+        .catch(() => {
+          this.errorMessage('Delete cancelled');
+        });
+    },
     deleteFarmer(id) {
-      console.log(id);
+      farmersService.deleteFarmer(id).then(() => {
+        this.successNotification('Success', 'Farmer deleted successfully');
+        this.getFarmers();
+      });
+    },
+    addFarmerModal() {
+      this.showAddFarmerModal = true;
+    },
+    farmerAdded() {
+      this.showAddFarmerModal = false;
+      this.getFarmers();
     },
     handleEdit(index, row) {
       console.log(index, row);

@@ -79,6 +79,7 @@ export default {
           address: 'No. 189, Grove St, Los Angeles',
         },
       ],
+      tableLoading: false,
       showAddUserModal: false,
       search: '',
     };

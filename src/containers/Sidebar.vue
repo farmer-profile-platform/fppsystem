@@ -12,7 +12,7 @@
         <b>Bernard Cudjoe</b> <br />
         <span style="font-size:12px;">bernard.c@cnmagement.com</span>
       </span>
-      <span class="logout">
+      <span class="logout" @click="logout">
         <el-tag size="small" type="info">Logout</el-tag>
       </span>
     </div>

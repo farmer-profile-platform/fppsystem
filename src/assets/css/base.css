@@ -188,6 +188,7 @@ a {
   float: right;
   margin-top: -15px;
   margin-right: 20px;
+  cursor: pointer;
 }
 
 .sidebar_activities {

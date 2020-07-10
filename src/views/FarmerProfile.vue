@@ -174,14 +174,17 @@
                 </el-col>
                 <el-col :span="6">
                   <p>Age</p>
-                  <h5>{{ getuserAge(children.dob) }} old</h5>
+                  <h5>{{ getuserAge(children.dob) }} years old</h5>
                 </el-col>
                 <el-col :span="6"> </el-col>
                 <el-col :span="6"> </el-col>
               </el-row>
+              <hr />
             </div>
           </div>
         </el-collapse-item>
+
+        <!-- Farm History -->
         <el-collapse-item title="Farm Info" name="3">
           <div class="profile-tab-bg pt-0">
             <h3 class="mb-1">Farm History</h3>
@@ -242,58 +245,52 @@
             </div>
           </div>
         </el-collapse-item>
+
         <el-collapse-item title="Farm Yield Income" name="4">
           <div class="profile-tab-bg pt-0">
-            <el-row type="flex" justify="space-between" class="mt-1">
-              <el-col :span="5">
-                <p>Crop Name</p>
-                <h5 style="color:green;">Millet</h5>
-              </el-col>
-              <el-col :span="6">
-                <p>Acres</p>
-                <h5 style="color:green;">2 acres</h5>
-              </el-col>
-              <el-col :span="6"> </el-col>
-              <el-col :span="6"> </el-col>
-            </el-row>
-            <h3 class="mb-1 mt-1">Yield Income</h3>
-            <el-row type="flex" justify="space-between" class="mt-1">
-              <el-col :span="5">
-                <p>Year</p>
-                <h5>2016</h5>
-              </el-col>
-              <el-col :span="6">
-                <p>Major Season</p>
-                <h5>430 bags</h5>
-              </el-col>
-              <el-col :span="6">
-                <p>Minor Season</p>
-                <h5>190 bags</h5>
-              </el-col>
-              <el-col :span="6">
-                <p>Yearly</p>
-                <h5>630 bags</h5>
-              </el-col>
-            </el-row>
-            <hr />
-            <el-row type="flex" justify="space-between" class="mt-1">
-              <el-col :span="5">
-                <p>Year</p>
-                <h5>2019</h5>
-              </el-col>
-              <el-col :span="6">
-                <p>Major Season</p>
-                <h5>40 bags</h5>
-              </el-col>
-              <el-col :span="6">
-                <p>Minor Season</p>
-                <h5>100 bags</h5>
-              </el-col>
-              <el-col :span="6">
-                <p>Yearly</p>
-                <h5>330 bags</h5>
-              </el-col>
-            </el-row>
+            <div
+              v-for="(yieldIncome, index) in farmer.yieldIncome"
+              :key="index"
+            >
+              <el-row type="flex" justify="space-between" class="mt-1">
+                <el-col :span="5">
+                  <p>Crop Name</p>
+                  <h5 style="color:green;">{{ yieldIncome.crop_name }}</h5>
+                </el-col>
+                <el-col :span="6">
+                  <p>Acres</p>
+                  <h5 style="color:green;">{{ yieldIncome.acres }}</h5>
+                </el-col>
+                <el-col :span="6"> </el-col>
+                <el-col :span="6"> </el-col>
+              </el-row>
+              <h3 class="mb-1 mt-1">Yield Income</h3>
+              <el-row
+                type="flex"
+                justify="space-between"
+                class="mt-1"
+                v-for="year in yieldIncome.years"
+                :key="year.year"
+              >
+                <el-col :span="5">
+                  <p>Year</p>
+                  <h5>{{ year.year }}</h5>
+                </el-col>
+                <el-col :span="6">
+                  <p>Major Season Income</p>
+                  <h5>{{ year.major_season_income }}</h5>
+                </el-col>
+                <el-col :span="6">
+                  <p>Minor Season Income</p>
+                  <h5>{{ year.minor_season_income }}</h5>
+                </el-col>
+                <el-col :span="6">
+                  <p>Yearly Income</p>
+                  <h5>{{ year.yearly_income }}</h5>
+                </el-col>
+              </el-row>
+              <hr />
+            </div>
           </div>
         </el-collapse-item>
         <el-collapse-item title="Analytics" name="5">
@@ -362,40 +359,52 @@
             </el-row>
           </div>
         </el-collapse-item>
+
+        <!-- Bank Information -->
         <el-collapse-item title="Bank Details" name="7">
           <div class="profile-tab-bg pt-0">
-            <h5 class="mb-1 mt-1">
-              Bank: <span style="color:green;">Unibank</span>
-            </h5>
-            <h5 class="mb-1 mt-1">
-              Branch: <span style="color:green;">Tachiman Branch</span>
-            </h5>
-            <el-row type="flex" justify="space-between" class="mt-1">
-              <el-col :span="6">
-                <p>Account Name</p>
-                <h5>John Taylor</h5>
-              </el-col>
-              <el-col :span="6">
-                <p>Account Number</p>
-                <h5>00610044356789</h5>
-              </el-col>
-              <el-col :span="6">
-                <p>Swift Code</p>
-                <h5>UBG2334</h5>
-              </el-col>
-              <el-col :span="3"> </el-col>
-            </el-row>
-            <br />
-            <hr />
+            <div v-for="(bank, index) in farmer.bank" :key="index">
+              <h5 class="mb-1 mt-1">
+                Bank: <span style="color:green;">{{ bank.name }}</span>
+              </h5>
+              <h5 class="mb-1 mt-1">
+                Branch: <span style="color:green;">{{ bank.branch }}</span>
+              </h5>
+              <el-row type="flex" justify="space-between" class="mt-1">
+                <el-col :span="6">
+                  <p>Account Name</p>
+                  <h5>{{ bank.acc_name }}</h5>
+                </el-col>
+                <el-col :span="6">
+                  <p>Account Number</p>
+                  <h5>{{ bank.acc_number }}</h5>
+                </el-col>
+                <el-col :span="6">
+                  <p>Swift Code</p>
+                  <h5>{{ bank.swift_code }}</h5>
+                </el-col>
+                <el-col :span="3"> </el-col>
+              </el-row>
+              <br />
+              <hr />
+            </div>
+
+            <!-- Mobile Money -->
             <h5 class="mb-1 mt-1">Mobile Money</h5>
-            <el-row type="flex" justify="space-between" class="mt-1">
+            <el-row
+              type="flex"
+              justify="space-between"
+              class="mt-1"
+              v-for="momo in farmer.momo"
+              :key="momo.phone"
+            >
               <el-col :span="6">
                 <p>MoMo Number</p>
-                <h5>0245655556</h5>
+                <h5>{{ momo.phone }}</h5>
               </el-col>
               <el-col :span="6">
                 <p>Account Name</p>
-                <h5>John taylor</h5>
+                <h5>{{ momo.name }}</h5>
               </el-col>
               <el-col :span="6">
                 <p>Network</p>

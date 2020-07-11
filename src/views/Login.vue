@@ -132,6 +132,7 @@ export default {
               self.set_user(response);
             })
             .catch((errors) => {
+              console.log(errors);
               self.errorMessage(errors.error);
               self.btnLoading = false;
             });

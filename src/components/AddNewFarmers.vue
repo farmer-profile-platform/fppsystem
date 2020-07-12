@@ -362,13 +362,9 @@
         <el-tab-pane label="Farm Info" name="farm">
           <h3 class="mb-1">Farm History</h3>
           <el-row :gutter="20">
-            <el-col :span="7">
+            <el-col :span="5">
               <el-form-item label="Years of Farming">
-                <el-input-number
-                  v-model="addFamerDetails.years_farming"
-                  :min="0"
-                  :max="10"
-                />
+                <el-input v-model="addFamerDetails.years_farming" />
               </el-form-item>
             </el-col>
             <el-col :span="9">
@@ -376,7 +372,7 @@
                 <el-input v-model="addFamerDetails.farmLandOwnershipType" />
               </el-form-item>
             </el-col>
-            <el-col :span="7">
+            <el-col :span="9">
               <el-form-item label="Total number of Farmland Cultivated">
                 <el-input v-model="addFamerDetails.num_farmLands">
                   <template slot="append">acres</template>
@@ -474,7 +470,7 @@
                     style="color: red; font-size: 20px;"
                   ></i>
                   <br />
-                  <el-button type="text" size="mini">Delete Year</el-button>
+                  <el-button type="text" size="mini">Remove Year</el-button>
                 </div>
               </el-col>
             </el-row>
@@ -798,7 +794,7 @@ export default {
         photo: '',
         fingerprint: '',
         num_children: 0,
-        years_farming: 0,
+        years_farming: 1,
         farmLandOwnershipType: '',
         num_farmLands: '',
         spouse: [

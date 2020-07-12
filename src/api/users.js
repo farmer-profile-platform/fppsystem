@@ -24,7 +24,7 @@ export default {
       .catch((error) => Promise.reject(error))
   },
   updateUser(userData) {
-    let url = config.FARMERS_URL + '/' + userData.id
+    let url = config.USERS_URL + '/' + userData.id
     return apiService.update(url, userData)
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error))

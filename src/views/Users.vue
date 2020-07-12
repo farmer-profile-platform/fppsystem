@@ -56,15 +56,25 @@
             >
           </template>
         </el-table-column>
-        <el-table-column align="right">
+        <el-table-column label="Status">
+          <template slot-scope="props">
+            <el-tag
+              size="mini"
+              :type="props.row.suspended ? 'danger' : 'success'"
+            >
+              {{ props.row.suspended ? 'User Suspended' : 'Active' }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column align="right" width="240px">
           <template slot-scope="props">
             <el-button
-              type="info"
+              :type="props.row.suspended ? 'success' : 'info'"
               plain
               size="mini"
               icon="el-icon-cancel"
-              @click="confirmSuspend(props.row._id)"
-              >Suspend</el-button
+              @click="confirmSuspend(props.row.suspended, props.row._id)"
+              >{{ props.row.suspended ? 'Activate' : 'Suspend' }}</el-button
             >
             <el-button
               type="danger"
@@ -144,22 +154,48 @@ export default {
         });
     },
     deleteUser(id) {
-      userService.deleteUser(id).then(() => {
-        this.successNotification('Success', 'User deleted successfully');
-        this.getUsers();
-      });
+      userService
+        .deleteUser(id)
+        .then(() => {
+          this.successNotification('Success', 'User deleted successfully');
+          this.getUsers();
+        })
+        .catch((errors) => this.errorMessage(errors.error));
     },
-    confirmSuspend() {
-      this.$confirm('This will temporary suspend user for 30days', 'Warning', {
+    confirmSuspend(status, id) {
+      let message;
+      if (status == true) {
+        message = 'Are you sure you want to activate user';
+      } else {
+        message = 'This will temporary suspend user for 30days';
+      }
+      this.$confirm(message, 'Warning', {
         confirmButtonText: 'OK',
         cancelButtonText: 'Cancel',
         type: 'warning',
       })
         .then(() => {
-          this.successMusic('Success', 'Suspention completed');
+          this.suspendUser(status, id);
         })
         .catch(() => {
           this.errorMessage('Suspention cancelled');
+        });
+    },
+    suspendUser(status, id) {
+      let user = {};
+      user.id = id;
+      user.suspended = status === true ? false : true;
+      userService
+        .updateUser(user)
+        .then(() => {
+          this.successNotification(
+            'Success',
+            'User status changed successfully'
+          );
+          this.getUsers();
+        })
+        .catch((errors) => {
+          this.errorMessage(errors.error);
         });
     },
     handleCurrentChange(page) {

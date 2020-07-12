@@ -99,6 +99,63 @@
       >
       </el-pagination>
     </div>
+
+    <!-- Add user Dialog -->
+    <el-dialog
+      :visible.sync="showAddUserModal"
+      width="30%"
+      title="Add a new system user"
+    >
+      <el-form :model="addUserForm" :rules="rules" ref="addUserForm">
+        <el-row :gutter="24">
+          <el-col :span="24">
+            <el-form-item prop="name">
+              <el-input
+                v-model="addUserForm.name"
+                placeholder="Enter full name"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item prop="role">
+              <el-select
+                placeholder="Select user role"
+                v-model="addUserForm.role"
+                style="width:100%; margin-top:-12px"
+              >
+                <el-option label="Editor" value="editor"></el-option>
+                <el-option label="User" value="user"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item prop="email">
+              <el-input
+                v-model="addUserForm.email"
+                placeholder="@youremail.com"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item prop="password">
+              <el-input
+                v-model="addUserForm.password"
+                type="password"
+                placeholder="********"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-button
+          class="button_full"
+          type="primary"
+          icon="el-icon-plus"
+          @click="addUser"
+          :loading="btnLoading"
+          >Add User</el-button
+        >
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -112,6 +169,49 @@ export default {
       tableData: [],
       tableLoading: false,
       showAddUserModal: false,
+      btnLoading: false,
+      addUserForm: {
+        role: 'user',
+        name: '',
+        email: '',
+        password: '',
+      },
+      rules: {
+        role: [
+          {
+            required: true,
+            message: 'Select user role',
+            trigger: ['blur', 'change'],
+          },
+        ],
+        name: [
+          {
+            required: true,
+            message: 'Select user role',
+            trigger: 'blur',
+          },
+        ],
+        email: [
+          {
+            type: 'email',
+            required: true,
+            message: 'Email is required',
+            trigger: 'blur',
+          },
+        ],
+        password: [
+          {
+            required: true,
+            message: 'Please enter password',
+            trigger: 'blur',
+          },
+          {
+            min: 6,
+            message: 'Length should be 6 or more characters',
+            trigger: 'change',
+          },
+        ],
+      },
       search: '',
       currentPage: 1,
       total: 3,
@@ -135,6 +235,27 @@ export default {
           self.errorMessage(errors.error);
           self.tableLoading = false;
         });
+    },
+    addUser() {
+      this.btnLoading = true;
+      this.$refs['addUserForm'].validate((valid) => {
+        if (valid) {
+          userService
+            .addUser(this.addUserForm)
+            .then(() => {
+              this.btnLoading = false;
+              this.showAddUserModal = false;
+              this.getUsers();
+            })
+            .catch(() => {
+              this.btnLoading = false;
+              this.errorMessage('User error');
+            });
+        } else {
+          this.btnLoading = false;
+          return false;
+        }
+      });
     },
     confirmDelete(id) {
       this.$confirm(

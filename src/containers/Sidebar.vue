@@ -9,8 +9,8 @@
         <img src="../assets/images/charl.png" alt="" style="width:40px;" />
       </span>
       <span id="user_name">
-        <b>Bernard Cudjoe</b> <br />
-        <span style="font-size:12px;">bernard.c@cnmagement.com</span>
+        <b>{{ user.name }}</b> <br />
+        <span style="font-size:12px;">{{ user.email }}</span>
       </span>
       <span class="logout" @click="logout">
         <el-tag size="small" type="info">Logout</el-tag>
@@ -64,12 +64,18 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import RecentActivity from '@/components/RecentActivity';
 
 export default {
   name: 'Sidebar',
   components: {
     RecentActivity,
+  },
+  computed: {
+    ...mapGetters({
+      user: 'getUser',
+    }),
   },
 };
 </script>

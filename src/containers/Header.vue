@@ -8,12 +8,20 @@
         <el-dropdown-item>Delete</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-    <span>Tom</span>
+    <span
+      >{{ user.name }} <el-tag size="mini">{{ capitalize(user.role) }}</el-tag>
+    </span>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
   name: 'Header',
+  computed: {
+    ...mapGetters({
+      user: 'getUser',
+    }),
+  },
 };
 </script>

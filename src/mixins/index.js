@@ -48,6 +48,10 @@ export default {
 
       return Math.abs(age_dt.getUTCFullYear() - 1970);
     },
+    capitalize(word) {
+      if (typeof word !== 'string') return ''
+      return word.charAt(0).toUpperCase() + word.slice(1)
+    },
     logout() {
       let self = this
       authService.logout(this.token)

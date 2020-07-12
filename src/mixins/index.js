@@ -54,11 +54,10 @@ export default {
     },
     logout() {
       let self = this
+      self.$store.dispatch('logout');
+      self.$router.push("/login")
       authService.logout(this.token)
-        .then(() => {
-          self.$store.dispatch('logout');
-          self.$router.push("/login")
-        }).catch((errors) => {
+        .then(() => { }).catch((errors) => {
           console.log(errors)
         })
     }

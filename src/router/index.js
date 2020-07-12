@@ -11,6 +11,7 @@ import FarmInputSupport from "@/views/FarmInputSupport"
 import AddFarmer from "@/views/AddFarmer";
 import FarmerProfile from "@/views/FarmerProfile";
 import Users from "@/views/Users";
+import UserProfile from "@/views/UserProfile"
 import Login from "@/views/Login";
 
 Vue.use(VueRouter);
@@ -51,6 +52,11 @@ const routes = [
         path: "/users",
         name: "Users",
         component: Users
+      },
+      {
+        path: "/user-profile",
+        name: "User Profile",
+        component: UserProfile
       }
     ]
   },

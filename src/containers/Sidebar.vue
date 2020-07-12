@@ -5,13 +5,16 @@
       <p>Authorized Personnel</p>
     </div>
     <div class="sidebar_userInfo mb-3">
-      <span id="user_photo">
-        <img src="../assets/images/charl.png" alt="" style="width:40px;" />
+      <span @click="userProfile">
+        <span id="user_photo">
+          <img src="../assets/images/charl.png" alt="" style="width:40px;" />
+        </span>
+        <span id="user_name">
+          <b>{{ user.name }}</b> <br />
+          <span style="font-size:12px;">{{ user.email }}</span>
+        </span>
       </span>
-      <span id="user_name">
-        <b>{{ user.name }}</b> <br />
-        <span style="font-size:12px;">{{ user.email }}</span>
-      </span>
+
       <span class="logout" @click="logout">
         <el-tag size="small" type="info">Logout</el-tag>
       </span>
@@ -76,6 +79,14 @@ export default {
     ...mapGetters({
       user: 'getUser',
     }),
+  },
+  methods: {
+    userProfile() {
+      this.$router.push({
+        path: '/user-profile',
+        query: { id: this.user._id, name: this.user.name },
+      });
+    },
   },
 };
 </script>

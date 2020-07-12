@@ -33,7 +33,7 @@
       </el-menu-item>
       <hr />
       <el-menu-item index="3">
-        <router-link to="/farmer-input">
+        <router-link to="/farmer-input-support">
           <i class="el-icon-s-flag"></i>
           Farmer Input Support
         </router-link>

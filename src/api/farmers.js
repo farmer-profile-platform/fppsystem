@@ -29,6 +29,12 @@ export default {
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error))
   },
+  getFarmersWithSupport() {
+    let url = config.FARMERS_URL + "/support"
+    return apiService.get(url)
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error))
+  },
   deleteFarmer(id) {
     let url = config.FARMERS_URL + '/' + id
     return apiService.delete(url)

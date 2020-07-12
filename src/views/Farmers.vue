@@ -33,7 +33,7 @@
         element-loading-spinner="el-icon-loading"
         style="width: 100%"
       >
-        <el-table-column label="Basic Info">
+        <el-table-column label="Basic Info" width="230">
           <template slot-scope="props">
             <span style="float:left; margin-right: 10px;">
               <img

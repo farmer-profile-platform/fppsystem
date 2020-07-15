@@ -1,20 +1,10 @@
 <template>
   <div>
-    <!-- <router-link to="/add-farmer">
-    </router-link> -->
-    <el-button
-      icon="el-icon-plus"
-      plain
-      type="primary"
-      size="small"
-      @click="addFarmerModal"
-      >Add New Farmer</el-button
-    >
     <div>
       <el-input
         placeholder="Search farmers by thier names"
         v-model="search"
-        class="mt-4 mb-1"
+        class="mt-1 mb-1"
       >
         <el-button slot="append" icon="el-icon-search"></el-button>
       </el-input>
@@ -67,7 +57,25 @@
               }}</el-button>
               <el-button type="primary" round plain size="mini"
                 >{{ crop.acres }} acres</el-button
+              ><br /><br />
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column label="Support Info" width="310">
+          <template slot-scope="props">
+            <span
+              v-for="(support, index) in props.row.inputSupport"
+              :key="index"
+            >
+              <span
+                >Year: <span>{{ support.year }}</span></span
               >
+              <br />
+              <span
+                >Grand Total: <span>GH₵ {{ support.grand_total }}</span></span
+              ><br />
+              <el-button type="text" icon="el-icon-view">View Inputs</el-button>
+              <br /><br />
             </span>
           </template>
         </el-table-column>

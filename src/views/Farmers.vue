@@ -67,7 +67,7 @@
               }}</el-button>
               <el-button type="primary" round plain size="mini"
                 >{{ crop.acres }} acres</el-button
-              >
+              ><br /><br />
             </span>
           </template>
         </el-table-column>

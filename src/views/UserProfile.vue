@@ -14,7 +14,7 @@ export default {
     };
   },
   created() {
-    this.getUser(this.$route.query.id);
+    this.getUser(this.$route.params.id);
   },
   methods: {
     getUser(id) {

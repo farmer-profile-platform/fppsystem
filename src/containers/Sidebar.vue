@@ -5,7 +5,7 @@
       <p>Authorized Personnel</p>
     </div>
     <div class="sidebar_userInfo mb-3">
-      <span @click="userProfile">
+      <span @click="userProfile" style="cursor:pointer;">
         <span id="user_photo">
           <img src="../assets/images/charl.png" alt="" style="width:40px;" />
         </span>
@@ -83,8 +83,8 @@ export default {
   methods: {
     userProfile() {
       this.$router.push({
-        path: '/user-profile',
-        query: { id: this.user._id, name: this.user.name },
+        name: 'User Profile',
+        params: { id: this.user._id, name: this.user.name },
       });
     },
   },

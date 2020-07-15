@@ -125,18 +125,6 @@ export default {
             trigger: 'blur',
           },
         ],
-        password: [
-          {
-            required: true,
-            message: 'Please enter password',
-            trigger: 'blur',
-          },
-          {
-            min: 6,
-            message: 'Length should be 6 or more characters',
-            trigger: 'change',
-          },
-        ],
       },
     };
   },
@@ -158,17 +146,33 @@ export default {
         .catch((errors) => this.errorMessage(errors.error));
     },
     editUser() {
+      let self = this;
       this.btnLoading = true;
-      userService
-        .updateUser(this.editForm)
-        .then(() => {
-          this.isEditing = false;
-          this.btnLoading = false;
-        })
-        .catch((errors) => {
-          this.btnLoading = false;
-          this.errorMessage(errors.error);
-        });
+      this.editForm.password === undefined || this.editForm.password == ''
+        ? delete this.editForm.password
+        : this.editForm;
+      this.editForm.role == 'admin' ? delete this.editForm.role : this.editForm;
+      this.$refs['editForm'].validate((valid) => {
+        if (valid) {
+          userService
+            .updateUser(this.editForm)
+            .then((response) => {
+              self.$store.dispatch('get_user', response.data);
+              self.isEditing = false;
+              self.btnLoading = false;
+              self.successNotification(
+                'Success',
+                'Updated profile successfully'
+              );
+            })
+            .catch(() => {
+              self.errorMessage('Error Editing user details');
+            });
+        } else {
+          self.btnLoading = false;
+          return false;
+        }
+      });
     },
   },
 };

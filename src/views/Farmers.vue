@@ -65,13 +65,10 @@
               <el-button type="primary" round plain size="mini">{{
                 crop.crop_name
               }}</el-button>
-              <el-button type="primary" round plain size="mini"
-                >{{ crop.acres }} acres</el-button
-              ><br /><br />
             </span>
           </template>
         </el-table-column>
-        <el-table-column label="Support Status">
+        <el-table-column label="Support Status" width="200">
           <template slot-scope="props">
             <el-tag
               size="mini"
@@ -115,7 +112,7 @@
                     "
                   >
                     <i class="el-icon-s-flag" style="margin-right: 10px"></i>
-                    Input Farmer Support
+                    Add Farm Support
                   </span>
                 </el-dropdown-item>
                 <el-dropdown-item divided>
@@ -155,7 +152,7 @@
     </el-dialog>
 
     <!-- Add farmer Input Support -->
-    <el-dialog :visible.sync="showInputSupportModal" width="67%">
+    <el-dialog :visible.sync="showInputSupportModal" width="58%">
       <template slot="title">
         <h3>{{ inputSupportTitle }}</h3>
         <p>Take note of the unit details and amounts.</p>
@@ -181,12 +178,12 @@
             v-for="(support, index) in year.inputs"
             :key="index"
           >
-            <el-col :span="4">
+            <el-col :span="8">
               <el-form-item label="Input Type">
                 <el-input v-model="support.type" />
               </el-form-item>
             </el-col>
-            <el-col :span="5">
+            <el-col :span="7">
               <el-form-item label="Input Name">
                 <el-input v-model="support.name" />
               </el-form-item>
@@ -200,23 +197,7 @@
                 />
               </el-form-item>
             </el-col>
-            <el-col :span="2">
-              <el-form-item label="Quantity">
-                <el-input
-                  v-model="support.quantity"
-                  type="number"
-                  @input="setTotal(support, year)"
-                />
-              </el-form-item>
-            </el-col>
-            <el-col :span="5">
-              <el-form-item label="Total Amount">
-                <el-input v-model="support.total" type="number">
-                  <template slot="prepend">GH₵</template>
-                </el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="3">
+            <el-col :span="4">
               <div
                 class="button-add-details"
                 v-if="index < 1"
@@ -242,6 +223,23 @@
                 <el-button type="text" size="mini">Remove</el-button>
               </div>
             </el-col>
+            <el-col :span="5">
+              <el-form-item label="Quantity">
+                <el-input
+                  v-model="support.quantity"
+                  type="number"
+                  @input="setTotal(support, year)"
+                />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="Total Amount">
+                <el-input v-model="support.total" type="number">
+                  <template slot="prepend">GH₵</template>
+                </el-input>
+              </el-form-item>
+            </el-col>
+            <hr />
           </el-row>
           <el-row :gutter="20">
             <el-col :span="10">
@@ -372,7 +370,6 @@ export default {
     },
     addInputSupport() {
       this.inputSupportForm.id = this.selectedId;
-      console.log(this.inputSupportForm);
       farmersService
         .updateFarmer(this.inputSupportForm)
         .then(() => {

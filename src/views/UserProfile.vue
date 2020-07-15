@@ -1,5 +1,89 @@
 <template>
-  <div></div>
+  <div>
+    <el-row type="flex" justify="center">
+      <el-col :span="12">
+        <div>
+          <div style="text-align:center;">
+            <el-avatar
+              :size="100"
+              src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+            ></el-avatar>
+            <div>
+              <input type="file" ref="file" style="display: none" />
+              <el-button
+                @click="$refs.file.click()"
+                type="text"
+                icon="el-icon-edit"
+              >
+                <b style="color:#2fa512;"> Update Photo</b></el-button
+              >
+            </div>
+          </div>
+          <el-button
+            type="text"
+            icon="el-icon-edit"
+            @click="isEditing = true"
+            size="mini"
+            >Edit Details</el-button
+          >
+          <el-form :model="editForm" :rules="rules" ref="editForm">
+            <el-row :gutter="24">
+              <el-col :span="24">
+                <el-form-item prop="name">
+                  <el-input
+                    v-model="editForm.name"
+                    :disabled="!isEditing"
+                    placeholder="Enter full name"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :span="24">
+                <el-form-item prop="role">
+                  <el-select
+                    placeholder="Select user role"
+                    v-model="editForm.role"
+                    :disabled="!isEditing"
+                    style="width:100%; margin-top:-12px"
+                  >
+                    <el-option label="Editor" value="editor"></el-option>
+                    <el-option label="User" value="user"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="24">
+                <el-form-item prop="email">
+                  <el-input
+                    v-model="editForm.email"
+                    placeholder="@youremail.com"
+                    :disabled="!isEditing"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :span="24">
+                <el-form-item prop="password">
+                  <el-input
+                    v-model="editForm.password"
+                    type="password"
+                    placeholder="********"
+                    :disabled="!isEditing"
+                  />
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-button
+              class="button_full"
+              type="primary"
+              icon="el-icon-plus"
+              :disabled="!isEditing"
+              @click="editUser"
+              :loading="btnLoading"
+              >Save Details</el-button
+            >
+          </el-form>
+        </div>
+      </el-col>
+    </el-row>
+  </div>
 </template>
 
 <script>
@@ -9,8 +93,51 @@ export default {
   name: 'UsersProfile',
   data() {
     return {
-      loading: false,
-      user: {},
+      btnLoading: false,
+      isEditing: false,
+      editForm: {
+        id: '',
+        role: '',
+        name: '',
+        email: '',
+        password: '',
+      },
+      rules: {
+        role: [
+          {
+            required: true,
+            message: 'Select user role',
+            trigger: ['blur', 'change'],
+          },
+        ],
+        name: [
+          {
+            required: true,
+            message: 'Select user role',
+            trigger: 'blur',
+          },
+        ],
+        email: [
+          {
+            type: 'email',
+            required: true,
+            message: 'Email is required',
+            trigger: 'blur',
+          },
+        ],
+        password: [
+          {
+            required: true,
+            message: 'Please enter password',
+            trigger: 'blur',
+          },
+          {
+            min: 6,
+            message: 'Length should be 6 or more characters',
+            trigger: 'change',
+          },
+        ],
+      },
     };
   },
   created() {
@@ -18,15 +145,30 @@ export default {
   },
   methods: {
     getUser(id) {
-      console.log(id);
-      this.loading = true;
       userService
-        .getUsers(id)
+        .getUser(id)
         .then((response) => {
-          this.user = response.data;
-          this.loading = false;
+          let user = response.data;
+          this.editForm.name = user.name;
+          this.editForm.role = user.role;
+          this.editForm.email = user.email;
+          this.editForm.password = user.password;
+          this.editForm.id = user._id;
         })
         .catch((errors) => this.errorMessage(errors.error));
+    },
+    editUser() {
+      this.btnLoading = true;
+      userService
+        .updateUser(this.editForm)
+        .then(() => {
+          this.isEditing = false;
+          this.btnLoading = false;
+        })
+        .catch((errors) => {
+          this.btnLoading = false;
+          this.errorMessage(errors.error);
+        });
     },
   },
 };

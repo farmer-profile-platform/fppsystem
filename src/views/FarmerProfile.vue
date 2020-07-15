@@ -204,7 +204,9 @@
               <el-col :span="3"> </el-col> </el-row
             ><br />
             <hr />
-            <h3 class="mb-1 mt-1">Harvest Yield</h3>
+            <h3 class="mb-1 mt-1">
+              Harvest Yield ( {{ farmer.harvestYield.length }} )
+            </h3>
             <div v-for="(harvest, index) in farmer.harvestYield" :key="index">
               <el-row type="flex" justify="space-between" class="mt-1">
                 <el-col :span="5">
@@ -242,10 +244,15 @@
                   <h5>{{ years.yearly_harvest }}</h5>
                 </el-col>
               </el-row>
+              <br />
+              <hr />
             </div>
+            <br />
+            <hr />
           </div>
         </el-collapse-item>
 
+        <!-- Farm Yield Income -->
         <el-collapse-item title="Farm Yield Income" name="4">
           <div class="profile-tab-bg pt-0">
             <div
@@ -293,70 +300,65 @@
             </div>
           </div>
         </el-collapse-item>
+
+        <!-- Analytics -->
         <el-collapse-item title="Analytics" name="5">
           <div>
             Will be done later on.
           </div>
         </el-collapse-item>
+
+        <!-- Farm input support -->
         <el-collapse-item title="Farm Input Support" name="6">
-          <div class="profile-tab-bg pt-0">
-            <h5 class="mb-1 mt-1" style="color:green;">2016</h5>
-            <el-row type="flex" justify="space-between" class="mt-1">
-              <el-col :span="5">
-                <p>Input Type</p>
-                <h5>Fertilizer</h5>
-              </el-col>
-              <el-col :span="5">
-                <p>Input Name</p>
-                <h5>Urea 15-15-15</h5>
-              </el-col>
-              <el-col :span="5">
-                <p>Unit Price</p>
-                <h5>GHS 120</h5>
-              </el-col>
-              <el-col :span="5">
-                <p>Quantity</p>
-                <h5>2</h5>
-              </el-col>
-              <el-col :span="5">
-                <p>Total Amount</p>
-                <h5>GHS 240</h5>
-              </el-col>
-            </el-row>
-            <el-row type="flex" justify="end" class="mt-1">
-              <div>
-                <h5>Grand Total: <span style="color:green;">GHS 240</span></h5>
-              </div> </el-row
-            ><br />
-            <hr />
-            <h5 class="mb-1 mt-1" style="color:green;">2020</h5>
-            <el-row type="flex" justify="space-between" class="mt-1">
-              <el-col :span="5">
-                <p>Input Type</p>
-                <h5>Fertilizer</h5>
-              </el-col>
-              <el-col :span="5">
-                <p>Input Name</p>
-                <h5>Urea 15-15-15</h5>
-              </el-col>
-              <el-col :span="5">
-                <p>Unit Price</p>
-                <h5>GHS 120</h5>
-              </el-col>
-              <el-col :span="5">
-                <p>Quantity</p>
-                <h5>2</h5>
-              </el-col>
-              <el-col :span="5">
-                <p>Total Amount</p>
-                <h5>GHS 240</h5>
-              </el-col>
-            </el-row>
-            <el-row type="flex" justify="end" class="mt-1">
-              <div>
-                <h5>Grand Total: <span style="color:green;">GHS 240</span></h5>
-              </div>
-            </el-row>
+          <div
+            class="profile-tab-bg pt-0"
+            v-if="farmer.inputSupport.length !== 0"
+          >
+            <div v-for="(support, index) in farmer.inputSupport" :key="index">
+              <h4 class="mb-1 mt-1" style="color:green;">{{ support.year }}</h4>
+              <el-row
+                type="flex"
+                justify="space-between"
+                class="mt-1"
+                v-for="(input, idx) in support.inputs"
+                :key="idx"
+              >
+                <el-col :span="5">
+                  <p>Input Type</p>
+                  <h5>{{ input.type }}</h5>
+                </el-col>
+                <el-col :span="5">
+                  <p>Input Name</p>
+                  <h5>{{ input.name }}</h5>
+                </el-col>
+                <el-col :span="5">
+                  <p>Unit Price</p>
+                  <h5>{{ input.unit_price }}</h5>
+                </el-col>
+                <el-col :span="5">
+                  <p>Quantity</p>
+                  <h5>{{ input.quantity }}</h5>
+                </el-col>
+                <el-col :span="5">
+                  <p>Total Amount</p>
+                  <h5>GH₵ {{ input.total }}</h5>
+                </el-col>
+              </el-row>
+              <el-row type="flex" justify="end" class="mt-1">
+                <div>
+                  <h5>
+                    Grand Total:
+                    <span style="color:green;"
+                      >GH₵ {{ support.grand_total }}</span
+                    >
+                  </h5>
+                </div> </el-row
+              ><br />
+              <hr />
+            </div>
+          </div>
+          <div v-else>
+            <h3>No input support added</h3>
           </div>
         </el-collapse-item>
 

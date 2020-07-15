@@ -55,9 +55,6 @@
               <el-button type="primary" round plain size="mini">{{
                 crop.crop_name
               }}</el-button>
-              <el-button type="primary" round plain size="mini"
-                >{{ crop.acres }} acres</el-button
-              ><br /><br />
             </span>
           </template>
         </el-table-column>
@@ -75,7 +72,7 @@
                 >Grand Total: <span>GH₵ {{ support.grand_total }}</span></span
               ><br />
               <el-button type="text" icon="el-icon-view">View Inputs</el-button>
-              <br /><br />
+              <br />
             </span>
           </template>
         </el-table-column>

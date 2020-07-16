@@ -29,6 +29,12 @@ export default {
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error))
   },
+  uploadUserPhoto(id, img) {
+    let url = config.USERS_URL + '/' + id + '/photo'
+    return apiService.update(url, img)
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error))
+  },
   deleteUser(id) {
     let url = config.USERS_URL + '/' + id
     return apiService.delete(url)

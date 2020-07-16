@@ -29,6 +29,9 @@ const actions = {
   get_user({ commit }, response) {
     commit('USER_SUCCESS', response)
   },
+  update_user({ commit }, response) {
+    commit('USER_UPDATE', response)
+  },
 }
 
 const mutations = {
@@ -62,6 +65,17 @@ const mutations = {
     state.user = user
     state.userLoggedIn = true
   },
+  USER_UPDATE: (state, user) => {
+    switch (user.role) {
+      case 'admin':
+        state.isAdmin = true
+        break;
+      case 'editor':
+        state.isEditor = true
+        break;
+    }
+    state.user = user
+  }
 }
 
 export default {

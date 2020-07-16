@@ -6,10 +6,15 @@
           <div style="text-align:center;">
             <el-avatar
               :size="100"
-              src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+              :src="`http://127.0.0.1:5000/uploads/${user.profile_pic}`"
             ></el-avatar>
             <div>
-              <input type="file" ref="file" style="display: none" />
+              <input
+                type="file"
+                ref="file"
+                style="display: none"
+                @change="getUserImage"
+              />
               <el-button
                 @click="$refs.file.click()"
                 type="text"
@@ -87,6 +92,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import userService from '../api/users';
 
 export default {
@@ -95,6 +101,7 @@ export default {
     return {
       btnLoading: false,
       isEditing: false,
+      userId: null,
       editForm: {
         id: '',
         role: '',
@@ -128,8 +135,14 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapGetters({
+      user: 'getUser',
+    }),
+  },
   created() {
-    this.getUser(this.$route.params.id);
+    this.userId = this.$route.params.id;
+    this.getUser(this.userId);
   },
   methods: {
     getUser(id) {
@@ -173,6 +186,21 @@ export default {
           return false;
         }
       });
+    },
+    getUserImage(e) {
+      const files = e.target.files;
+      const formData = new FormData();
+      formData.append('file', files[0]);
+      userService
+        .uploadUserPhoto(this.userId, formData)
+        .then((response) => {
+          this.$store.dispatch('update_user', response.data);
+          this.successNotification('Profile Pic Updated');
+          console.log(response);
+        })
+        .catch((errors) => {
+          this.errorMessage(errors.error);
+        });
     },
   },
 };

@@ -63,8 +63,8 @@ export default {
       let self = this
       self.$store.dispatch('logout');
       self.$router.push("/login")
-      authService.logout(this.token)
-        .then(() => { }).catch(() => {
+      authService.logout()
+        .then(() => { this.successMessage('User Logout') }).catch(() => {
           this.errorMessage('Contact System Administrator')
         })
     }

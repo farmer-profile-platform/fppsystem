@@ -1,5 +1,5 @@
 import apiService from './api'
-import axios from 'axios'
+// import axios from 'axios'
 import config from '../config'
 
 export default {
@@ -28,10 +28,9 @@ export default {
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error))
   },
-  logout(token) {
-    axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
+  logout() {
     let url = config.LOGOUT_USER_URL
-    return axios.get(url)
+    return apiService.get(url)
       .then((response) => Promise.resolve(response.data))
       .catch((error) => Promise.reject(error))
   },

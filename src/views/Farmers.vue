@@ -139,8 +139,9 @@
       >
       </el-pagination>
     </div>
+
     <!-- add farmers dialog -->
-    <el-dialog :visible.sync="showAddFarmerModal" width="55%">
+    <el-dialog :visible.sync="showAddFarmerModal" width="65%">
       <template slot="title">
         <h3>Add Farmer</h3>
         <p>Plaese fill all fields for accurate data reports.</p>

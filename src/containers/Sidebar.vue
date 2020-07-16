@@ -7,7 +7,11 @@
     <div class="sidebar_userInfo mb-3">
       <span @click="userProfile" style="cursor:pointer;">
         <span id="user_photo">
-          <img src="../assets/images/charl.png" alt="" style="width:40px;" />
+          <img
+            :src="setProfilePic(user.profile_pic)"
+            alt=""
+            style="width:40px;"
+          />
         </span>
         <span id="user_name">
           <b>{{ user.name }}</b> <br />

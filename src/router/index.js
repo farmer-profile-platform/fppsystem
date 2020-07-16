@@ -8,7 +8,6 @@ import Main from "@/containers/Main.vue";
 import Dashboard from "@/views/Dashboard.vue";
 import Farmers from "@/views/Farmers";
 import FarmInputSupport from "@/views/FarmInputSupport"
-import AddFarmer from "@/views/AddFarmer";
 import FarmerProfile from "@/views/FarmerProfile";
 import Users from "@/views/Users";
 import UserProfile from "@/views/UserProfile"
@@ -37,11 +36,6 @@ const routes = [
         path: "/farmer-input-support",
         name: "Farm Input Support",
         component: FarmInputSupport
-      },
-      {
-        path: "/add-farmer",
-        name: "Add Farmer",
-        component: AddFarmer
       },
       {
         path: "/farmer-profile/:id",

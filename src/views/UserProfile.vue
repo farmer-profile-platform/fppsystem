@@ -6,7 +6,7 @@
           <div style="text-align:center;">
             <el-avatar
               :size="100"
-              :src="`http://127.0.0.1:5000/uploads/${user.profile_pic}`"
+              :src="setProfilePic(user.profile_pic)"
             ></el-avatar>
             <div>
               <input

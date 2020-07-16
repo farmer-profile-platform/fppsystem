@@ -25,7 +25,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="9">
-              <el-form-item label="First Name">
+              <el-form-item label="First Name" prop="firstName">
                 <el-input v-model="addFamerDetails.firstName" />
               </el-form-item>
             </el-col>
@@ -42,7 +42,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="Date of Birth">
+              <el-form-item label="Date of Birth" prop="dob">
                 <el-date-picker
                   type="date"
                   placeholder="Date of birth"
@@ -53,7 +53,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="Phone Number">
+              <el-form-item label="Phone Number" prop="phone">
                 <el-input
                   v-model="addFamerDetails.phone"
                   placeholder="(054) 54153324"
@@ -73,7 +73,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="Nationality">
+              <el-form-item label="Nationality" prop="nationality">
                 <el-input
                   v-model="addFamerDetails.nationality"
                   placeholder="Ghanaian"
@@ -105,7 +105,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="National ID Type">
+              <el-form-item label="National ID Type" prop="national_id">
                 <el-select
                   v-model="addFamerDetails.national_id"
                   placeholder="Select"
@@ -122,7 +122,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="ID Number">
+              <el-form-item label="ID Number" prop="id_number">
                 <el-input v-model="addFamerDetails.id_number" />
               </el-form-item>
             </el-col> </el-row
@@ -876,6 +876,27 @@ export default {
           },
           { min: 5, message: 'Length should be 5 or more', trigger: 'blur' },
         ],
+        dob: [
+          {
+            required: true,
+            message: 'Please enter a Date of birth',
+            trigger: ['blur', 'change'],
+          },
+        ],
+        national_id: [
+          {
+            required: true,
+            message: 'Please enter valid national ID',
+            trigger: ['blur', 'change'],
+          },
+        ],
+        phone: [
+          {
+            required: true,
+            message: 'Phone number field is required',
+            trigger: ['blur', 'change'],
+          },
+        ],
       },
     };
   },
@@ -899,7 +920,14 @@ export default {
         }
       )
         .then(() => {
-          this.addFarmer();
+          this.$refs['addFamerDetails'].validate((valid) => {
+            if (valid) {
+              this.addFarmer();
+            } else {
+              this.errorMessage('Make sure all required fields are filled');
+              return false;
+            }
+          });
         })
         .catch(() => {
           this.errorMessage('Farmer not added');

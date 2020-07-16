@@ -29,8 +29,8 @@ const actions = {
   get_user({ commit }, response) {
     commit('USER_SUCCESS', response)
   },
-  update_user({ commit }, response) {
-    commit('USER_UPDATE', response)
+  update_pic({ commit }, pic) {
+    commit('UPDATE_PIC', pic)
   },
 }
 
@@ -65,16 +65,8 @@ const mutations = {
     state.user = user
     state.userLoggedIn = true
   },
-  USER_UPDATE: (state, user) => {
-    switch (user.role) {
-      case 'admin':
-        state.isAdmin = true
-        break;
-      case 'editor':
-        state.isEditor = true
-        break;
-    }
-    state.user = user
+  UPDATE_PIC: (state, pic) => {
+    state.user.profile_pic = pic
   }
 }
 

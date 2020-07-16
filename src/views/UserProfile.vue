@@ -194,9 +194,8 @@ export default {
       userService
         .uploadUserPhoto(this.userId, formData)
         .then((response) => {
-          this.$store.dispatch('update_user', response.data);
+          this.$store.dispatch('update_pic', response.data);
           this.successNotification('Profile Pic Updated');
-          console.log(response);
         })
         .catch((errors) => {
           this.errorMessage(errors.error);

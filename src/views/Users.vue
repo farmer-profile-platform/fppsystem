@@ -34,7 +34,7 @@
           <template slot-scope="props">
             <span style="float:left; margin-right: 10px;">
               <img
-                src="../assets/images/charl.png"
+                :src="setProfilePic(props.row.profile_pic)"
                 alt=""
                 style="width:40px;"
               />

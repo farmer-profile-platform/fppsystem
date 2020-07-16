@@ -8,6 +8,13 @@ export default {
     })
   },
   methods: {
+    setProfilePic(pic) {
+      if (pic.includes('no-photo')) {
+        return 'http://127.0.0.1:5000/uploads/photo_5ef8e123f8df83065189f440.png'
+      } else {
+        return `http://127.0.0.1:5000/uploads/${pic}`
+      }
+    },
     successMessage(message) {
       this.$message({
         showClose: true,

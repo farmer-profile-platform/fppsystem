@@ -33,7 +33,7 @@
         element-loading-spinner="el-icon-loading"
         style="width: 100%"
       >
-        <el-table-column label="Basic Info" width="230">
+        <el-table-column label="Basic Info" width="250">
           <template slot-scope="props">
             <span style="float:left; margin-right: 10px;">
               <img
@@ -44,14 +44,14 @@
             </span>
             <span>
               <b style="font-weight:bold; font-size: 16px">{{
-                props.row.firstName + ' ' + props.row.lastName
+                props.row.name
               }}</b>
               <br />
               <span style="font-size:12px;">{{ props.row.hometown }}</span>
             </span>
           </template>
         </el-table-column>
-        <el-table-column label="Rating">
+        <el-table-column label="Rating" align="center">
           <template>
             <el-button type="text" size="mini">
               <i class="el-icon-star-on" style="color:gold; font-size:18px"></i>
@@ -59,12 +59,17 @@
             >
           </template>
         </el-table-column>
-        <el-table-column label="Crop Information" width="310">
+        <el-table-column label="Crop Information" width="250">
           <template slot-scope="props">
             <span v-for="(crop, index) in props.row.harvestYield" :key="index">
-              <el-button type="primary" round plain size="mini">{{
-                crop.crop_name
-              }}</el-button>
+              <el-button
+                type="primary"
+                round
+                plain
+                size="mini"
+                style="margin-right:10px;"
+                >{{ crop.crop_name }}</el-button
+              >
             </span>
           </template>
         </el-table-column>
@@ -96,7 +101,7 @@
                 <router-link
                   :to="{
                     name: 'Farmer Profile',
-                    params: { id: props.row._id },
+                    params: { id: props.row._id, name: props.row.firstName },
                   }"
                 >
                   <el-dropdown-item>
@@ -113,6 +118,12 @@
                   >
                     <i class="el-icon-s-flag" style="margin-right: 10px"></i>
                     Add Farm Support
+                  </span>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <span @click="showEditModal(props.row)">
+                    <i class="el-icon-edit" style="margin-right: 10px"></i>
+                    Edit Farmer
                   </span>
                 </el-dropdown-item>
                 <el-dropdown-item divided>
@@ -141,15 +152,12 @@
     </div>
 
     <!-- add farmers dialog -->
-    <el-dialog :visible.sync="showAddFarmerModal" width="65%">
+    <el-dialog :visible.sync="showAddFarmerModal" fullscreen>
       <template slot="title">
         <h3>Add Farmer</h3>
         <p>Plaese fill all fields for accurate data reports.</p>
       </template>
-      <AddNewFarmers
-        :showModal="showAddFarmerModal"
-        v-on:addedFarmer="farmerAdded"
-      />
+      <AddNewFarmers v-on:addedFarmer="farmerAdded" />
     </el-dialog>
 
     <!-- Add farmer Input Support -->
@@ -281,24 +289,41 @@
         </div>
       </el-form>
     </el-dialog>
+
+    <!-- Edit farmer details -->
+    <el-dialog :visible.sync="showEditFarmerModal" fullscreen>
+      <template slot="title">
+        <h3>{{ editTitle }}</h3>
+        <p>Edit field and make sure all required fields has data.</p>
+      </template>
+      <EditFarmerDetails
+        :farmer.sync="farmer"
+        v-on:editedFarmer="farmerEdited"
+      />
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import farmersService from '../api/farmers';
 import AddNewFarmers from '../components/AddNewFarmers';
+import EditFarmerDetails from '../components/EditFarmerDetails';
 
 export default {
   name: 'farmers',
   components: {
     AddNewFarmers,
+    EditFarmerDetails,
   },
   data() {
     return {
       tableData: [],
+      farmer: {},
       tableLoading: false,
       showAddFarmerModal: false,
+      showEditFarmerModal: false,
       showInputSupportModal: false,
+      editTitle: '',
       inputSupportTitle: '',
       selectedId: null,
       currentPage: 1,
@@ -379,6 +404,11 @@ export default {
         })
         .catch((errors) => this.errorMessage(errors.error));
     },
+    showEditModal(farmer) {
+      this.editTitle = 'Edit Farmer Details for ' + farmer.name;
+      this.farmer = farmer;
+      this.showEditFarmerModal = true;
+    },
     confirmDelete(id) {
       this.$confirm('This will permanently delete farmer data', 'Warning', {
         confirmButtonText: 'OK',
@@ -403,6 +433,10 @@ export default {
     },
     farmerAdded() {
       this.showAddFarmerModal = false;
+      this.getFarmers();
+    },
+    farmerEdited() {
+      this.showEditFarmerModal = false;
       this.getFarmers();
     },
     handleCurrentChange(page) {

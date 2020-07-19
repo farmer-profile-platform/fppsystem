@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <el-card v-loading="loading">
+  <div v-loading="loading">
+    <el-card>
       <el-row type="flex" class="row-bg" justify="space-between">
         <el-col :span="8" class="d-flex">
           <div>
@@ -205,7 +205,7 @@
             ><br />
             <hr />
             <h3 class="mb-1 mt-1">
-              Harvest Yield ( {{ farmer.harvestYield.length }} )
+              Harvest Yield
             </h3>
             <div v-for="(harvest, index) in farmer.harvestYield" :key="index">
               <el-row type="flex" justify="space-between" class="mt-1">
@@ -312,7 +312,7 @@
         <el-collapse-item title="Farm Input Support" name="6">
           <div
             class="profile-tab-bg pt-0"
-            v-if="farmer.inputSupport.length !== 0"
+            v-if="checkEmptyArray(farmer.inputSupport) == false"
           >
             <div v-for="(support, index) in farmer.inputSupport" :key="index">
               <h4 class="mb-1 mt-1" style="color:green;">{{ support.year }}</h4>
@@ -357,7 +357,7 @@
               <hr />
             </div>
           </div>
-          <div v-else>
+          <div v-else-if="checkEmptyArray(farmer.inputSupport) == true">
             <h3>No input support added</h3>
           </div>
         </el-collapse-item>

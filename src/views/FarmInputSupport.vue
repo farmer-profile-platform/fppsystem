@@ -90,7 +90,7 @@
                 <router-link
                   :to="{
                     name: 'Farmer Profile',
-                    params: { id: props.row._id },
+                    params: { id: props.row._id, name: props.row.firstName },
                   }"
                 >
                   <el-dropdown-item>

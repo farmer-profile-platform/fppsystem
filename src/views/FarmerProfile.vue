@@ -22,10 +22,20 @@
           </div>
         </el-col>
         <el-col :span="6">
-          <el-button size="mini" icon="el-icon-edit" type="success">
+          <el-button
+            size="mini"
+            icon="el-icon-edit"
+            type="success"
+            @click="showEditModal"
+          >
             Edit
           </el-button>
-          <el-button size="mini" icon="el-icon-delete" type="danger">
+          <el-button
+            size="mini"
+            icon="el-icon-delete"
+            type="danger"
+            @click="confirmDelete(farmer._id)"
+          >
             Delete
           </el-button>
         </el-col>
@@ -418,29 +428,49 @@
         </el-collapse-item>
       </el-collapse>
     </el-card>
+
+    <!-- Edit farmer details -->
+    <el-dialog :visible.sync="showEditFarmerModal" fullscreen>
+      <template slot="title">
+        <h3>{{ editTitle }}</h3>
+        <p>Edit field and make sure all required fields has data.</p>
+      </template>
+      <EditFarmerDetails
+        :farmer.sync="farmer"
+        v-on:editedFarmer="farmerEdited"
+      />
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import farmersService from '../api/farmers';
+import EditFarmerDetails from '../components/EditFarmerDetails';
 
 export default {
   name: 'FarmerProfile',
+  components: {
+    EditFarmerDetails,
+  },
   data() {
     return {
+      selectedId: null,
+      showEditFarmerModal: false,
+      editTitle: '',
       activeTab: 'personal',
       loading: false,
       farmer: {},
     };
   },
   created() {
-    this.getFarmer(this.$route.params.id);
+    this.selectedId = this.$route.params.id;
+    this.getFarmer();
   },
   methods: {
-    getFarmer(id) {
+    getFarmer() {
       this.loading = true;
       farmersService
-        .getFarmer(id)
+        .getFarmer(this.selectedId)
         .then((response) => {
           this.farmer = response.data;
           this.farmer.name =
@@ -448,6 +478,38 @@ export default {
           this.loading = false;
         })
         .catch((errors) => this.errorMessage(errors.error));
+    },
+    showEditModal() {
+      this.editTitle = 'Edit Farmer Details for ' + this.farmer.name;
+      this.showEditFarmerModal = true;
+    },
+    farmerEdited() {
+      this.showEditFarmerModal = false;
+      this.getFarmer(this.selectedId);
+    },
+    confirmDelete(id) {
+      this.$confirm('This will permanently delete farmer data', 'Warning', {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'warning',
+      })
+        .then(() => {
+          this.deleteFarmer(id);
+        })
+        .catch(() => {
+          this.errorMessage('Delete cancelled');
+        });
+    },
+    deleteFarmer(id) {
+      farmersService
+        .deleteFarmer(id)
+        .then(() => {
+          this.successNotification('Success', 'Farmer deleted successfully');
+          this.$router.go(-1);
+        })
+        .catch((errors) => {
+          this.errorMessage(errors.error);
+        });
     },
   },
 };

@@ -188,6 +188,7 @@
             <el-button
               class="full-width"
               type="primary"
+              :loading="btnLoading"
               @click="updateFarmerDetails()"
               >Update Details</el-button
             >
@@ -363,6 +364,7 @@
             <el-button
               class="full-width"
               type="primary"
+              :loading="btnLoading"
               @click="updateFarmerDetails()"
               >Update Details</el-button
             >
@@ -508,6 +510,7 @@
             <el-button
               class="full-width"
               type="primary"
+              :loading="btnLoading"
               @click="updateFarmerDetails()"
               >Update Details</el-button
             >
@@ -634,6 +637,7 @@
             <el-button
               class="full-width"
               type="primary"
+              :loading="btnLoading"
               @click="updateFarmerDetails()"
               >Update Details</el-button
             >
@@ -790,6 +794,8 @@
 </template>
 
 <script>
+import farmersService from '../api/farmers';
+
 export default {
   name: 'EditFarmer',
   props: ['farmer'],
@@ -927,6 +933,7 @@ export default {
   },
   methods: {
     getFarmerDetails() {
+      this.editFamerDetails.id = this.farmer._id;
       this.editFamerDetails.title = this.farmer.title;
       this.editFamerDetails.firstName = this.farmer.firstName;
       this.editFamerDetails.lastName = this.farmer.lastName;
@@ -960,7 +967,22 @@ export default {
       this.loading = false;
     },
     updateFarmerDetails() {
-      console.log('edited');
+      this.btnLoading = true;
+      this.$refs['editFamerDetails'].validate((valid) => {
+        if (valid) {
+          farmersService
+            .updateFarmer(this.editFamerDetails)
+            .then(() => {
+              this.btnLoading = false;
+              this.successNotification('Success', 'Farmer edited successfully');
+              this.$emit('editedFarmer');
+            })
+            .catch((errors) => this.errorMessage(errors.error));
+        } else {
+          this.btnLoading = false;
+          return false;
+        }
+      });
     },
     addCropHarvest() {
       this.infoMessage('Added another crop');

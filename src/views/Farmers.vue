@@ -405,7 +405,7 @@ export default {
         .catch((errors) => this.errorMessage(errors.error));
     },
     showEditModal(farmer) {
-      this.editTitle = 'Edit Farmer Details for ' + farmer.name;
+      this.editTitle = `Edit Farmer Details for ${farmer.name} (${farmer.farmerId})`;
       this.farmer = farmer;
       this.showEditFarmerModal = true;
     },

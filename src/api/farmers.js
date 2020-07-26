@@ -35,6 +35,12 @@ export default {
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error))
   },
+  uploadFarmerFiles(img) {
+    let url = config.FARMERS_URL + "/upload"
+    return apiService.post(url, img)
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error))
+  },
   deleteFarmer(id) {
     let url = config.FARMERS_URL + '/' + id
     return apiService.delete(url)

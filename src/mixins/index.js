@@ -12,9 +12,9 @@ export default {
     checkEmptyArray(data) {
       return is.empty(data)
     },
-    setProfilePic(pic) {
+    getImageFile(pic) {
       if (pic.includes('no-photo')) {
-        return 'http://127.0.0.1:5000/uploads/photo_5ef8e123f8df83065189f440.png'
+        return 'http://127.0.0.1:5000/uploads/photo_default.png'
       } else {
         return `http://127.0.0.1:5000/uploads/${pic}`
       }

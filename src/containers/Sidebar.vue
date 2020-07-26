@@ -8,7 +8,7 @@
       <span @click="userProfile" style="cursor:pointer;">
         <span id="user_photo">
           <img
-            :src="setProfilePic(user.profile_pic)"
+            :src="getImageFile(user.profile_pic)"
             alt=""
             style="width:40px;"
           />

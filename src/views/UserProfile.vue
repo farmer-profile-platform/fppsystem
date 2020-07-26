@@ -6,7 +6,7 @@
           <div style="text-align:center;">
             <el-avatar
               :size="100"
-              :src="setProfilePic(user.profile_pic)"
+              :src="getImageFile(user.profile_pic)"
             ></el-avatar>
             <div>
               <input

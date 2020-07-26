@@ -5,7 +5,7 @@
         <el-col :span="8" class="d-flex">
           <div>
             <img
-              src="../assets/images/finger.png"
+              :src="getImageFile(farmer.photo)"
               alt="photo"
               style="width:130px; margin-right: 20px"
             />
@@ -13,6 +13,7 @@
 
           <div>
             <h4 class="mb-0">{{ farmer.name }}</h4>
+            <p style="font-size: 12px;">{{ farmer.farmerId }}</p>
             <p style="font-size: 12px;">{{ farmer.hometown }}</p>
             <p style="font-size: 12px;">{{ farmer.phone }}</p>
             <el-button type="text" size="mini">
@@ -71,7 +72,7 @@
           >
             <el-col :span="5">
               <p>Age</p>
-              <h5>45</h5>
+              <h5>{{ getuserAge(farmer.dob) }} years</h5>
             </el-col>
             <el-col :span="6">
               <p>Phone Number</p>
@@ -127,8 +128,8 @@
             <el-col :span="6">
               <p>Signature/Thumbprint</p>
               <img
-                src="../assets/images/finger.png"
-                alt="photo"
+                :src="getImageFile(farmer.fingerprint)"
+                alt="finger print"
                 style="width:100px; border:1px solid white; padding:5px;"
               />
             </el-col>
@@ -151,7 +152,7 @@
                 </el-col>
                 <el-col :span="6">
                   <p>Age</p>
-                  <h5>{{ getuserAge(spouse.dob) }}</h5>
+                  <h5>{{ getuserAge(spouse.dob) }} years</h5>
                 </el-col>
                 <el-col :span="6"> </el-col> </el-row
               ><br />
@@ -184,7 +185,7 @@
                 </el-col>
                 <el-col :span="6">
                   <p>Age</p>
-                  <h5>{{ getuserAge(children.dob) }} years old</h5>
+                  <h5>{{ getuserAge(children.dob) }} years</h5>
                 </el-col>
                 <el-col :span="6"> </el-col>
                 <el-col :span="6"> </el-col>
@@ -225,7 +226,7 @@
                 </el-col>
                 <el-col :span="6">
                   <p>Acres</p>
-                  <h5>{{ harvest.acres }}</h5>
+                  <h5>{{ harvest.acres }} acres</h5>
                 </el-col>
                 <el-col :span="6"> </el-col>
                 <el-col :span="6"> </el-col>
@@ -243,15 +244,15 @@
                 </el-col>
                 <el-col :span="6">
                   <p>Major Season</p>
-                  <h5>{{ years.major_season_harvest }}</h5>
+                  <h5>{{ years.major_season_harvest }} bags</h5>
                 </el-col>
                 <el-col :span="6">
                   <p>Minor Season</p>
-                  <h5>{{ years.minor_season_harvest }}</h5>
+                  <h5>{{ years.minor_season_harvest }} bags</h5>
                 </el-col>
                 <el-col :span="6">
                   <p>Yearly</p>
-                  <h5>{{ years.yearly_harvest }}</h5>
+                  <h5>{{ years.yearly_harvest }} bags</h5>
                 </el-col>
               </el-row>
               <br />
@@ -276,7 +277,7 @@
                 </el-col>
                 <el-col :span="6">
                   <p>Acres</p>
-                  <h5 style="color:green;">{{ yieldIncome.acres }}</h5>
+                  <h5 style="color:green;">{{ yieldIncome.acres }} acres</h5>
                 </el-col>
                 <el-col :span="6"> </el-col>
                 <el-col :span="6"> </el-col>
@@ -295,15 +296,15 @@
                 </el-col>
                 <el-col :span="6">
                   <p>Major Season Income</p>
-                  <h5>{{ year.major_season_income }}</h5>
+                  <h5>GH₵ {{ year.major_season_income }}</h5>
                 </el-col>
                 <el-col :span="6">
                   <p>Minor Season Income</p>
-                  <h5>{{ year.minor_season_income }}</h5>
+                  <h5>GH₵{{ year.minor_season_income }}</h5>
                 </el-col>
                 <el-col :span="6">
                   <p>Yearly Income</p>
-                  <h5>{{ year.yearly_income }}</h5>
+                  <h5>GH₵{{ year.yearly_income }}</h5>
                 </el-col>
               </el-row>
               <hr />

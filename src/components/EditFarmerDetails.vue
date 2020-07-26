@@ -132,16 +132,21 @@
           <el-row :gutter="20">
             <el-col :span="12">
               <div class="d-flex">
-                <div>
+                <div v-loading="photoLoading">
                   <img
-                    src="../assets/images/charl.png"
+                    :src="getImageFile(editFamerDetails.photo)"
                     alt="photo"
                     style="width:50px; margin-right: 20px"
                   />
                 </div>
                 <div>
-                  <input type="file" ref="file" style="display: none" />
-                  <el-button @click="$refs.file.click()" type="text">
+                  <input
+                    type="file"
+                    ref="photo"
+                    style="display: none"
+                    @change="setProfilePic"
+                  />
+                  <el-button @click="$refs.photo.click()" type="text">
                     <b style="color:#2fa512;"> Upload Photo</b></el-button
                   >
                   <p>
@@ -155,16 +160,21 @@
             </el-col>
             <el-col :span="12">
               <div class="d-flex">
-                <div>
+                <div v-loading="fingerPrintLoading">
                   <img
-                    src="../assets/images/finger.png"
+                    :src="getImageFile(editFamerDetails.fingerprint)"
                     alt="photo"
                     style="width:50px; margin-right: 20px"
                   />
                 </div>
                 <div>
-                  <input type="file" ref="file" style="display: none" />
-                  <el-button @click="$refs.file.click()" type="text">
+                  <input
+                    type="file"
+                    ref="fingerprint"
+                    style="display: none"
+                    @change="getFingerPrintPic"
+                  />
+                  <el-button @click="$refs.fingerprint.click()" type="text">
                     <b style="color:#2fa512;">
                       Upload Thumbprint / Signature</b
                     ></el-button
@@ -188,7 +198,6 @@
             <el-button
               class="full-width"
               type="primary"
-              :loading="btnLoading"
               @click="updateFarmerDetails()"
               >Update Details</el-button
             >
@@ -364,7 +373,6 @@
             <el-button
               class="full-width"
               type="primary"
-              :loading="btnLoading"
               @click="updateFarmerDetails()"
               >Update Details</el-button
             >
@@ -510,7 +518,6 @@
             <el-button
               class="full-width"
               type="primary"
-              :loading="btnLoading"
               @click="updateFarmerDetails()"
               >Update Details</el-button
             >
@@ -637,7 +644,6 @@
             <el-button
               class="full-width"
               type="primary"
-              :loading="btnLoading"
               @click="updateFarmerDetails()"
               >Update Details</el-button
             >
@@ -782,7 +788,6 @@
             <el-button
               class="full-width"
               type="primary"
-              :loading="btnLoading"
               @click="updateFarmerDetails()"
               >Update Details</el-button
             >
@@ -885,7 +890,8 @@ export default {
         ],
       },
       loading: false,
-      btnLoading: false,
+      photoLoading: false,
+      fingerPrintLoading: false,
       activeTab: 'personal',
       idcardTypes: [
         'Passport',
@@ -949,7 +955,7 @@ export default {
       this.editFamerDetails.fboMember_name = this.farmer.fbo_position;
       this.editFamerDetails.national_id = this.farmer.national_id;
       this.editFamerDetails.id_number = this.farmer.id_number;
-      this.editFamerDetails.photo = this.farmer.phone;
+      this.editFamerDetails.photo = this.farmer.photo;
       this.editFamerDetails.fingerprint = this.farmer.fingerprint;
       this.editFamerDetails.num_children = this.farmer.num_children;
       this.editFamerDetails.years_farming = this.farmer.years_farming;
@@ -967,22 +973,56 @@ export default {
       this.loading = false;
     },
     updateFarmerDetails() {
-      this.btnLoading = true;
+      this.loading = true;
       this.$refs['editFamerDetails'].validate((valid) => {
         if (valid) {
           farmersService
             .updateFarmer(this.editFamerDetails)
             .then(() => {
-              this.btnLoading = false;
+              this.loading = false;
               this.successNotification('Success', 'Farmer edited successfully');
               this.$emit('editedFarmer');
             })
             .catch((errors) => this.errorMessage(errors.error));
         } else {
-          this.btnLoading = false;
+          this.loading = false;
           return false;
         }
       });
+    },
+    setProfilePic(e) {
+      this.photoLoading = true;
+      const files = e.target.files;
+      const formData = new FormData();
+      formData.append('file', files[0]);
+      farmersService
+        .uploadFarmerFiles(formData)
+        .then((response) => {
+          this.photoLoading = false;
+          this.editFamerDetails.photo = response.data;
+          this.successNotification('Uploaded Successfully');
+        })
+        .catch((errors) => {
+          this.photoLoading = false;
+          this.errorMessage(errors.error);
+        });
+    },
+    getFingerPrintPic(e) {
+      this.fingerPrintLoading = true;
+      const files = e.target.files;
+      const formData = new FormData();
+      formData.append('file', files[0]);
+      farmersService
+        .uploadFarmerFiles(formData)
+        .then((response) => {
+          this.fingerPrintLoading = false;
+          this.addFamerDetails.fingerprint = response.data;
+          this.successNotification('Uploaded Successfully');
+        })
+        .catch((errors) => {
+          this.fingerPrintLoading = false;
+          this.errorMessage(errors.error);
+        });
     },
     addCropHarvest() {
       this.infoMessage('Added another crop');

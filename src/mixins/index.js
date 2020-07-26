@@ -2,6 +2,7 @@ import is from 'is_js';
 import authService from "../api/auth";
 import { mapGetters } from "vuex"
 
+
 export default {
   computed: {
     ...mapGetters({
@@ -9,14 +10,20 @@ export default {
     })
   },
   methods: {
+    getHostName() {
+      let hn = window.location.hostname
+      let uploadUrl = hn == 'localhost' ? "http://127.0.0.1:5000/uploads/" : "https://api.fppghana.com/uploads/"
+      return uploadUrl;
+    },
     checkEmptyArray(data) {
       return is.empty(data)
     },
     getImageFile(pic) {
+      const url = this.getHostName()
       if (pic.includes('no-photo')) {
-        return 'http://127.0.0.1:5000/uploads/photo_default.png'
+        return url + 'photo_default.png'
       } else {
-        return `http://127.0.0.1:5000/uploads/${pic}`
+        return url + pic
       }
     },
     successMessage(message) {

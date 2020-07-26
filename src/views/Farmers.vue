@@ -37,8 +37,8 @@
           <template slot-scope="props">
             <span style="float:left; margin-right: 10px;">
               <img
-                src="../assets/images/charl.png"
-                alt=""
+                :src="getImageFile(props.row.photo)"
+                alt="pic"
                 style="width:40px;"
               />
             </span>

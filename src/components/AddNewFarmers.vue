@@ -7,7 +7,12 @@
       :rules="rules"
       ref="addFamerDetails"
     >
-      <el-tabs v-model="activeTab" class="mt-4 px-2" stretch>
+      <el-tabs
+        v-model="activeTab"
+        class="mt-4 px-2"
+        stretch
+        v-loading="loading"
+      >
         <el-tab-pane label="Personal Bio" name="personal">
           <el-row :gutter="20">
             <el-col :span="6">
@@ -306,7 +311,7 @@
                 <el-input-number
                   v-model="addFamerDetails.num_children"
                   :min="0"
-                  :max="10"
+                  :max="30"
                 />
               </el-form-item>
             </el-col>
@@ -729,7 +734,10 @@
                   style="width:100%; margin-top:-12px"
                 >
                   <el-option label="MTN" value="MTN"></el-option>
-                  <el-option label="Tigo" value="Tigo"></el-option>
+                  <el-option
+                    label="Airtel Tigo"
+                    value="Airtel Tigo"
+                  ></el-option>
                   <el-option label="Vodafone." value="Vodafone"></el-option>
                 </el-select>
               </el-form-item>
@@ -769,7 +777,6 @@
             <el-button
               class="full-width"
               type="primary"
-              :loading="btnLoading"
               @click="confirmFarmerAddition()"
               >Add a new famer</el-button
             >
@@ -870,7 +877,7 @@ export default {
           },
         ],
       },
-      btnLoading: false,
+      loading: false,
       fingerPrintLoading: false,
       photoLoading: false,
       activeTab: 'personal',
@@ -982,9 +989,11 @@ export default {
         });
     },
     addFarmer() {
+      this.loading = true;
       farmersService
         .addFarmer(this.addFamerDetails)
         .then(() => {
+          this.loading = false;
           this.successNotification('Success', 'Farmer added successfully');
           this.$emit('addedFarmer');
         })

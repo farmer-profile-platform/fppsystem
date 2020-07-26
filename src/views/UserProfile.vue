@@ -140,6 +140,11 @@ export default {
       user: 'getUser',
     }),
   },
+  watch: {
+    user: function(v) {
+      console.log(v);
+    },
+  },
   created() {
     this.userId = this.$route.params.id;
     this.getUser(this.userId);

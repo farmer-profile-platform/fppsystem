@@ -197,7 +197,7 @@
               </div>
             </el-col> </el-row
           ><br />
-          <div class="mt-3 d-flex">
+          <div class="mt-3 mb-3 d-flex">
             <el-button class="full-width">Cancel and reset form</el-button>
             <el-button
               class="full-width"
@@ -365,7 +365,7 @@
           </div>
 
           <br />
-          <div class="mt-3 d-flex">
+          <div class="mt-3 mb-3 d-flex">
             <el-button class="full-width">Cancel and reset form</el-button>
             <el-button
               class="full-width"
@@ -626,7 +626,7 @@
             >
           </div>
           <br />
-          <div class="mt-3 d-flex">
+          <div class="mt-3 mb-3 d-flex">
             <el-button class="full-width">Cancel</el-button>
             <el-button
               class="full-width"
@@ -770,7 +770,7 @@
             </el-col>
           </el-row>
           <br />
-          <div class="mt-3 d-flex">
+          <div class="mt-3 mb-3 d-flex">
             <el-button class="full-width" icon="el-icon-cancel"
               >Cancel</el-button
             >

@@ -3,11 +3,10 @@
     <el-dropdown>
       <i class="el-icon-setting" style="margin-right: 15px"></i>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item>Notifications</el-dropdown-item>
         <el-dropdown-item>Profile</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-    <span
+    <span @click="userProfile(user._id, user.name)" class="pointer"
       >{{ user.name }} <el-tag size="mini">{{ capitalize(user.role) }}</el-tag>
     </span>
   </div>

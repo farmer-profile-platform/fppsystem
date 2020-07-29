@@ -26,6 +26,12 @@ export default {
         return url + pic
       }
     },
+    userProfile(userId, name) {
+      this.$router.push({
+        name: 'User Profile',
+        params: { id: userId, name: name },
+      });
+    },
     successMessage(message) {
       this.$message({
         showClose: true,

@@ -5,7 +5,7 @@
       <p>Authorized Personnel</p>
     </div>
     <div class="sidebar_userInfo mb-3">
-      <span @click="userProfile" style="cursor:pointer;">
+      <span @click="userProfile(user._id, user.name)" class="pointer">
         <span id="user_photo">
           <img
             :src="getImageFile(user.profile_pic)"
@@ -83,14 +83,6 @@ export default {
     ...mapGetters({
       user: 'getUser',
     }),
-  },
-  methods: {
-    userProfile() {
-      this.$router.push({
-        name: 'User Profile',
-        params: { id: this.user._id, name: this.user.name },
-      });
-    },
   },
 };
 </script>

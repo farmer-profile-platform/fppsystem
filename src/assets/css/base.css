@@ -81,6 +81,10 @@ a {
   margin-left: 10px;
 }
 
+.mr-1 {
+  margin-right: 10px;
+}
+
 .pt-1 {
   padding-top: 20px;
 }

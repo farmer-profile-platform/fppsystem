@@ -382,7 +382,7 @@
           <el-row :gutter="20">
             <el-col :span="5">
               <el-form-item label="Years of Farming">
-                <el-input v-model="addFamerDetails.years_farming" />
+                <el-input-number v-model="addFamerDetails.years_farming" />
               </el-form-item>
             </el-col>
             <el-col :span="9">

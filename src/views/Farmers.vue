@@ -35,22 +35,28 @@
       >
         <el-table-column label="Basic Info" width="250">
           <template slot-scope="props">
-            <span style="float:left; margin-right: 10px;">
-              <img
-                :src="getImageFile(props.row.photo)"
-                alt="pic"
-                style="width:40px;"
-              />
-            </span>
-            <span>
-              <b style="font-weight:bold; font-size: 16px">{{
-                props.row.name
-              }}</b>
-              <br />
-              <span style="font-size:12px;">{{
-                props.row.townOfResidence
-              }}</span>
-            </span>
+            <div class="d-flex">
+              <span style="margin-right: 10px;">
+                <img
+                  :src="getImageFile(props.row.photo)"
+                  alt="pic"
+                  style="width:40px;"
+                />
+              </span>
+              <span>
+                <b style="font-weight:bold; font-size: 16px">{{
+                  props.row.name
+                }}</b>
+                <br />
+                <small style="font-weight:500; font-size: 12px">{{
+                  props.row.farmerId
+                }}</small>
+                <br />
+                <small style="font-size:12px;">{{
+                  props.row.townOfResidence
+                }}</small>
+              </span>
+            </div>
           </template>
         </el-table-column>
         <el-table-column label="Rating" align="center">
@@ -267,7 +273,7 @@
             </el-col>
             <el-col :span="10">
               <el-form-item label="Grand Total">
-                <el-input v-model="year.grand_total" type="number">
+                <el-input v-model="year.grand_total" type="number" disabled>
                   <template slot="prepend">GH₵</template>
                 </el-input>
               </el-form-item>
@@ -291,8 +297,14 @@
           entered.
         </h5>
         <div class="mt-3 d-flex">
-          <el-button class="full-width">Cancel</el-button>
-          <el-button class="full-width" type="primary" @click="addInputSupport"
+          <el-button class="full-width" @click="showInputSupportModal = false"
+            >Cancel</el-button
+          >
+          <el-button
+            class="full-width"
+            type="primary"
+            :loading="btnLoading"
+            @click="addInputSupport"
             >Save Details</el-button
           >
         </div>
@@ -332,6 +344,7 @@ export default {
       showAddFarmerModal: false,
       showEditFarmerModal: false,
       showInputSupportModal: false,
+      btnLoading: false,
       editTitle: '',
       inputSupportTitle: '',
       selectedId: null,
@@ -404,10 +417,12 @@ export default {
       yrs.grand_total = grandTotal;
     },
     addInputSupport() {
+      this.btnLoading = true;
       this.inputSupportForm.id = this.selectedId;
       farmersService
         .updateFarmer(this.inputSupportForm)
         .then(() => {
+          this.btnLoading = false;
           this.showInputSupportModal = false;
           this.getFarmers();
         })

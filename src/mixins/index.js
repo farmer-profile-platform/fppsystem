@@ -20,7 +20,7 @@ export default {
     },
     getImageFile(pic) {
       const url = this.getHostName()
-      if (pic.includes('no-photo')) {
+      if (pic == "no-photo.jpg") {
         return url + 'photo_default.png'
       } else {
         return url + pic

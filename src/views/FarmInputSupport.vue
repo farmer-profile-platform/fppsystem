@@ -23,25 +23,33 @@
         element-loading-spinner="el-icon-loading"
         style="width: 100%"
       >
-        <el-table-column label="Basic Info" width="230">
+        <el-table-column label="Basic Info" width="250">
           <template slot-scope="props">
-            <span style="float:left; margin-right: 10px;">
-              <img
-                src="../assets/images/charl.png"
-                alt=""
-                style="width:40px;"
-              />
-            </span>
-            <span>
-              <b style="font-weight:bold; font-size: 16px">{{
-                props.row.firstName + ' ' + props.row.lastName
-              }}</b>
-              <br />
-              <span style="font-size:12px;">{{ props.row.hometown }}</span>
-            </span>
+            <div class="d-flex">
+              <span style="margin-right: 10px;">
+                <img
+                  :src="getImageFile(props.row.photo)"
+                  alt=""
+                  style="width:40px;"
+                />
+              </span>
+              <span>
+                <b style="font-weight:bold; font-size: 16px">{{
+                  props.row.firstName + ' ' + props.row.lastName
+                }}</b>
+                <br />
+                <small style="font-weight:500; font-size: 12px">{{
+                  props.row.farmerId
+                }}</small>
+                <br />
+                <small style="font-size:12px;">{{
+                  props.row.townOfResidence
+                }}</small>
+              </span>
+            </div>
           </template>
         </el-table-column>
-        <el-table-column label="Rating">
+        <el-table-column label="Rating" align="center">
           <template>
             <el-button type="text" size="mini">
               <i class="el-icon-star-on" style="color:gold; font-size:18px"></i>
@@ -49,16 +57,16 @@
             >
           </template>
         </el-table-column>
-        <el-table-column label="Crop Information" width="310">
+        <el-table-column label="Crop Information" width="250">
           <template slot-scope="props">
             <span v-for="(crop, index) in props.row.harvestYield" :key="index">
-              <el-button type="primary" round plain size="mini">{{
+              <el-button type="primary" round plain size="mini" class="mr-1">{{
                 crop.crop_name
               }}</el-button>
             </span>
           </template>
         </el-table-column>
-        <el-table-column label="Support Info" width="310">
+        <el-table-column label="Support Info" width="200">
           <template slot-scope="props">
             <span
               v-for="(support, index) in props.row.inputSupport"
@@ -98,6 +106,12 @@
                     View Profile</el-dropdown-item
                   >
                 </router-link>
+                <el-dropdown-item>
+                  <span @click="showEditModal(props.row)">
+                    <i class="el-icon-edit" style="margin-right: 10px"></i>
+                    Edit Farmer
+                  </span>
+                </el-dropdown-item>
                 <el-dropdown-item divided>
                   <span @click="confirmDelete(props.row._id)">
                     <i class="el-icon-delete" style="margin-right: 10px"></i>
@@ -122,18 +136,37 @@
       >
       </el-pagination>
     </div>
+
+    <!-- Edit farmer details -->
+    <el-dialog :visible.sync="showEditFarmerModal" fullscreen>
+      <template slot="title">
+        <h3>{{ editTitle }}</h3>
+        <p>Edit field and make sure all required fields has data.</p>
+      </template>
+      <EditFarmerDetails
+        :farmer.sync="farmer"
+        v-on:editedFarmer="farmerEdited"
+      />
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import farmersService from '../api/farmers';
+import EditFarmerDetails from '../components/EditFarmerDetails';
 
 export default {
   name: 'farmers',
+  components: {
+    EditFarmerDetails,
+  },
   data() {
     return {
       tableData: [],
       tableLoading: false,
+      showEditFarmerModal: false,
+      editTitle: '',
+      farmer: {},
       currentPage: 1,
       total: 3,
       search: '',
@@ -176,6 +209,15 @@ export default {
         this.successNotification('Success', 'Farmer deleted successfully');
         this.getFarmers();
       });
+    },
+    showEditModal(farmer) {
+      this.editTitle = `Edit Farmer Details for ${farmer.name} (${farmer.farmerId})`;
+      this.farmer = farmer;
+      this.showEditFarmerModal = true;
+    },
+    farmerEdited() {
+      this.showEditFarmerModal = false;
+      this.getFarmers();
     },
     handleCurrentChange(page) {
       this.currentPage = page;

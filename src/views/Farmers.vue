@@ -111,6 +111,7 @@
               ></el-button>
             </el-tooltip>
             <el-dropdown class="ml-1">
+              <!-- <img src="../assets/images/morep.svg" alt="more" style="margin-top:10px;"/> -->
               <i class="el-icon-more fa-rotate-45"></i>
               <el-dropdown-menu slot="dropdown">
                 <router-link

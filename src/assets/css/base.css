@@ -212,12 +212,7 @@ a {
 }
 
 .fa-rotate-45 {
-  -webkit-transform: rotate(90deg);
-  -moz-transform: rotate(90deg);
-  -ms-transform: rotate(90deg);
-  -o-transform: rotate(90deg);
-  transform: rotate(90deg);
-  rotate: 90deg;
+  transform: rotate(90deg)
 }
 
 .d-flex {
@@ -256,6 +251,15 @@ a {
 
 .pointer {
   cursor: pointer;
+}
+
+footer {
+  padding: 7px;
+  font-size: 10px;
+}
+
+footer p {
+  font-size: 11px;
 }
 
 @media (min-width: 1200px) {}

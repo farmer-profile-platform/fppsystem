@@ -14,6 +14,7 @@
         </el-main>
         <footer>
           <p>Farmer Pro Platform © 2020. All right reserved.</p>
+          <p>v-0.1.1</p>
         </footer>
       </el-container>
     </el-container>

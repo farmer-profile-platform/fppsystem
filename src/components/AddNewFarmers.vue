@@ -219,7 +219,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="7">
-                <el-form-item label="Spouse First Name">
+                <el-form-item label="Spouse Last Name">
                   <el-input v-model="spouse.lastName" />
                 </el-form-item>
               </el-col>
@@ -567,22 +567,24 @@
               <el-col :span="5">
                 <el-form-item label="Major Season">
                   <el-input
-                    v-model="year.major_season_income"
-                    placeholder="GHc"
+                    v-model.number="year.major_season_income"
+                    @input="setTotal(year)"
                   />
                 </el-form-item>
               </el-col>
               <el-col :span="5">
                 <el-form-item label="Minor Season">
                   <el-input
-                    v-model="year.minor_season_income"
-                    placeholder="GHc"
+                    v-model.number="year.minor_season_income"
+                    @input="setTotal(year)"
                   />
                 </el-form-item>
               </el-col>
               <el-col :span="5">
                 <el-form-item label="Yearly Income">
-                  <el-input v-model="year.yearly_income" placeholder="GHc" />
+                  <el-input type="number" v-model="year.yearly_income" disabled
+                    ><template slot="prepend">GH₵</template></el-input
+                  >
                 </el-form-item>
               </el-col>
               <el-col :span="4">
@@ -853,9 +855,9 @@ export default {
             years: [
               {
                 year: '',
-                major_season_income: '',
-                minor_season_income: '',
-                yearly_income: '',
+                major_season_income: 0,
+                minor_season_income: 0,
+                yearly_income: 0,
               },
             ],
           },
@@ -1000,6 +1002,9 @@ export default {
         .catch((errors) => {
           this.errorMessage(errors.error);
         });
+    },
+    setTotal(year) {
+      year.yearly_income = year.major_season_income + year.minor_season_income;
     },
     handleContinue(nextTab) {
       this.activeTab = nextTab;

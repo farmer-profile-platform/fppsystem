@@ -47,7 +47,9 @@
                 props.row.name
               }}</b>
               <br />
-              <span style="font-size:12px;">{{ props.row.hometown }}</span>
+              <span style="font-size:12px;">{{
+                props.row.townOfResidence
+              }}</span>
             </span>
           </template>
         </el-table-column>
@@ -250,7 +252,7 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="Total Amount">
-                <el-input v-model="support.total" type="number">
+                <el-input v-model="support.total" type="number" disabled>
                   <template slot="prepend">GH₵</template>
                 </el-input>
               </el-form-item>

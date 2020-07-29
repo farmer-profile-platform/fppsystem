@@ -578,22 +578,24 @@
               <el-col :span="5">
                 <el-form-item label="Major Season">
                   <el-input
-                    v-model="year.major_season_income"
-                    placeholder="GHc"
+                    v-model.number="year.major_season_income"
+                    @input="setTotal(year)"
                   />
                 </el-form-item>
               </el-col>
               <el-col :span="5">
                 <el-form-item label="Minor Season">
                   <el-input
-                    v-model="year.minor_season_income"
-                    placeholder="GHc"
+                    v-model.number="year.minor_season_income"
+                    @input="setTotal(year)"
                   />
                 </el-form-item>
               </el-col>
               <el-col :span="5">
                 <el-form-item label="Yearly Income">
-                  <el-input v-model="year.yearly_income" placeholder="GHc" />
+                  <el-input type="number" v-model="year.yearly_income" disabled>
+                    <template slot="prepend">GH₵</template>
+                  </el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="4">
@@ -1006,6 +1008,9 @@ export default {
           this.photoLoading = false;
           this.errorMessage(errors.error);
         });
+    },
+    setTotal(year) {
+      year.yearly_income = year.major_season_income + year.minor_season_income;
     },
     getFingerPrintPic(e) {
       this.fingerPrintLoading = true;

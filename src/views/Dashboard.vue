@@ -13,7 +13,7 @@
       <el-col :span="8">
         <DashBoardCard
           title="FARMERS SUPPORT TOTAL"
-          :total="farmersTotal"
+          :total="supportTotal"
           titleText="Total Number of Farmers we're providing support"
           bgColor="suppBg"
           progColor="#4fc2ab"
@@ -22,7 +22,7 @@
       <el-col :span="8">
         <DashBoardCard
           title="USERS TOTAL"
-          :total="farmersTotal"
+          :total="usersTotal"
           titleText="Total Number of users working on the platform."
           bgColor="userBg"
           progColor="#0cd0e1"
@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import dashboardService from '../api/dashboard';
 import DashBoardCard from '../components/DashBoardCard';
 
 export default {
@@ -46,6 +47,13 @@ export default {
       usersTotal: 0,
       supportTotal: 0,
     };
+  },
+  created() {
+    dashboardService.getReports().then((response) => {
+      this.farmersTotal = response.data.totalFarmers;
+      this.usersTotal = response.data.usersTotal;
+      this.supportTotal = response.data.totalSupports;
+    });
   },
 };
 </script>

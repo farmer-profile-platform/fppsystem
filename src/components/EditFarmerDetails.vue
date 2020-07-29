@@ -530,36 +530,22 @@
             ><i class="el-icon-grape"></i> Farm Yield Income</span
           >
           <h3 class="mb-1">
-            Crop ( {{ editFamerDetails.yieldIncome.length }} )
+            Crop ( {{ editFamerDetails.harvestYield.length }} )
           </h3>
           <div
-            v-for="(yieldIncome, idx) in editFamerDetails.yieldIncome"
+            v-for="(yieldIncome, idx) in editFamerDetails.harvestYield"
             :key="idx"
           >
             <el-row :gutter="20">
               <el-col :span="10">
                 <el-form-item label="Crop Name">
-                  <el-input v-model="yieldIncome.crop_name" />
+                  <el-input v-model="yieldIncome.crop_name" disabled />
                 </el-form-item>
               </el-col>
               <el-col :span="10">
                 <el-form-item label="Acres">
-                  <el-input v-model="yieldIncome.acres" />
+                  <el-input v-model="yieldIncome.acres" disabled />
                 </el-form-item>
-              </el-col>
-              <el-col :span="4">
-                <div
-                  class="button-add-details"
-                  v-if="idx > 0"
-                  @click="editFamerDetails.yieldIncome.splice(idx, 1)"
-                >
-                  <i
-                    class="el-icon-delete"
-                    style="color: red; font-size: 20px;"
-                  ></i>
-                  <br />
-                  <el-button type="text" size="mini">Delete Crop</el-button>
-                </div>
               </el-col>
             </el-row>
 
@@ -572,7 +558,7 @@
             >
               <el-col :span="5">
                 <el-form-item label="Year">
-                  <el-input v-model="year.year" placeholder="2013" />
+                  <el-input v-model="year.year" placeholder="2013" disabled />
                 </el-form-item>
               </el-col>
               <el-col :span="5">
@@ -598,45 +584,8 @@
                   </el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="4">
-                <div
-                  class="button-add-details"
-                  v-if="yearindex < 1"
-                  @click="addDuplicateField(yieldIncome.years, 'years')"
-                >
-                  <i
-                    class="el-icon-circle-plus"
-                    style="color: grey; font-size: 20px;"
-                  ></i>
-                  <br />
-                  <el-button type="text" size="mini">Add Year</el-button>
-                </div>
-                <div
-                  class="button-add-details"
-                  v-else
-                  @click="yieldIncome.years.splice(yearindex, 1)"
-                >
-                  <i
-                    class="el-icon-delete"
-                    style="color: red; font-size: 20px;"
-                  ></i>
-                  <br />
-                  <el-button type="text" size="mini">Delete Year</el-button>
-                </div>
-              </el-col>
             </el-row>
             <hr />
-          </div>
-
-          <br />
-          <div>
-            <el-button
-              icon="el-icon-plus"
-              type="info"
-              class="full-width"
-              @click="addCropYieldIncome"
-              >Add Crop</el-button
-            >
           </div>
           <br />
           <div class="mt-3 d-flex">
@@ -856,17 +805,6 @@ export default {
                 major_season_harvest: '',
                 minor_season_harvest: '',
                 yearly_harvest: '',
-              },
-            ],
-          },
-        ],
-        yieldIncome: [
-          {
-            crop_name: '',
-            acres: '',
-            years: [
-              {
-                year: '',
                 major_season_income: '',
                 minor_season_income: '',
                 yearly_income: '',
@@ -970,7 +908,6 @@ export default {
       this.editFamerDetails.spouse = this.farmer.spouse;
       this.editFamerDetails.children = this.farmer.children;
       this.editFamerDetails.harvestYield = this.farmer.harvestYield;
-      this.editFamerDetails.yieldIncome = this.farmer.yieldIncome;
       this.editFamerDetails.bank = this.farmer.bank;
       this.editFamerDetails.momo = this.farmer.momo;
 

@@ -267,7 +267,7 @@
         <el-collapse-item title="Farm Yield Income" name="4">
           <div class="profile-tab-bg pt-0">
             <div
-              v-for="(yieldIncome, index) in farmer.yieldIncome"
+              v-for="(yieldIncome, index) in farmer.harvestYield"
               :key="index"
             >
               <el-row type="flex" justify="space-between" class="mt-1">

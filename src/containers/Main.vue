@@ -12,7 +12,7 @@
         <el-main>
           <router-view />
         </el-main>
-        <footer>
+        <footer class="flex_justify_between">
           <p>Farmer Pro Platform © 2020. All right reserved.</p>
           <p>v-0.1.1</p>
         </footer>

@@ -448,10 +448,13 @@ export default {
         });
     },
     deleteFarmer(id) {
-      farmersService.deleteFarmer(id).then(() => {
-        this.successNotification('Success', 'Farmer deleted successfully');
-        this.getFarmers();
-      });
+      farmersService
+        .deleteFarmer(id)
+        .then(() => {
+          this.successNotification('Success', 'Farmer deleted successfully');
+          this.getFarmers();
+        })
+        .catch((errors) => this.errorMessage(errors.error));
     },
     addFarmerModal() {
       this.showAddFarmerModal = true;

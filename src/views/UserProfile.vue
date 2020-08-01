@@ -140,11 +140,6 @@ export default {
       user: 'getUser',
     }),
   },
-  watch: {
-    user: function(v) {
-      console.log(v);
-    },
-  },
   created() {
     this.userId = this.$route.params.id;
     this.getUser(this.userId);
@@ -158,7 +153,7 @@ export default {
           this.editForm.name = user.name;
           this.editForm.role = user.role;
           this.editForm.email = user.email;
-          this.editForm.password = user.password;
+          this.editForm.password = '';
           this.editForm.id = user._id;
         })
         .catch((errors) => this.errorMessage(errors.error));
@@ -201,6 +196,9 @@ export default {
         .then((response) => {
           this.$store.dispatch('update_pic', response.data);
           this.successNotification('Profile Pic Updated');
+          setTimeout(function() {
+            location.reload();
+          }, 1000);
         })
         .catch((errors) => {
           this.errorMessage(errors.error);

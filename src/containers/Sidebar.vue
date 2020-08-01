@@ -46,7 +46,7 @@
         </router-link>
       </el-menu-item>
       <hr />
-      <el-menu-item index="4">
+      <el-menu-item index="4" v-if="isAdmin">
         <router-link to="/users">
           <i class="el-icon-s-custom"></i>
           Users
@@ -82,6 +82,7 @@ export default {
   computed: {
     ...mapGetters({
       user: 'getUser',
+      isAdmin: 'getAdmin',
     }),
   },
 };

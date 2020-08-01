@@ -30,7 +30,7 @@
         element-loading-spinner="el-icon-loading"
         style="width: 100%"
       >
-        <el-table-column label="User Info">
+        <el-table-column label="User Info" width="280">
           <template slot-scope="props">
             <span style="float:left; margin-right: 10px;">
               <img
@@ -66,7 +66,7 @@
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column align="right" width="240px">
+        <el-table-column align="right">
           <template slot-scope="props">
             <el-button
               :type="props.row.suspended ? 'success' : 'info'"
@@ -77,12 +77,17 @@
               >{{ props.row.suspended ? 'Activate' : 'Suspend' }}</el-button
             >
             <el-button
+              type="primary"
+              size="mini"
+              icon="el-icon-edit"
+              @click="showEditForm(props.row)"
+            />
+            <el-button
               type="danger"
               size="mini"
               icon="el-icon-delete"
               @click="confirmDelete(props.row._id)"
-              >Delete</el-button
-            >
+            />
           </template>
         </el-table-column>
       </el-table>
@@ -156,11 +161,69 @@
         >
       </el-form>
     </el-dialog>
+
+    <!-- Edit user Dialog -->
+    <el-dialog
+      :visible.sync="showEditUserModal"
+      width="30%"
+      title="Edit user details"
+    >
+      <el-form :model="editUserForm" :rules="rules" ref="editUserForm">
+        <el-row :gutter="24">
+          <el-col :span="24">
+            <el-form-item prop="name">
+              <el-input
+                v-model="editUserForm.name"
+                placeholder="Enter full name"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item prop="role">
+              <el-select
+                placeholder="Select user role"
+                v-model="editUserForm.role"
+                style="width:100%; margin-top:-12px"
+              >
+                <el-option label="Editor" value="editor"></el-option>
+                <el-option label="User" value="user"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item prop="email">
+              <el-input
+                v-model="editUserForm.email"
+                placeholder="@youremail.com"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item>
+              <el-input
+                v-model="editUserForm.password"
+                type="password"
+                placeholder="********"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-button
+          class="button_full"
+          type="primary"
+          icon="el-icon-plus"
+          @click="editUser"
+          :loading="btnLoading"
+          >Update Details</el-button
+        >
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import userService from '../api/users';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'Users',
@@ -169,9 +232,17 @@ export default {
       tableData: [],
       tableLoading: false,
       showAddUserModal: false,
+      showEditUserModal: false,
       btnLoading: false,
       addUserForm: {
         role: 'user',
+        name: '',
+        email: '',
+        password: '',
+      },
+      editUserForm: {
+        id: '',
+        role: '',
         name: '',
         email: '',
         password: '',
@@ -220,6 +291,11 @@ export default {
   created() {
     this.getUsers();
   },
+  computed: {
+    ...mapGetters({
+      user: 'getUser',
+    }),
+  },
   methods: {
     getUsers() {
       let self = this;
@@ -254,6 +330,46 @@ export default {
         } else {
           this.btnLoading = false;
           return false;
+        }
+      });
+    },
+    showEditForm(user) {
+      this.editUserForm.name = user.name;
+      this.editUserForm.role = user.role;
+      this.editUserForm.email = user.email;
+      this.editUserForm.password = '';
+      this.editUserForm.id = user._id;
+      this.showEditUserModal = true;
+    },
+    editUser() {
+      this.btnLoading = true;
+      this.editUserForm.password === undefined ||
+      this.editUserForm.password == ''
+        ? delete this.editUserForm.password
+        : this.editUserForm;
+      this.editUserForm.role == 'admin'
+        ? delete this.editUserForm.role
+        : this.editUserForm;
+      this.$refs['editUserForm'].validate((valid) => {
+        if (valid) {
+          this.btnLoading = false;
+          userService
+            .updateUser(this.editUserForm)
+            .then((response) => {
+              if (this.user._id == this.editUserForm.id) {
+                this.$store.dispatch('get_user', response.data);
+              }
+              this.btnLoading = false;
+              this.showEditUserModal = false;
+              this.getUsers();
+              this.successNotification(
+                'Success',
+                'Updated profile successfully'
+              );
+            })
+            .catch(() => {
+              self.errorMessage('Error Editing user details');
+            });
         }
       });
     },

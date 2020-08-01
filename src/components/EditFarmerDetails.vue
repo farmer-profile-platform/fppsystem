@@ -919,7 +919,8 @@ export default {
         if (valid) {
           farmersService
             .updateFarmer(this.editFamerDetails)
-            .then(() => {
+            .then((response) => {
+              this.addActivity(response.data, 'Edited');
               this.loading = false;
               this.successNotification('Success', 'Farmer edited successfully');
               this.$emit('editedFarmer');

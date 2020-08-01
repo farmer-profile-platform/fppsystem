@@ -1,7 +1,7 @@
 import is from 'is_js';
 import authService from "../api/auth";
+import activityService from '../api/activities';
 import { mapGetters } from "vuex"
-
 
 export default {
   computed: {
@@ -10,6 +10,17 @@ export default {
     })
   },
   methods: {
+    addActivity(farmer, action) {
+      let activity = {}
+      activity.action = action
+      activity.name = farmer.name;
+      activity.farmerId = farmer._id;
+      activity.user = "";
+
+      activityService.addActivity(activity)
+        .then(() => { })
+        .catch(() => { });
+    },
     getPercentageData(data, total) {
       let percentage = data / total * 100
       return percentage;

@@ -128,9 +128,7 @@
 
                 <el-dropdown-item>
                   <span
-                    @click="
-                      showInputSupport(props.row._id, props.row.firstName)
-                    "
+                    @click="showInputSupport(props.row._id, props.row.name)"
                   >
                     <i class="el-icon-s-flag" style="margin-right: 10px"></i>
                     Add Farm Support
@@ -143,7 +141,7 @@
                   </span>
                 </el-dropdown-item>
                 <el-dropdown-item divided>
-                  <span @click="confirmDelete(props.row._id)">
+                  <span @click="confirmDelete(props.row._id, props.row.name)">
                     <i class="el-icon-delete" style="margin-right: 10px"></i>
                     Delete Farmer
                   </span>
@@ -349,6 +347,7 @@ export default {
       editTitle: '',
       inputSupportTitle: '',
       selectedId: null,
+      selectedName: '',
       currentPage: 1,
       inputSupportForm: {
         id: '',
@@ -401,12 +400,8 @@ export default {
     },
     showInputSupport(id, name) {
       this.selectedId = id;
-      this.inputSupportTitle =
-        'Farm Input Support for ' +
-        name +
-        ' (' +
-        this.inputSupportForm.inputSupport.length +
-        ')';
+      this.selectedName = name;
+      this.inputSupportTitle = 'Add Farm Support for ' + name;
       this.showInputSupportModal = true;
     },
     setTotal(input, yrs) {
@@ -423,6 +418,10 @@ export default {
       farmersService
         .updateFarmer(this.inputSupportForm)
         .then(() => {
+          this.addActivity(
+            { _id: this.selectedId, name: this.selectedName },
+            'Support Added'
+          );
           this.btnLoading = false;
           this.showInputSupportModal = false;
           this.getFarmers();
@@ -434,20 +433,21 @@ export default {
       this.farmer = farmer;
       this.showEditFarmerModal = true;
     },
-    confirmDelete(id) {
+    confirmDelete(id, name) {
       this.$confirm('This will permanently delete farmer data', 'Warning', {
         confirmButtonText: 'OK',
         cancelButtonText: 'Cancel',
         type: 'warning',
       })
         .then(() => {
-          this.deleteFarmer(id);
+          this.deleteFarmer(id, name);
         })
         .catch(() => {
           this.errorMessage('Delete cancelled');
         });
     },
-    deleteFarmer(id) {
+    deleteFarmer(id, name) {
+      this.addActivity({ _id: id, name: name }, 'Delete');
       farmersService
         .deleteFarmer(id)
         .then(() => {

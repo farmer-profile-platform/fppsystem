@@ -18,5 +18,6 @@ export default {
   LOGOUT_USER_URL: API_URL + 'auth/logout',
   FARMERS_URL: API_URL + 'farmers',
   USERS_URL: API_URL + 'users',
-  DASHBOARD_URL: API_URL + 'dashboard/reports'
+  DASHBOARD_URL: API_URL + 'dashboard/reports',
+  ACTIVITIES_URL: API_URL + 'activities'
 }

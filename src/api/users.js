@@ -35,6 +35,12 @@ export default {
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error))
   },
+  getUserActivity(userId) {
+    let url = config.USERS_URL + '/' + userId + '/activities'
+    return apiService.get(url)
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error))
+  },
   deleteUser(id) {
     let url = config.USERS_URL + '/' + id
     return apiService.delete(url)

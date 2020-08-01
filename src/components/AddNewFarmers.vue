@@ -740,6 +740,7 @@
 
 <script>
 import farmersService from '../api/farmers';
+import activityService from '../api/activities';
 
 export default {
   name: 'AddNewFarmers',
@@ -828,6 +829,12 @@ export default {
         'Health Insurance',
         'Ghana Card',
       ],
+      activity: {
+        action: 'Added',
+        name: '',
+        farmerId: '',
+        user: '',
+      },
       rules: {
         firstName: [
           {
@@ -928,7 +935,8 @@ export default {
       this.loading = true;
       farmersService
         .addFarmer(this.addFamerDetails)
-        .then(() => {
+        .then((response) => {
+          this.addActivity(response.data);
           this.loading = false;
           this.successNotification('Success', 'Farmer added successfully');
           this.$emit('addedFarmer');
@@ -939,6 +947,14 @@ export default {
     },
     setTotal(year) {
       year.yearly_income = year.major_season_income + year.minor_season_income;
+    },
+    addActivity(farmer) {
+      this.activity.name = farmer.name;
+      this.activity.farmerId = farmer._id;
+      activityService
+        .addActivity(this.activity)
+        .then(() => {})
+        .catch(() => {});
     },
     handleContinue(nextTab) {
       this.activeTab = nextTab;

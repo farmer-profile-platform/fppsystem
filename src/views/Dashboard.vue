@@ -8,6 +8,7 @@
           titleText="Total Number of Farmers registered on platform."
           bgColor="frmBg"
           progColor="#2cb96b"
+          :percentage="getPercentageData(farmersTotal, 1000)"
         />
       </el-col>
       <el-col :span="8">
@@ -17,6 +18,7 @@
           titleText="Total Number of Farmers we're providing support"
           bgColor="suppBg"
           progColor="#4fc2ab"
+          :percentage="getPercentageData(supportTotal, 500)"
         />
       </el-col>
       <el-col :span="8">
@@ -26,6 +28,7 @@
           titleText="Total Number of users working on the platform."
           bgColor="userBg"
           progColor="#0cd0e1"
+          :percentage="getPercentageData(usersTotal, 50)"
         />
       </el-col>
     </el-row>

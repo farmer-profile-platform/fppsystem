@@ -10,6 +10,10 @@ export default {
     })
   },
   methods: {
+    getPercentageData(data, total) {
+      let percentage = data / total * 100
+      return percentage;
+    },
     getHostName() {
       let hn = window.location.hostname
       let uploadUrl = hn == 'localhost' ? "http://127.0.0.1:5000/uploads/" : "https://api.fppghana.com/uploads/"

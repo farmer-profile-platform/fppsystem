@@ -45,7 +45,7 @@
               </span>
               <span>
                 <b style="font-weight:bold; font-size: 16px">{{
-                  props.row.name
+                  props.row.firstName + ' ' + props.row.lastName
                 }}</b>
                 <br />
                 <small style="font-weight:500; font-size: 12px">{{
@@ -128,7 +128,9 @@
 
                 <el-dropdown-item>
                   <span
-                    @click="showInputSupport(props.row._id, props.row.name)"
+                    @click="
+                      showInputSupport(props.row._id, props.row.firstName)
+                    "
                   >
                     <i class="el-icon-s-flag" style="margin-right: 10px"></i>
                     Add Farm Support
@@ -447,7 +449,7 @@ export default {
         });
     },
     deleteFarmer(id, name) {
-      this.addActivity({ _id: id, name: name }, 'Delete');
+      this.addActivity({ _id: id, name: name }, 'Deleted');
       farmersService
         .deleteFarmer(id)
         .then(() => {

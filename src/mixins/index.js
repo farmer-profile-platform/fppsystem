@@ -10,6 +10,24 @@ export default {
     })
   },
   methods: {
+    getActivityColor(action) {
+      let color;
+      switch (action) {
+        case 'Support Added':
+          color = "#f7ba2a;"
+          break;
+        case 'Edited':
+          color = "#044b74"
+          break;
+        case 'Added':
+          color = "#2fa512"
+          break;
+        case 'Deleted':
+          color = "#ff4949"
+          break;
+      }
+      return color
+    },
     addActivity(farmer, action) {
       let activity = {}
       activity.action = action

@@ -1,17 +1,17 @@
 <template>
   <div>
     <h4 class="mb-2">Recent Activities</h4>
-    <el-tag type="info" class="sidebar_activity">
-      <span>Bashiru Ahmed</span>
-      <span :style="`float:right; color:#2fa512;`">Added</span>
-    </el-tag>
-    <el-tag type="info" class="sidebar_activity">
-      <span>Alison Barker</span>
-      <span :style="`float:right; color:#ff4949;`">Deleted</span>
-    </el-tag>
-    <el-tag type="info" class="sidebar_activity">
-      <span>Bernard Kwabena</span>
-      <span :style="`float:right; color:#f7ba2a;`">Printed</span>
+    <el-tag
+      type="info"
+      class="sidebar_activity"
+      v-for="(activity, index) in activities"
+      :key="index"
+    >
+      <span>{{ activity.name }}</span>
+      <span
+        :style="`float:right; color:${getActivityColor(activity.action)};`"
+        >{{ activity.action }}</span
+      >
     </el-tag>
 
     <div class="align_center">
@@ -21,12 +21,26 @@
 </template>
 
 <script>
+import activityService from '../api/activities';
+
 export default {
   name: 'RecentActivity',
   data() {
     return {
       action: true,
+      activities: [],
     };
+  },
+  created() {
+    activityService
+      .getActivities()
+      .then((response) => {
+        if (response.data.length > 5) {
+          response.data.length = 5;
+        }
+        this.activities = response.data;
+      })
+      .catch((errors) => this.errorMessage(errors.error));
   },
 };
 </script>

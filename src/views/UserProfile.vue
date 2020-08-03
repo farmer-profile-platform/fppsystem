@@ -19,12 +19,14 @@
                 @click="$refs.file.click()"
                 type="text"
                 icon="el-icon-edit"
+                :disabled="!isAdmin"
               >
                 <b style="color:#2fa512;"> Update Photo</b></el-button
               >
             </div>
           </div>
           <el-button
+            v-if="isAdmin"
             type="text"
             icon="el-icon-edit"
             @click="isEditing = true"
@@ -138,6 +140,7 @@ export default {
   computed: {
     ...mapGetters({
       user: 'getUser',
+      isAdmin: 'getAdmin',
     }),
   },
   created() {

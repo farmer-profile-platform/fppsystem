@@ -114,6 +114,27 @@
       <el-form :model="addUserForm" :rules="rules" ref="addUserForm">
         <el-row :gutter="24">
           <el-col :span="24">
+            <div style="text-align:center;">
+              <el-avatar
+                :size="100"
+                :src="getImageFile(addUserForm.profile_pic)"
+              ></el-avatar>
+              <div>
+                <input
+                  type="file"
+                  ref="addPic"
+                  style="display: none"
+                  @change="getUserImage($event, 'add')"
+                />
+                <el-button
+                  @click="$refs.addPic.click()"
+                  type="text"
+                  icon="el-icon-edit"
+                >
+                  <b style="color:#2fa512;"> Update Photo</b></el-button
+                >
+              </div>
+            </div>
             <el-form-item prop="name">
               <el-input
                 v-model="addUserForm.name"
@@ -171,6 +192,27 @@
       <el-form :model="editUserForm" :rules="rules" ref="editUserForm">
         <el-row :gutter="24">
           <el-col :span="24">
+            <div style="text-align:center;">
+              <el-avatar
+                :size="100"
+                :src="getImageFile(editUserForm.profile_pic)"
+              ></el-avatar>
+              <div>
+                <input
+                  type="file"
+                  ref="editPic"
+                  style="display: none"
+                  @change="getUserImage($event, 'edit')"
+                />
+                <el-button
+                  @click="$refs.editPic.click()"
+                  type="text"
+                  icon="el-icon-edit"
+                >
+                  <b style="color:#2fa512;"> Update Photo</b></el-button
+                >
+              </div>
+            </div>
             <el-form-item prop="name">
               <el-input
                 v-model="editUserForm.name"
@@ -223,6 +265,7 @@
 
 <script>
 import userService from '../api/users';
+import farmersService from '../api/farmers';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -239,6 +282,7 @@ export default {
         name: '',
         email: '',
         password: '',
+        profile_pic: 'no-photo.jpg',
       },
       editUserForm: {
         id: '',
@@ -246,6 +290,7 @@ export default {
         name: '',
         email: '',
         password: '',
+        profile_pic: 'no-photo.jpg',
       },
       rules: {
         role: [
@@ -304,8 +349,11 @@ export default {
         .getUsers()
         .then((response) => {
           this.tableLoading = false;
-          this.tableData = response.data;
-          this.total = response.total;
+          let users = response.data.filter(function(user) {
+            return user.id !== self.user.id;
+          });
+          this.tableData = users;
+          this.total = this.tableData.length;
         })
         .catch((errors) => {
           self.errorMessage(errors.error);
@@ -339,6 +387,7 @@ export default {
       this.editUserForm.email = user.email;
       this.editUserForm.password = '';
       this.editUserForm.id = user._id;
+      this.editUserForm.profile_pic = user.profile_pic;
       this.showEditUserModal = true;
     },
     editUser() {
@@ -430,6 +479,24 @@ export default {
             'User status changed successfully'
           );
           this.getUsers();
+        })
+        .catch((errors) => {
+          this.errorMessage(errors.error);
+        });
+    },
+    getUserImage(e, action) {
+      const files = e.target.files;
+      const formData = new FormData();
+      formData.append('file', files[0]);
+      farmersService
+        .uploadFarmerFiles(formData)
+        .then((response) => {
+          if (action == 'add') {
+            this.addUserForm.profile_pic = response.data;
+          } else {
+            this.editUserForm.profile_pic = response.data;
+          }
+          this.successNotification('Uploaded Successfully');
         })
         .catch((errors) => {
           this.errorMessage(errors.error);

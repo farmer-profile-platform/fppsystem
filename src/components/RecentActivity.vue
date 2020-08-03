@@ -1,7 +1,11 @@
 <template>
   <div>
     <h4 class="mb-2">Recent Activities</h4>
+    <p v-if="activities.length == 0">
+      No Activities Yet!
+    </p>
     <el-tag
+      v-else
       type="info"
       class="sidebar_activity"
       v-for="(activity, index) in activities"

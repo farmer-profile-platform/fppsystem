@@ -67,22 +67,38 @@
             </el-col>
           </el-row>
           <el-row :gutter="20">
-            <el-col :span="8">
+            <el-col :span="6">
               <el-form-item label="Email Address">
                 <el-input v-model="addFamerDetails.email" />
               </el-form-item>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="6">
               <el-form-item label="Home Town">
                 <el-input v-model="addFamerDetails.hometown" />
               </el-form-item>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="6">
               <el-form-item label="Nationality" prop="nationality">
                 <el-input
                   v-model="addFamerDetails.nationality"
                   placeholder="Ghanaian"
                 />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="Education" prop="education">
+                <el-select
+                  v-model="addFamerDetails.education"
+                  placeholder="Select"
+                  style="width:100%; margin-top:-12px"
+                >
+                  <el-option
+                    v-for="item in education"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                  ></el-option>
+                </el-select>
               </el-form-item>
             </el-col>
           </el-row>
@@ -133,7 +149,7 @@
             </el-col> </el-row
           ><br />
           <el-row :gutter="20">
-            <el-col :span="12">
+            <el-col :span="8">
               <div class="d-flex">
                 <div v-loading="photoLoading">
                   <img
@@ -159,11 +175,53 @@
                     2MB
                   </p>
                   <br />
-                  <el-button type="danger" size="mini">Remove Photo</el-button>
+                  <el-button
+                    type="danger"
+                    size="mini"
+                    @click="addFamerDetails.photo = 'no-photo.jpg'"
+                  >
+                    Remove Photo
+                  </el-button>
                 </div>
               </div>
             </el-col>
-            <el-col :span="12">
+            <el-col :span="8">
+              <div class="d-flex">
+                <div v-loading="idCardLoading">
+                  <img
+                    :src="getImageFile(addFamerDetails.idCard)"
+                    alt="photo"
+                    style="width:50px; margin-right: 20px"
+                  />
+                </div>
+                <div>
+                  <input
+                    type="file"
+                    ref="idCard"
+                    style="display: none"
+                    @change="getIdCardPic"
+                  />
+                  <el-button @click="$refs.idCard.click()" type="text">
+                    <b style="color:#2fa512;">
+                      <i class="el-icon-upload"></i>
+                      Upload Id Card
+                    </b>
+                  </el-button>
+                  <p>
+                    Photo should be photocopy of a national ID
+                  </p>
+                  <br />
+                  <el-button
+                    type="danger"
+                    size="mini"
+                    @click="addFamerDetails.idCard = 'no-photo.jpg'"
+                  >
+                    Remove ID card
+                  </el-button>
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="8">
               <div class="d-flex">
                 <div v-loading="fingerPrintLoading">
                   <img
@@ -190,7 +248,10 @@
                     2MB
                   </p>
                   <br />
-                  <el-button type="danger" size="mini"
+                  <el-button
+                    type="danger"
+                    size="mini"
+                    @click="addFamerDetails.fingerprint = 'no-photo.jpg'"
                     >Remove Finger print</el-button
                   >
                 </div>
@@ -755,6 +816,7 @@ export default {
         email: '',
         hometown: '',
         nationality: 'Ghanaian',
+        education: '',
         townOfResidence: '',
         res_address: '',
         fbo_position: '',
@@ -763,6 +825,7 @@ export default {
         id_number: '',
         photo: 'no-photo.jpg',
         fingerprint: 'no-photo.jpg',
+        idCard: 'no-photo.jpg',
         num_children: 0,
         years_farming: 1,
         farmLandOwnershipType: '',
@@ -820,6 +883,7 @@ export default {
       loading: false,
       fingerPrintLoading: false,
       photoLoading: false,
+      idCardLoading: false,
       activeTab: 'personal',
       idcardTypes: [
         'Passport',
@@ -827,6 +891,14 @@ export default {
         'Birth Certificate',
         'Health Insurance',
         'Ghana Card',
+      ],
+      education: [
+        'Masters',
+        'College Degree',
+        'Professional Certificate',
+        'WASSCE',
+        'BECE',
+        'None',
       ],
       rules: {
         firstName: [
@@ -855,6 +927,13 @@ export default {
           {
             required: true,
             message: 'Phone number field is required',
+            trigger: ['blur', 'change'],
+          },
+        ],
+        education: [
+          {
+            required: true,
+            message: 'Enter education qualification',
             trigger: ['blur', 'change'],
           },
         ],
@@ -897,6 +976,23 @@ export default {
         })
         .catch((errors) => {
           this.fingerPrintLoading = false;
+          this.errorMessage(errors.error);
+        });
+    },
+    getIdCardPic(e) {
+      this.idCardLoading = true;
+      const files = e.target.files;
+      const formData = new FormData();
+      formData.append('file', files[0]);
+      farmersService
+        .uploadFarmerFiles(formData)
+        .then((response) => {
+          this.idCardLoading = false;
+          this.addFamerDetails.idCard = response.data;
+          this.successNotification('Uploaded Successfully');
+        })
+        .catch((errors) => {
+          this.idCardLoading = false;
           this.errorMessage(errors.error);
         });
     },

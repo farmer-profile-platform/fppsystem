@@ -95,8 +95,19 @@
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="FBO Membership Position">
-                <el-input v-model="editFamerDetails.fbo_position" />
+              <el-form-item label="Education" prop="education">
+                <el-select
+                  v-model="editFamerDetails.education"
+                  placeholder="Select"
+                  style="width:100%; margin-top:-12px"
+                >
+                  <el-option
+                    v-for="item in education"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                  ></el-option>
+                </el-select>
               </el-form-item>
             </el-col>
           </el-row>
@@ -180,11 +191,10 @@
                     @change="updateImage($event, 'idCard')"
                   />
                   <el-button @click="$refs.idCard.click()" type="text">
-                    <b style="color:#2fa512;"> Upload Photo</b></el-button
+                    <b style="color:#2fa512;"> Upload ID Card</b></el-button
                   >
                   <p>
-                    Photo should be in standard format JPG, PNG and no more than
-                    2MB
+                    Photo should be photocopy of a national ID
                   </p>
                   <br />
                   <el-button
@@ -196,7 +206,7 @@
                 </div>
               </div>
             </el-col>
-            <el-col :span="12">
+            <el-col :span="8">
               <div class="d-flex">
                 <div>
                   <img
@@ -880,6 +890,14 @@ export default {
         'Birth Certificate',
         'Health Insurance',
         'Ghana Card',
+      ],
+      education: [
+        'Masters',
+        'College Degree',
+        'Professional Certificate',
+        'WASSCE',
+        'BECE',
+        'None',
       ],
       rules: {
         firstName: [

@@ -187,7 +187,7 @@
             </el-col>
             <el-col :span="8">
               <div class="d-flex">
-                <div v-loading="idCardLoading">
+                <div>
                   <img
                     :src="getImageFile(addFamerDetails.idCard)"
                     alt="photo"
@@ -223,7 +223,7 @@
             </el-col>
             <el-col :span="8">
               <div class="d-flex">
-                <div v-loading="fingerPrintLoading">
+                <div>
                   <img
                     :src="getImageFile(addFamerDetails.fingerprint)"
                     alt="photo"
@@ -998,6 +998,7 @@ export default {
           this.$emit('addedFarmer');
         })
         .catch((errors) => {
+          this.loading = false;
           this.errorMessage(errors.error);
         });
     },

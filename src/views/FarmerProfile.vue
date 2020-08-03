@@ -104,7 +104,10 @@
               <p>Residential Address</p>
               <h5>{{ farmer.res_address }}</h5>
             </el-col>
-            <el-col :span="6"></el-col>
+            <el-col :span="6">
+              <p>Education</p>
+              <h5>{{ farmer.education }}</h5>
+            </el-col>
           </el-row>
           <el-row
             type="flex"
@@ -133,7 +136,14 @@
                 style="width:100px; border:1px solid white; padding:5px;"
               />
             </el-col>
-            <el-col :span="6"> </el-col>
+            <el-col :span="6">
+              <p>Id Card</p>
+              <img
+                :src="getImageFile(farmer.idCard)"
+                alt="id card"
+                style="width:100px; border:1px solid white; padding:5px;"
+              />
+            </el-col>
           </el-row>
         </el-collapse-item>
         <el-collapse-item title="Household Info" name="2">

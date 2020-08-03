@@ -130,9 +130,9 @@
             </el-col> </el-row
           ><br />
           <el-row :gutter="20">
-            <el-col :span="12">
+            <el-col :span="8">
               <div class="d-flex">
-                <div v-loading="photoLoading">
+                <div>
                   <img
                     :src="getImageFile(editFamerDetails.photo)"
                     alt="photo"
@@ -144,7 +144,7 @@
                     type="file"
                     ref="photo"
                     style="display: none"
-                    @change="setProfilePic"
+                    @change="updateImage($event, 'photo')"
                   />
                   <el-button @click="$refs.photo.click()" type="text">
                     <b style="color:#2fa512;"> Upload Photo</b></el-button
@@ -154,16 +154,54 @@
                     2MB
                   </p>
                   <br />
-                  <el-button type="danger" size="mini">Remove Photo</el-button>
+                  <el-button
+                    type="danger"
+                    size="mini"
+                    @click="editFamerDetails.photo = 'no-photo.jpg'"
+                    >Remove Photo</el-button
+                  >
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="d-flex">
+                <div>
+                  <img
+                    :src="getImageFile(editFamerDetails.idCard)"
+                    alt="id card"
+                    style="width:50px; margin-right: 20px"
+                  />
+                </div>
+                <div>
+                  <input
+                    type="file"
+                    ref="idCard"
+                    style="display: none"
+                    @change="updateImage($event, 'idCard')"
+                  />
+                  <el-button @click="$refs.idCard.click()" type="text">
+                    <b style="color:#2fa512;"> Upload Photo</b></el-button
+                  >
+                  <p>
+                    Photo should be in standard format JPG, PNG and no more than
+                    2MB
+                  </p>
+                  <br />
+                  <el-button
+                    type="danger"
+                    size="mini"
+                    @click="editFamerDetails.idCard = 'no-photo.jpg'"
+                    >Remove Photo</el-button
+                  >
                 </div>
               </div>
             </el-col>
             <el-col :span="12">
               <div class="d-flex">
-                <div v-loading="fingerPrintLoading">
+                <div>
                   <img
                     :src="getImageFile(editFamerDetails.fingerprint)"
-                    alt="photo"
+                    alt="finger print"
                     style="width:50px; margin-right: 20px"
                   />
                 </div>
@@ -172,7 +210,7 @@
                     type="file"
                     ref="fingerprint"
                     style="display: none"
-                    @change="getFingerPrintPic"
+                    @change="updateImage($event, 'fingerPrint')"
                   />
                   <el-button @click="$refs.fingerprint.click()" type="text">
                     <b style="color:#2fa512;">
@@ -184,7 +222,10 @@
                     2MB
                   </p>
                   <br />
-                  <el-button type="danger" size="mini"
+                  <el-button
+                    type="danger"
+                    size="mini"
+                    @click="editFamerDetails.fingerprint = 'no-photo.jpg'"
                     >Remove Finger print</el-button
                   >
                 </div>
@@ -767,6 +808,7 @@ export default {
         email: '',
         hometown: '',
         nationality: '',
+        education: '',
         townOfResidence: '',
         res_address: '',
         fbo_position: '',
@@ -775,6 +817,7 @@ export default {
         id_number: '',
         photo: '',
         fingerprint: '',
+        idCard: '',
         num_children: 0,
         years_farming: 1,
         farmLandOwnershipType: '',
@@ -830,8 +873,6 @@ export default {
         ],
       },
       loading: false,
-      photoLoading: false,
-      fingerPrintLoading: false,
       activeTab: 'personal',
       idcardTypes: [
         'Passport',
@@ -891,6 +932,7 @@ export default {
       this.editFamerDetails.email = this.farmer.email;
       this.editFamerDetails.hometown = this.farmer.hometown;
       this.editFamerDetails.nationality = this.farmer.nationality;
+      this.editFamerDetails.education = this.farmer.education;
       this.editFamerDetails.townOfResidence = this.farmer.townOfResidence;
       this.editFamerDetails.res_address = this.farmer.res_address;
       this.editFamerDetails.fbo_position = this.farmer.fbo_position;
@@ -899,6 +941,7 @@ export default {
       this.editFamerDetails.id_number = this.farmer.id_number;
       this.editFamerDetails.photo = this.farmer.photo;
       this.editFamerDetails.fingerprint = this.farmer.fingerprint;
+      this.editFamerDetails.idCard = this.farmer.idCard;
       this.editFamerDetails.num_children = this.farmer.num_children;
       this.editFamerDetails.years_farming = this.farmer.years_farming;
       this.editFamerDetails.farmLandOwnershipType = this.farmer.farmLandOwnershipType;
@@ -932,40 +975,27 @@ export default {
         }
       });
     },
-    setProfilePic(e) {
-      this.photoLoading = true;
-      const files = e.target.files;
-      const formData = new FormData();
-      formData.append('file', files[0]);
-      farmersService
-        .uploadFarmerFiles(formData)
-        .then((response) => {
-          this.photoLoading = false;
-          this.editFamerDetails.photo = response.data;
-          this.successNotification('Uploaded Successfully');
-        })
-        .catch((errors) => {
-          this.photoLoading = false;
-          this.errorMessage(errors.error);
-        });
-    },
     setTotal(year) {
       year.yearly_income = year.major_season_income + year.minor_season_income;
     },
-    getFingerPrintPic(e) {
-      this.fingerPrintLoading = true;
+    updateImage(e, type) {
+      let self = this;
       const files = e.target.files;
       const formData = new FormData();
       formData.append('file', files[0]);
       farmersService
         .uploadFarmerFiles(formData)
         .then((response) => {
-          this.fingerPrintLoading = false;
-          this.addFamerDetails.fingerprint = response.data;
+          if (type == 'photo') {
+            self.editFamerDetails.photo = response.data;
+          } else if (type == 'idCard') {
+            self.editFamerDetails.idCard = response.data;
+          } else if (type == 'fingerPrint') {
+            self.editFamerDetails.fingerprint = response.data;
+          }
           this.successNotification('Uploaded Successfully');
         })
         .catch((errors) => {
-          this.fingerPrintLoading = false;
           this.errorMessage(errors.error);
         });
     },

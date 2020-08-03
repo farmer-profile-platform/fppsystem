@@ -151,7 +151,7 @@
           <el-row :gutter="20">
             <el-col :span="8">
               <div class="d-flex">
-                <div v-loading="photoLoading">
+                <div>
                   <img
                     :src="getImageFile(addFamerDetails.photo)"
                     alt="photo"
@@ -163,7 +163,7 @@
                     type="file"
                     ref="photo"
                     style="display: none"
-                    @change="setProfilePic"
+                    @change="updateImage($event, 'photo')"
                   />
                   <el-button @click="$refs.photo.click()" type="text">
                     <b style="color:#2fa512;">
@@ -199,7 +199,7 @@
                     type="file"
                     ref="idCard"
                     style="display: none"
-                    @change="getIdCardPic"
+                    @change="updateImage($event, 'idCard')"
                   />
                   <el-button @click="$refs.idCard.click()" type="text">
                     <b style="color:#2fa512;">
@@ -235,7 +235,7 @@
                     type="file"
                     ref="fingerprint"
                     style="display: none"
-                    @change="getFingerPrintPic"
+                    @change="updateImage($event, 'fingerPrint')"
                   />
                   <el-button @click="$refs.fingerprint.click()" type="text">
                     <b style="color:#2fa512;">
@@ -881,9 +881,6 @@ export default {
         ],
       },
       loading: false,
-      fingerPrintLoading: false,
-      photoLoading: false,
-      idCardLoading: false,
       activeTab: 'personal',
       idcardTypes: [
         'Passport',
@@ -945,54 +942,24 @@ export default {
       this.infoMessage('Added another crop');
       this.addFamerDetails.harvestYield.push({ years: [{}] });
     },
-    setProfilePic(e) {
-      this.photoLoading = true;
+    updateImage(e, type) {
+      let self = this;
       const files = e.target.files;
       const formData = new FormData();
       formData.append('file', files[0]);
       farmersService
         .uploadFarmerFiles(formData)
         .then((response) => {
-          this.photoLoading = false;
-          this.addFamerDetails.photo = response.data;
+          if (type == 'photo') {
+            self.addFamerDetails.photo = response.data;
+          } else if (type == 'idCard') {
+            self.addFamerDetails.idCard = response.data;
+          } else if (type == 'fingerPrint') {
+            self.addFamerDetails.fingerprint = response.data;
+          }
           this.successNotification('Uploaded Successfully');
         })
         .catch((errors) => {
-          this.photoLoading = false;
-          this.errorMessage(errors.error);
-        });
-    },
-    getFingerPrintPic(e) {
-      this.fingerPrintLoading = true;
-      const files = e.target.files;
-      const formData = new FormData();
-      formData.append('file', files[0]);
-      farmersService
-        .uploadFarmerFiles(formData)
-        .then((response) => {
-          this.fingerPrintLoading = false;
-          this.addFamerDetails.fingerprint = response.data;
-          this.successNotification('Uploaded Successfully');
-        })
-        .catch((errors) => {
-          this.fingerPrintLoading = false;
-          this.errorMessage(errors.error);
-        });
-    },
-    getIdCardPic(e) {
-      this.idCardLoading = true;
-      const files = e.target.files;
-      const formData = new FormData();
-      formData.append('file', files[0]);
-      farmersService
-        .uploadFarmerFiles(formData)
-        .then((response) => {
-          this.idCardLoading = false;
-          this.addFamerDetails.idCard = response.data;
-          this.successNotification('Uploaded Successfully');
-        })
-        .catch((errors) => {
-          this.idCardLoading = false;
           this.errorMessage(errors.error);
         });
     },

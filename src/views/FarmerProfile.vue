@@ -2,7 +2,7 @@
   <div v-loading="loading">
     <el-card>
       <el-row type="flex" class="row-bg" justify="space-between">
-        <el-col :span="8" class="d-flex">
+        <el-col :span="10" class="d-flex">
           <div>
             <img
               :src="getImageFile(farmer.photo)"
@@ -13,9 +13,18 @@
 
           <div>
             <h4 class="mb-0">{{ farmer.name }}</h4>
-            <p style="font-size: 12px;">{{ farmer.farmerId }}</p>
-            <p style="font-size: 12px;">{{ farmer.hometown }}</p>
-            <p style="font-size: 12px;">{{ farmer.phone }}</p>
+            <p style="font-size:12px;">
+              <b style="font-size:12px;">ID:</b> {{ farmer.farmerId }}
+            </p>
+            <p style="font-size:12px;">
+              <b style="font-size:12px;">Location:</b> {{ farmer.hometown }}
+            </p>
+            <p style="font-size: 12px;">
+              <b style="font-size:12px;">Phone:</b> {{ farmer.phone }}
+            </p>
+            <p style="font-size: 12px;">
+              <b style="font-size:12px;">Added on:</b> {{ farmer.createdAt }}
+            </p>
             <el-button type="text" size="mini">
               <i class="el-icon-star-on" style="color:gold; font-size:18px"></i>
               4.3</el-button

@@ -986,7 +986,10 @@ export default {
               this.successNotification('Success', 'Farmer edited successfully');
               this.$emit('editedFarmer');
             })
-            .catch((errors) => this.errorMessage(errors.error));
+            .catch((errors) => {
+              this.loading = false;
+              this.errorMessage(errors.error);
+            });
         } else {
           this.loading = false;
           return false;

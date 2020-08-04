@@ -12,7 +12,10 @@
         {{ total }}
       </span>
       <span class="dashboard_card_text">
-        <span><i class="el-icon-info"></i> Expect(Yearly): <b>1000</b></span>
+        <span
+          ><i class="el-icon-info"></i> Expect(Yearly):
+          <b>{{ yrExpert }}</b></span
+        >
         <br />
         <span><i class="el-icon-arrow-down"></i> % of what we have. </span>
       </span>
@@ -26,7 +29,15 @@
 <script>
 export default {
   name: 'DashBoardCard',
-  props: ['title', 'total', 'titleText', 'bgColor', 'progColor', 'percentage'],
+  props: [
+    'title',
+    'total',
+    'titleText',
+    'bgColor',
+    'progColor',
+    'percentage',
+    'yrExpert',
+  ],
 };
 </script>
 

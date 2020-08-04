@@ -10,6 +10,13 @@ export default {
     })
   },
   methods: {
+    getDateFormat(currentDate) {
+      const date = new Date(currentDate)
+      const dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'short', day: '2-digit' })
+      const [{ value: month }, , { value: day }, , { value: year }] = dateTimeFormat.formatToParts(date)
+
+      return `${day}-${month}-${year}`
+    },
     getActivityColor(action) {
       let color;
       switch (action) {
@@ -37,7 +44,7 @@ export default {
 
       activityService.addActivity(activity)
         .then(() => { })
-        .catch(() => { });
+        .catch((errors) => this.errorMessage(errors.error));
     },
     getPercentageData(data, total) {
       let percentage = data / total * 100

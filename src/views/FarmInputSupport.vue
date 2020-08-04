@@ -72,15 +72,18 @@
               v-for="(support, index) in props.row.inputSupport"
               :key="index"
             >
-              <span
-                >Year: <span>{{ support.year }}</span></span
-              >
+              <span style="font-size:11px;"> Year: {{ support.year }} </span>
               <br />
-              <span
-                >Grand Total: <span>GH₵ {{ support.grand_total }}</span></span
+              <span style="font-size:11px;">
+                Grand Total: GH₵ {{ support.grand_total }} </span
               ><br />
-              <el-button type="text" icon="el-icon-view">View Inputs</el-button>
-              <br />
+              <el-button
+                type="text"
+                icon="el-icon-view"
+                size="mini"
+                @click="showInputs(props.row.inputSupport)"
+                >View Inputs</el-button
+              >
             </span>
           </template>
         </el-table-column>
@@ -107,9 +110,15 @@
                   >
                 </router-link>
                 <el-dropdown-item>
+                  <span @click="showSupportUpdate(props.row)">
+                    <i class="el-icon-s-flag" style="margin-right: 10px"></i>
+                    Update Support
+                  </span>
+                </el-dropdown-item>
+                <el-dropdown-item>
                   <span @click="showEditModal(props.row)">
                     <i class="el-icon-edit" style="margin-right: 10px"></i>
-                    Edit Farmer
+                    Edit Farmer Details
                   </span>
                 </el-dropdown-item>
                 <el-dropdown-item divided>
@@ -148,6 +157,73 @@
         v-on:editedFarmer="farmerEdited"
       />
     </el-dialog>
+
+    <!-- Show Inputs details -->
+    <el-dialog
+      :visible.sync="showInputsModal"
+      width="58%"
+      title="Support Information"
+    >
+      <div>
+        <el-table :data="supportData" style="width: 100%" stripe>
+          <el-table-column label="Year & Total">
+            <template slot-scope="props">
+              <span
+                >Year:
+                <el-tag size="mini" type="warning">{{
+                  props.row.year
+                }}</el-tag></span
+              >
+              <br />
+              <span
+                >Grand Total:
+                <el-tag size="mini"
+                  >GH₵ {{ props.row.grand_total }}</el-tag
+                ></span
+              >
+            </template>
+          </el-table-column>
+          <el-table-column label="Inputs Info" width="550">
+            <template slot-scope="props">
+              <div
+                v-for="(input, index) in props.row.inputs"
+                :key="index"
+                class="flex_justify_between"
+              >
+                <div class="support_table">
+                  <span>Type</span>
+                  <span class="support_value">{{ input.type }}</span>
+                </div>
+                <div class="support_table">
+                  <span>Name</span>
+                  <span class="support_value">{{ input.name }}</span>
+                </div>
+                <div class="support_table">
+                  <span>Unit Price</span>
+                  <span class="support_value"
+                    ><el-tag size="mini" type="success"
+                      >GH₵ {{ input.unit_price }}</el-tag
+                    >
+                  </span>
+                </div>
+                <div class="support_table">
+                  <span>Quantity</span>
+                  <span class="support_value">{{ input.quantity }}</span>
+                </div>
+                <div class="support_table">
+                  <span>Total</span>
+                  <span class="support_value"
+                    ><el-tag size="mini" type="success"
+                      >GH₵ {{ input.total }}</el-tag
+                    >
+                  </span>
+                </div>
+              </div>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -163,8 +239,10 @@ export default {
   data() {
     return {
       tableData: [],
+      supportData: [],
       tableLoading: false,
       showEditFarmerModal: false,
+      showInputsModal: false,
       editTitle: '',
       farmer: {},
       currentPage: 1,
@@ -191,6 +269,10 @@ export default {
           self.tableLoading = false;
         });
     },
+    showInputs(supportData) {
+      this.supportData = supportData;
+      this.showInputsModal = true;
+    },
     confirmDelete(id) {
       this.$confirm('This will permanently delete farmer data', 'Warning', {
         confirmButtonText: 'OK',
@@ -214,6 +296,9 @@ export default {
       this.editTitle = `Edit Farmer Details for ${farmer.name} (${farmer.farmerId})`;
       this.farmer = farmer;
       this.showEditFarmerModal = true;
+    },
+    showSupportUpdate(farmer) {
+      console.log(farmer.inputSupport);
     },
     farmerEdited() {
       this.showEditFarmerModal = false;

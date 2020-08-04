@@ -38,7 +38,7 @@
     <el-row :gutter="20" class="mt-3">
       <el-col :span="12">
         <h5 class="mb-1">Recent Activities of Users</h5>
-        <el-table :data="activities" style="width: 100%">
+        <el-table :data="activities" style="width: 100%" stripe>
           <el-table-column label="Info">
             <template slot-scope="props">
               <span>{{ props.row.name }}</span>
@@ -62,12 +62,21 @@
           </el-table-column>
           <el-table-column align="right">
             <template slot-scope="props">
-              <el-button
-                size="mini"
-                type="danger"
-                icon="el-icon-delete"
-                @click="deleteActivity(props.row._id)"
-              />
+              <el-popconfirm
+                confirmButtonText="OK"
+                cancelButtonText="No, Thanks"
+                icon="el-icon-info"
+                iconColor="red"
+                title="Are you sure to delete this?"
+                @onConfirm="deleteActivity(props.row._id)"
+              >
+                <el-button
+                  slot="reference"
+                  size="mini"
+                  type="danger"
+                  icon="el-icon-delete"
+                />
+              </el-popconfirm>
             </template>
           </el-table-column>
         </el-table>

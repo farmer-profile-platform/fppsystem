@@ -262,4 +262,17 @@ footer p {
   font-size: 11px;
 }
 
+.inputs_table {
+  margin-right: 10px;
+  width: 100%;
+}
+
+.support_table .support_value {
+  font-size: 12px;
+  padding: 3px;
+  margin-top: 5px;
+  display: block;
+}
+
+
 @media (min-width: 1200px) {}

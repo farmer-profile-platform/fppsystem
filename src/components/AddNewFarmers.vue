@@ -453,7 +453,7 @@
             </el-col>
             <el-col :span="9">
               <el-form-item label="Total number of Farmland Cultivated">
-                <el-input v-model="addFamerDetails.num_farmLands">
+                <el-input type="number" v-model="addFamerDetails.num_farmLands">
                   <template slot="append">acres</template>
                 </el-input>
               </el-form-item>
@@ -476,7 +476,9 @@
               </el-col>
               <el-col :span="10">
                 <el-form-item label="Acres">
-                  <el-input v-model="harvest.acres" />
+                  <el-input type="number" v-model="harvest.acres">
+                    <template slot="append">acres</template>
+                  </el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="4">
@@ -499,12 +501,17 @@
             <el-row :gutter="20" v-for="(year, i) in harvest.years" :key="i">
               <el-col :span="5">
                 <el-form-item label="Year">
-                  <el-input v-model="year.year" placeholder="2013" />
+                  <el-input
+                    type="number"
+                    v-model="year.year"
+                    placeholder="2013"
+                  />
                 </el-form-item>
               </el-col>
               <el-col :span="5">
                 <el-form-item label="Major Season">
                   <el-input
+                    type="number"
                     v-model="year.major_season_harvest"
                     placeholder="In bags"
                   />
@@ -513,6 +520,7 @@
               <el-col :span="5">
                 <el-form-item label="Minor Season">
                   <el-input
+                    type="number"
                     v-model="year.minor_season_harvest"
                     placeholder="In bags"
                   />
@@ -521,6 +529,7 @@
               <el-col :span="5">
                 <el-form-item label="Yearly Harvest">
                   <el-input
+                    type="number"
                     v-model="year.yearly_harvest"
                     placeholder="In bags"
                   />
@@ -594,7 +603,9 @@
               </el-col>
               <el-col :span="10">
                 <el-form-item label="Acres">
-                  <el-input v-model="yieldIncome.acres" disabled />
+                  <el-input type="number" v-model="yieldIncome.acres" disabled>
+                    <template slot="append">acres</template>
+                  </el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -608,7 +619,12 @@
             >
               <el-col :span="5">
                 <el-form-item label="Year">
-                  <el-input v-model="year.year" placeholder="2013" disabled />
+                  <el-input
+                    type="number"
+                    v-model="year.year"
+                    placeholder="2013"
+                    disabled
+                  />
                 </el-form-item>
               </el-col>
               <el-col :span="5">
@@ -829,7 +845,7 @@ export default {
         num_children: 0,
         years_farming: 1,
         farmLandOwnershipType: '',
-        num_farmLands: '',
+        num_farmLands: 0,
         spouse: [
           {
             firstName: '',
@@ -849,7 +865,7 @@ export default {
         harvestYield: [
           {
             crop_name: '',
-            acres: '',
+            acres: 0,
             years: [
               {
                 year: '',

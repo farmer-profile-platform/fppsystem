@@ -143,7 +143,10 @@ export default {
       this.activities = data;
     },
     deleteActivity(id) {
-      console.log(id);
+      activityService
+        .deleteActivity(id)
+        .then(() => this.getActivities())
+        .catch((errors) => this.errorMessage(errors.error));
     },
   },
 };

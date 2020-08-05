@@ -128,6 +128,7 @@
 
                 <el-dropdown-item>
                   <span
+                    v-show="props.row.inputSupport.length == 0"
                     @click="
                       showInputSupport(props.row._id, props.row.firstName)
                     "
@@ -185,7 +186,7 @@
       <AddFarmInputSupport
         :selectedId.sync="selectedId"
         :selectedName="selectedName"
-        v-on:addedInput="InputAdded"
+        v-on:addedInput="inputAdded"
       />
     </el-dialog>
 
@@ -300,7 +301,7 @@ export default {
       this.showEditFarmerModal = false;
       this.getFarmers();
     },
-    InputAdded() {
+    inputAdded() {
       this.showInputSupportModal = false;
       this.getFarmers();
     },

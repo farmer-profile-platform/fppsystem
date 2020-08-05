@@ -68,21 +68,21 @@
         </el-table-column>
         <el-table-column label="Support Info" width="200">
           <template slot-scope="props">
-            <span
-              v-for="(support, index) in props.row.inputSupport"
-              :key="index"
-            >
-              <span style="font-size:11px;"> Year: {{ support.year }} </span>
+            <span>
+              <span style="font-size:11px;">
+                Year: {{ props.row.inputSupport[0].year }}
+              </span>
               <br />
               <span style="font-size:11px;">
-                Grand Total: GH₵ {{ support.grand_total }} </span
+                Grand Total: GH₵
+                {{ props.row.inputSupport[0].grand_total }} </span
               ><br />
               <el-button
                 type="text"
                 icon="el-icon-view"
                 size="mini"
                 @click="showInputs(props.row.inputSupport)"
-                >View Inputs</el-button
+                >View all</el-button
               >
             </span>
           </template>
@@ -158,6 +158,20 @@
       />
     </el-dialog>
 
+    <!-- Update farmer Input Support -->
+    <el-dialog :visible.sync="showUpdateSupportModal" width="58%">
+      <template slot="title">
+        <h3>{{ inputSupportTitle }}</h3>
+        <p>Take note of the unit details and amounts.</p>
+      </template>
+      <AddFarmInputSupport
+        :selectedId.sync="selectedId"
+        :selectedName="selectedName"
+        :selectedInputs.sync="selectedInputs"
+        v-on:addedInput="inputUpdated"
+      />
+    </el-dialog>
+
     <!-- Show Inputs details -->
     <el-dialog
       :visible.sync="showInputsModal"
@@ -230,11 +244,13 @@
 <script>
 import farmersService from '../api/farmers';
 import EditFarmerDetails from '../components/EditFarmerDetails';
+import AddFarmInputSupport from '../components/AddFarmInputSupport';
 
 export default {
   name: 'farmers',
   components: {
     EditFarmerDetails,
+    AddFarmInputSupport,
   },
   data() {
     return {
@@ -243,6 +259,11 @@ export default {
       tableLoading: false,
       showEditFarmerModal: false,
       showInputsModal: false,
+      showUpdateSupportModal: false,
+      inputSupportTitle: '',
+      selectedName: '',
+      selectedId: '',
+      selectedInputs: [],
       editTitle: '',
       farmer: {},
       currentPage: 1,
@@ -298,10 +319,18 @@ export default {
       this.showEditFarmerModal = true;
     },
     showSupportUpdate(farmer) {
-      console.log(farmer.inputSupport);
+      this.inputSupportTitle = 'Update Farm Support for ' + farmer.name;
+      this.selectedId = farmer._id;
+      this.selectedName = farmer.name;
+      this.selectedInputs = farmer.inputSupport;
+      this.showUpdateSupportModal = true;
     },
     farmerEdited() {
       this.showEditFarmerModal = false;
+      this.getFarmers();
+    },
+    inputUpdated() {
+      this.showUpdateSupportModal = false;
       this.getFarmers();
     },
     handleCurrentChange(page) {

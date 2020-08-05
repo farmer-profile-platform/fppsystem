@@ -136,6 +136,20 @@ export default {
   props: {
     selectedName: String,
     selectedId: String,
+    selectedInputs: {
+      type: Array,
+      default: function() {
+        return [
+          {
+            year: '',
+            grand_total: 0,
+            inputs: [
+              { type: '', name: '', unit_price: 0, quantity: 1, total: 0 },
+            ],
+          },
+        ];
+      },
+    },
   },
   data() {
     return {
@@ -159,6 +173,9 @@ export default {
         ],
       },
     };
+  },
+  created() {
+    this.inputSupportForm.inputSupport = this.selectedInputs;
   },
   methods: {
     addInputSupportField() {

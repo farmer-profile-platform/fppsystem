@@ -108,6 +108,7 @@
                 plain
                 size="mini"
                 icon="el-icon-download"
+                @click="downloadProfile(props.row)"
               ></el-button>
             </el-tooltip>
             <el-dropdown class="ml-1">
@@ -201,6 +202,16 @@
         v-on:editedFarmer="farmerEdited"
       />
     </el-dialog>
+
+    <!-- Download -->
+    <el-dialog
+      :title="downloadTitle"
+      append-to-body
+      :close-on-click-modal="false"
+      :visible.sync="showDownloadModal"
+    >
+      <FarmerProfileDownload :farmer.sync="farmer" />
+    </el-dialog>
   </div>
 </template>
 
@@ -209,6 +220,7 @@ import farmersService from '../api/farmers';
 import AddNewFarmers from '../components/AddNewFarmers';
 import EditFarmerDetails from '../components/EditFarmerDetails';
 import AddFarmInputSupport from '../components/AddFarmInputSupport';
+import FarmerProfileDownload from '../components/FarmerProfileDownload';
 
 export default {
   name: 'farmers',
@@ -216,6 +228,7 @@ export default {
     AddNewFarmers,
     EditFarmerDetails,
     AddFarmInputSupport,
+    FarmerProfileDownload,
   },
   data() {
     return {
@@ -225,9 +238,11 @@ export default {
       showAddFarmerModal: false,
       showEditFarmerModal: false,
       showInputSupportModal: false,
+      showDownloadModal: false,
       btnLoading: false,
       editTitle: '',
       inputSupportTitle: '',
+      downloadTitle: '',
       selectedId: null,
       selectedName: '',
       currentPage: 1,
@@ -292,6 +307,12 @@ export default {
     },
     addFarmerModal() {
       this.showAddFarmerModal = true;
+    },
+    downloadProfile(farmer) {
+      this.downloadTitle =
+        'Download ' + farmer.name + ' Profile (' + farmer.farmerId + ')';
+      this.farmer = farmer;
+      this.showDownloadModal = true;
     },
     farmerAdded() {
       this.showAddFarmerModal = false;

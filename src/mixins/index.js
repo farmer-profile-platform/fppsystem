@@ -10,6 +10,15 @@ export default {
     })
   },
   methods: {
+    ucwords: function (str) {
+      if (typeof str !== 'undefined') {
+        return str.toLowerCase().replace(/\b[a-z]/g, function (letter) {
+          return letter.toUpperCase()
+        })
+      } else {
+        return str
+      }
+    },
     getDateFormat(currentDate) {
       const date = new Date(currentDate)
       const dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'short', day: '2-digit' })

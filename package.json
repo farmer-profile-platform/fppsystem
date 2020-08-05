@@ -13,6 +13,7 @@
     "core-js": "^3.6.5",
     "element-ui": "^2.13.2",
     "is_js": "^0.9.0",
+    "pdfmake": "^0.1.68",
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",
     "vue-headful": "^2.1.0",

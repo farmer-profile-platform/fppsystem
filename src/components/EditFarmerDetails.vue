@@ -309,28 +309,8 @@
                   />
                 </el-form-item>
               </el-col>
-              <el-col :span="7">
-                <el-form-item label="National ID Type">
-                  <el-select
-                    v-model="spouse.national_id"
-                    placeholder="Select"
-                    style="width:100%; margin-top:-12px"
-                  >
-                    <el-option
-                      v-for="item in idcardTypes"
-                      :key="item"
-                      :label="item"
-                      :value="item"
-                    >
-                    </el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="7">
-                <el-form-item label="ID Number">
-                  <el-input v-model="spouse.id_number" />
-                </el-form-item>
-              </el-col>
+              <el-col :span="7"> </el-col>
+              <el-col :span="7"> </el-col>
               <el-col :span="3">
                 <div class="button-add-details" v-if="spIdx < 1">
                   <i
@@ -838,8 +818,6 @@ export default {
             lastName: '',
             dob: '',
             phone: '',
-            national_id: '',
-            id_number: '',
           },
         ],
         children: [

@@ -175,7 +175,7 @@
                 </el-col>
                 <el-col :span="6"> </el-col> </el-row
               ><br />
-              <el-row type="flex" justify="space-between">
+              <!-- <el-row type="flex" justify="space-between">
                 <el-col :span="5">
                   <p>National ID Type</p>
                   <h5>{{ spouse.national_id }}</h5>
@@ -186,7 +186,7 @@
                 </el-col>
                 <el-col :span="6"> </el-col>
                 <el-col :span="6"> </el-col>
-              </el-row>
+              </el-row> -->
             </div>
             <br />
             <hr />

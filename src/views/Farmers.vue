@@ -19,7 +19,7 @@
         <el-button slot="append" icon="el-icon-search"></el-button>
       </el-input>
     </div>
-    <el-card class="">
+    <el-card>
       <el-table
         :data="
           tableData.filter(

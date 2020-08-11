@@ -80,6 +80,11 @@
             </template>
           </el-table-column>
         </el-table>
+        <div class="align_center">
+          <router-link to="/activities">
+            <el-button type="text">View all</el-button>
+          </router-link>
+        </div>
       </el-col>
     </el-row>
   </div>
@@ -130,12 +135,17 @@ export default {
     getActivities() {
       activityService
         .getActivities()
-        .then((response) => this.loadTable(response))
+        .then((response) => {
+          if (response.data.length > 10) {
+            response.data.length = 10;
+          }
+          this.loadTable(response.data);
+        })
         .catch((errors) => this.errorMessage(errors.error));
     },
     loadTable(activity) {
       let self = this;
-      let data = activity.data.map(function(act) {
+      let data = activity.map(function(act) {
         act.user.name =
           act.user._id === self.user._id ? 'Yourself' : act.user.name;
         return act;

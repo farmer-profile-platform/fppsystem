@@ -10,7 +10,9 @@ import Farmers from "@/views/Farmers";
 import FarmInputSupport from "@/views/FarmInputSupport"
 import FarmerProfile from "@/views/FarmerProfile";
 import Users from "@/views/Users";
-import UserProfile from "@/views/UserProfile"
+import UserProfile from "@/views/UserProfile";
+import Activities from "@/views/Activities";
+
 import Login from "@/views/Login";
 
 Vue.use(VueRouter);
@@ -51,6 +53,11 @@ const routes = [
         path: "/user-profile/:id/:name",
         name: "User Profile",
         component: UserProfile
+      },
+      {
+        path: "/activities",
+        name: "User Activities",
+        component: Activities
       }
     ]
   },

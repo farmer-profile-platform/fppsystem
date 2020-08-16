@@ -38,12 +38,12 @@
             </el-col>
           </el-row>
           <el-row :gutter="20">
-            <el-col :span="6">
+            <el-col :span="8">
               <el-form-item label="AKA">
                 <el-input v-model="editFamerDetails.aka" />
               </el-form-item>
             </el-col>
-            <el-col :span="6">
+            <el-col :span="8">
               <el-form-item label="Date of Birth" prop="dob">
                 <el-date-picker
                   type="date"
@@ -54,28 +54,12 @@
                 </el-date-picker>
               </el-form-item>
             </el-col>
-            <el-col :span="6">
+            <el-col :span="8">
               <el-form-item label="Phone Number" prop="phone">
                 <el-input
                   v-model="editFamerDetails.phone"
                   placeholder="(054) 54153324"
                 />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-              <el-form-item label="Marital Status">
-                <el-radio
-                  border
-                  v-model="editFamerDetails.marital_status"
-                  label="Single"
-                  >Single</el-radio
-                >
-                <el-radio
-                  border
-                  v-model="editFamerDetails.marital_status"
-                  label="Married"
-                  >Married</el-radio
-                >
               </el-form-item>
             </el-col>
           </el-row>
@@ -276,6 +260,24 @@
           <span slot="label"
             ><i class="el-icon-s-home"></i> Household Info</span
           >
+          <el-row :gutter="20">
+            <el-col :span="6">
+              <el-form-item label="Marital Status">
+                <el-radio
+                  border
+                  v-model="editFamerDetails.marital_status"
+                  label="Single"
+                  >Single</el-radio
+                >
+                <el-radio
+                  border
+                  v-model="editFamerDetails.marital_status"
+                  label="Married"
+                  >Married</el-radio
+                >
+              </el-form-item>
+            </el-col>
+          </el-row>
           <div v-if="married">
             <h3 class="mb-1">
               Spouse ( {{ editFamerDetails.spouse.length }} )
@@ -445,16 +447,21 @@
                 <el-input v-model="editFamerDetails.years_farming" />
               </el-form-item>
             </el-col>
-            <el-col :span="9">
+            <el-col :span="6">
               <el-form-item label="Type of Farmland Ownership">
                 <el-input v-model="editFamerDetails.farmLandOwnershipType" />
               </el-form-item>
             </el-col>
-            <el-col :span="9">
+            <el-col :span="6">
               <el-form-item label="Total number of Farmland Cultivated">
                 <el-input v-model="editFamerDetails.num_farmLands">
                   <template slot="append">acres</template>
                 </el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="GEO Location">
+                <el-input v-model="editFamerDetails.farm_location" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -836,6 +843,7 @@ export default {
         years_farming: 1,
         farmLandOwnershipType: '',
         num_farmLands: '',
+        farm_location: '',
         spouse: [
           {
             firstName: '',
@@ -973,6 +981,7 @@ export default {
       this.editFamerDetails.num_children = this.farmer.num_children;
       this.editFamerDetails.years_farming = this.farmer.years_farming;
       this.editFamerDetails.farmLandOwnershipType = this.farmer.farmLandOwnershipType;
+      this.editFamerDetails.farm_location = this.farmer.farm_location;
       this.editFamerDetails.num_children = this.farmer.num_children;
       this.editFamerDetails.years_farming = this.farmer.years_farming;
       this.editFamerDetails.num_farmLands = this.farmer.num_farmLands;

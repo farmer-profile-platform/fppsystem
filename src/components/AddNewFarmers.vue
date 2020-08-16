@@ -41,12 +41,12 @@
             </el-col>
           </el-row>
           <el-row :gutter="20">
-            <el-col :span="6">
+            <el-col :span="8">
               <el-form-item label="AKA">
                 <el-input v-model="addFamerDetails.aka" />
               </el-form-item>
             </el-col>
-            <el-col :span="6">
+            <el-col :span="8">
               <el-form-item label="Date of Birth" prop="dob">
                 <el-date-picker
                   type="date"
@@ -57,28 +57,12 @@
                 </el-date-picker>
               </el-form-item>
             </el-col>
-            <el-col :span="6">
+            <el-col :span="8">
               <el-form-item label="Phone Number" prop="phone">
                 <el-input
                   v-model="addFamerDetails.phone"
                   placeholder="(054) 54153324"
                 />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-              <el-form-item label="Marital Status">
-                <el-radio
-                  border
-                  v-model="addFamerDetails.marital_status"
-                  label="Single"
-                  >Single</el-radio
-                >
-                <el-radio
-                  border
-                  v-model="addFamerDetails.marital_status"
-                  label="Married"
-                  >Married</el-radio
-                >
               </el-form-item>
             </el-col>
           </el-row>
@@ -287,6 +271,24 @@
 
         <!-- House Hold information -->
         <el-tab-pane label="Household Info" name="household">
+          <el-row :gutter="20">
+            <el-col :span="6">
+              <el-form-item label="Marital Status">
+                <el-radio
+                  border
+                  v-model="addFamerDetails.marital_status"
+                  label="Single"
+                  >Single</el-radio
+                >
+                <el-radio
+                  border
+                  v-model="addFamerDetails.marital_status"
+                  label="Married"
+                  >Married</el-radio
+                >
+              </el-form-item>
+            </el-col>
+          </el-row>
           <div v-if="married">
             <h3 class="mb-1">Spouse ( {{ addFamerDetails.spouse.length }} )</h3>
             <div v-for="(spouse, spIdx) in addFamerDetails.spouse" :key="spIdx">
@@ -447,16 +449,21 @@
                 <el-input-number v-model="addFamerDetails.years_farming" />
               </el-form-item>
             </el-col>
-            <el-col :span="9">
+            <el-col :span="6">
               <el-form-item label="Type of Farmland Ownership">
                 <el-input v-model="addFamerDetails.farmLandOwnershipType" />
               </el-form-item>
             </el-col>
-            <el-col :span="9">
-              <el-form-item label="Total number of Farmland Cultivated">
+            <el-col :span="6">
+              <el-form-item label="Total Num. of Farmland Cultivated">
                 <el-input type="number" v-model="addFamerDetails.num_farmLands">
                   <template slot="append">acres</template>
                 </el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="GEO Location">
+                <el-input v-model="addFamerDetails.farm_location" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -807,7 +814,7 @@
               class="full-width"
               type="primary"
               @click="confirmFarmerAddition()"
-              >Add a new famer</el-button
+              >Add a new farmer</el-button
             >
           </div>
         </el-tab-pane>
@@ -848,6 +855,7 @@ export default {
         years_farming: 1,
         farmLandOwnershipType: '',
         num_farmLands: 0,
+        farm_location: '',
         spouse: [
           {
             firstName: '',

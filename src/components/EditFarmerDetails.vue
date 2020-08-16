@@ -918,7 +918,7 @@ export default {
             message: 'Please enter a name',
             trigger: ['blur', 'change'],
           },
-          { min: 5, message: 'Length should be 5 or more', trigger: 'blur' },
+          { min: 2, message: 'Length should be 5 or more', trigger: 'blur' },
         ],
         dob: [
           {

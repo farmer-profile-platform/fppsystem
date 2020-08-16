@@ -41,12 +41,12 @@
             </el-col>
           </el-row>
           <el-row :gutter="20">
-            <el-col :span="8">
+            <el-col :span="6">
               <el-form-item label="AKA">
                 <el-input v-model="addFamerDetails.aka" />
               </el-form-item>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="6">
               <el-form-item label="Date of Birth" prop="dob">
                 <el-date-picker
                   type="date"
@@ -57,12 +57,28 @@
                 </el-date-picker>
               </el-form-item>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="6">
               <el-form-item label="Phone Number" prop="phone">
                 <el-input
                   v-model="addFamerDetails.phone"
                   placeholder="(054) 54153324"
                 />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="Marital Status">
+                <el-radio
+                  border
+                  v-model="addFamerDetails.marital_status"
+                  label="Single"
+                  >Single</el-radio
+                >
+                <el-radio
+                  border
+                  v-model="addFamerDetails.marital_status"
+                  label="Married"
+                  >Married</el-radio
+                >
               </el-form-item>
             </el-col>
           </el-row>
@@ -271,75 +287,80 @@
 
         <!-- House Hold information -->
         <el-tab-pane label="Household Info" name="household">
-          <h3 class="mb-1">Spouse ( {{ addFamerDetails.spouse.length }} )</h3>
-          <div v-for="(spouse, spIdx) in addFamerDetails.spouse" :key="spIdx">
-            <el-row :gutter="20">
-              <el-col :span="7">
-                <el-form-item label="Spouse First Name">
-                  <el-input v-model="spouse.firstName" />
-                </el-form-item>
-              </el-col>
-              <el-col :span="7">
-                <el-form-item label="Spouse Last Name">
-                  <el-input v-model="spouse.lastName" />
-                </el-form-item>
-              </el-col>
-              <el-col :span="7">
-                <el-form-item label="Date of Birth">
-                  <el-date-picker
-                    type="date"
-                    placeholder="Date of birth"
-                    style="width: 100%; margin-top:-12px"
-                    v-model="spouse.dob"
-                  >
-                  </el-date-picker>
-                </el-form-item>
-              </el-col>
-              <el-col :span="3">
-                <div class="button-add-details" v-if="spIdx > 0">
-                  <i
-                    class="el-icon-delete"
-                    style="color: red; font-size: 20px;"
-                  ></i>
-                  <br />
-                  <el-button
-                    type="text"
-                    size="mini"
-                    @click="addFamerDetails.spouse.splice(spIdx, 1)"
-                    >Delete</el-button
-                  >
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="7">
-                <el-form-item label="Phone Number">
-                  <el-input
-                    v-model="spouse.phone"
-                    placeholder="(054) 54153324"
-                  />
-                </el-form-item>
-              </el-col>
-              <el-col :span="7"> </el-col>
-              <el-col :span="7"> </el-col>
-              <el-col :span="3">
-                <div class="button-add-details" v-if="spIdx < 1">
-                  <i
-                    class="el-icon-circle-plus"
-                    style="color: grey; font-size: 20px;"
-                  ></i>
-                  <br />
-                  <el-button
-                    type="text"
-                    size="mini"
-                    @click="addDuplicateField(addFamerDetails.spouse, 'spouse')"
-                    >Add Spouse</el-button
-                  >
-                </div>
-              </el-col>
-            </el-row>
-            <hr />
+          <div v-if="married">
+            <h3 class="mb-1">Spouse ( {{ addFamerDetails.spouse.length }} )</h3>
+            <div v-for="(spouse, spIdx) in addFamerDetails.spouse" :key="spIdx">
+              <el-row :gutter="20">
+                <el-col :span="7">
+                  <el-form-item label="Spouse First Name">
+                    <el-input v-model="spouse.firstName" />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="7">
+                  <el-form-item label="Spouse Last Name">
+                    <el-input v-model="spouse.lastName" />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="7">
+                  <el-form-item label="Date of Birth">
+                    <el-date-picker
+                      type="date"
+                      placeholder="Date of birth"
+                      style="width: 100%; margin-top:-12px"
+                      v-model="spouse.dob"
+                    >
+                    </el-date-picker>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="3">
+                  <div class="button-add-details" v-if="spIdx > 0">
+                    <i
+                      class="el-icon-delete"
+                      style="color: red; font-size: 20px;"
+                    ></i>
+                    <br />
+                    <el-button
+                      type="text"
+                      size="mini"
+                      @click="addFamerDetails.spouse.splice(spIdx, 1)"
+                      >Delete</el-button
+                    >
+                  </div>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="7">
+                  <el-form-item label="Phone Number">
+                    <el-input
+                      v-model="spouse.phone"
+                      placeholder="(054) 54153324"
+                    />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="7"> </el-col>
+                <el-col :span="7"> </el-col>
+                <el-col :span="3">
+                  <div class="button-add-details" v-if="spIdx < 1">
+                    <i
+                      class="el-icon-circle-plus"
+                      style="color: grey; font-size: 20px;"
+                    ></i>
+                    <br />
+                    <el-button
+                      type="text"
+                      size="mini"
+                      @click="
+                        addDuplicateField(addFamerDetails.spouse, 'spouse')
+                      "
+                      >Add Spouse</el-button
+                    >
+                  </div>
+                </el-col>
+              </el-row>
+              <hr />
+            </div>
           </div>
+
           <br />
 
           <!-- Children Information -->
@@ -810,6 +831,7 @@ export default {
         dob: '',
         phone: '',
         email: '',
+        marital_status: 'Single',
         hometown: '',
         nationality: 'Ghanaian',
         education: '',
@@ -888,6 +910,8 @@ export default {
         'College Degree',
         'Professional Certificate',
         'WASSCE',
+        'O/A Level',
+        'Basic',
         'BECE',
         'None',
       ],
@@ -930,6 +954,11 @@ export default {
         ],
       },
     };
+  },
+  computed: {
+    married: function() {
+      return this.addFamerDetails.marital_status == 'Married';
+    },
   },
   methods: {
     addCropHarvest() {

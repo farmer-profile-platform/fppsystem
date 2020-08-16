@@ -23,7 +23,8 @@
               <b style="font-size:12px;">Phone:</b> {{ farmer.phone }}
             </p>
             <p style="font-size: 12px;">
-              <b style="font-size:12px;">Added on:</b> {{ farmer.createdAt }}
+              <b style="font-size:12px;">Added on:</b>
+              {{ getDateFormat(farmer.createdAt) }}
             </p>
             <el-button type="text" size="mini">
               <i class="el-icon-star-on" style="color:gold; font-size:18px"></i>

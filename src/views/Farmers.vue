@@ -257,7 +257,6 @@ export default {
   },
   methods: {
     getFarmers() {
-      let self = this;
       this.tableLoading = true;
       farmersService
         .getFarmers()
@@ -267,8 +266,8 @@ export default {
           this.total = response.total;
         })
         .catch((errors) => {
-          self.errorMessage(errors.error);
-          self.tableLoading = false;
+          this.errorMessage(errors.error);
+          this.tableLoading = false;
         });
     },
     showInputSupport(id, name) {

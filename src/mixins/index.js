@@ -10,6 +10,17 @@ export default {
     })
   },
   methods: {
+    checkInternet() {
+      if (navigator.onLine) {
+        this.$store.dispatch('update_internet_status', navigator.onLine);
+      } else {
+        alert(
+          'Hey! We can tell there is no connection which will retrict you in performing some tasks. Its advisable to not logout from system untill you have connection back.'
+        );
+        this.$store.dispatch('update_internet_status', navigator.onLine);
+      }
+      return navigator.onLine;
+    },
     ucwords: function (str) {
       if (typeof str !== 'undefined') {
         return str.toLowerCase().replace(/\b[a-z]/g, function (letter) {

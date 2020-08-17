@@ -496,21 +496,15 @@ export default {
     };
   },
   created() {
-    this.selectedId = this.$route.params.id;
     this.getFarmer();
   },
   methods: {
     getFarmer() {
       this.loading = true;
-      farmersService
-        .getFarmer(this.selectedId)
-        .then((response) => {
-          this.farmer = response.data;
-          this.farmer.name =
-            response.data.firstName + ' ' + response.data.lastName;
-          this.loading = false;
-        })
-        .catch((errors) => this.errorMessage(errors.error));
+      this.selectedId = this.$route.params.id;
+      this.farmer = this.$route.query.farmer;
+      this.farmer.name = this.farmer.firstName + ' ' + this.farmer.lastName;
+      this.loading = false;
     },
     showEditModal() {
       this.editTitle = 'Edit Farmer Details for ' + this.farmer.name;
@@ -518,7 +512,7 @@ export default {
     },
     farmerEdited() {
       this.showEditFarmerModal = false;
-      this.getFarmer(this.selectedId);
+      this.getFarmer();
     },
     confirmDelete(id) {
       this.$confirm('This will permanently delete farmer data', 'Warning', {

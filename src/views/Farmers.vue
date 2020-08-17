@@ -118,7 +118,8 @@
                 <router-link
                   :to="{
                     name: 'Farmer Profile',
-                    params: { id: props.row._id, name: props.row.firstName },
+                    params: { id: props.row._id },
+                    query: { farmer: props.row },
                   }"
                 >
                   <el-dropdown-item>
@@ -221,6 +222,7 @@ import AddNewFarmers from '../components/AddNewFarmers';
 import EditFarmerDetails from '../components/EditFarmerDetails';
 import AddFarmInputSupport from '../components/AddFarmInputSupport';
 import FarmerProfileDownload from '../components/FarmerProfileDownload';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'farmers',
@@ -251,24 +253,36 @@ export default {
       search: '',
     };
   },
-  computed: {},
+  computed: {
+    ...mapGetters({
+      farmers: 'getFarmers',
+      internetStatus: 'internetStatus',
+    }),
+  },
   created() {
+    this.checkInternet();
     this.getFarmers();
   },
   methods: {
     getFarmers() {
       this.tableLoading = true;
-      farmersService
-        .getFarmers()
-        .then((response) => {
-          this.tableLoading = false;
-          this.tableData = response.data;
-          this.total = response.total;
-        })
-        .catch((errors) => {
-          this.errorMessage(errors.error);
-          this.tableLoading = false;
-        });
+      if (this.internetStatus) {
+        farmersService
+          .getFarmers()
+          .then((response) => {
+            this.tableLoading = false;
+            this.tableData = response.data;
+            this.$store.dispatch('getFarmerData', response.data);
+            this.total = response.total;
+          })
+          .catch((errors) => {
+            this.errorMessage(errors.error);
+            this.tableLoading = false;
+          });
+      } else {
+        this.tableLoading = false;
+        this.tableData = this.farmers;
+      }
     },
     showInputSupport(id, name) {
       this.selectedId = id;

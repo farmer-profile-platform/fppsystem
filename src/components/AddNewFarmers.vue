@@ -825,6 +825,7 @@
 
 <script>
 import farmersService from '../api/farmers';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'AddNewFarmers',
@@ -887,6 +888,7 @@ export default {
             ],
           },
         ],
+        inputSupport: [],
         bank: [
           {
             name: '',
@@ -967,6 +969,9 @@ export default {
     married: function() {
       return this.addFamerDetails.marital_status == 'Married';
     },
+    ...mapGetters({
+      internetStatus: 'internetStatus',
+    }),
   },
   methods: {
     addCropHarvest() {
@@ -1020,18 +1025,25 @@ export default {
     },
     addFarmer() {
       this.loading = true;
-      farmersService
-        .addFarmer(this.addFamerDetails)
-        .then((response) => {
-          this.addActivity(response.data, 'Added');
-          this.loading = false;
-          this.successNotification('Success', 'Farmer added successfully');
-          this.$emit('addedFarmer');
-        })
-        .catch((errors) => {
-          this.loading = false;
-          this.errorMessage(errors.error);
-        });
+      if (this.internetStatus == true) {
+        farmersService
+          .addFarmer(this.addFamerDetails)
+          .then((response) => {
+            this.addActivity(response.data, 'Added');
+            this.loading = false;
+            this.successNotification('Success', 'Farmer added successfully');
+            this.$emit('addedFarmer');
+          })
+          .catch((errors) => {
+            this.loading = false;
+            this.errorMessage(errors.error);
+          });
+      } else {
+        this.loading = false;
+        this.$store.dispatch('addFarmerOffline', this.addFamerDetails);
+        this.successNotification('Success', 'Farmer added successfully');
+        this.$emit('addedFarmer');
+      }
     },
     setTotal(year) {
       year.yearly_income = year.major_season_income + year.minor_season_income;

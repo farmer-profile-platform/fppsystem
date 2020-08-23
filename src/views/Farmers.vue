@@ -88,7 +88,7 @@
               :type="props.row.inputSupport.length == 0 ? 'warning' : 'success'"
             >
               {{
-                props.row.inputSupport.length == 0
+                props.row.inputSupport.length === 0
                   ? 'Not supported'
                   : 'Supported'
               }}
@@ -118,7 +118,6 @@
                 <router-link
                   :to="{
                     name: 'Farmer Profile',
-                    params: { id: props.row._id },
                     query: { farmer: props.row },
                   }"
                 >
@@ -130,7 +129,7 @@
 
                 <el-dropdown-item>
                   <span
-                    v-show="props.row.inputSupport.length == 0"
+                    v-if="props.row.inputSupport.length == 0"
                     @click="
                       showInputSupport(props.row._id, props.row.firstName)
                     "
@@ -259,6 +258,11 @@ export default {
       internetStatus: 'internetStatus',
     }),
   },
+  watch: {
+    farmers: function(v) {
+      this.tableData = v;
+    },
+  },
   created() {
     this.checkInternet();
     this.getFarmers();
@@ -282,6 +286,8 @@ export default {
       } else {
         this.tableLoading = false;
         this.tableData = this.farmers;
+        this.total = this.tableData.length;
+        console.log('table', this.tableData);
       }
     },
     showInputSupport(id, name) {

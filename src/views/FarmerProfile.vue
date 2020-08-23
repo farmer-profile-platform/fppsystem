@@ -487,7 +487,6 @@ export default {
   },
   data() {
     return {
-      selectedId: null,
       showEditFarmerModal: false,
       editTitle: '',
       activeTab: 'personal',
@@ -501,7 +500,6 @@ export default {
   methods: {
     getFarmer() {
       this.loading = true;
-      this.selectedId = this.$route.params.id;
       this.farmer = this.$route.query.farmer;
       this.farmer.name = this.farmer.firstName + ' ' + this.farmer.lastName;
       this.loading = false;

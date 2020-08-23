@@ -15,7 +15,7 @@ export default {
         this.$store.dispatch('update_internet_status', navigator.onLine);
       } else {
         alert(
-          'Hey! We can tell there is no connection which will retrict you in performing some tasks. Its advisable to not logout from system untill you have connection back.'
+          'Hey! Looks like there is no connection which will retrict you in performing some tasks. Its advisable to not logout from system untill you have connection back.'
         );
         this.$store.dispatch('update_internet_status', navigator.onLine);
       }

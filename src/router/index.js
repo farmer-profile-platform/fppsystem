@@ -40,7 +40,7 @@ const routes = [
         component: FarmInputSupport
       },
       {
-        path: "/farmer-profile/:id",
+        path: "/farmer-profile",
         name: "Farmer Profile",
         component: FarmerProfile
       },

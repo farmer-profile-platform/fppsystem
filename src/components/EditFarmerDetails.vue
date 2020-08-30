@@ -261,7 +261,7 @@
             ><i class="el-icon-s-home"></i> Household Info</span
           >
           <el-row :gutter="20">
-            <el-col :span="6">
+            <el-col :span="10">
               <el-form-item label="Marital Status">
                 <el-radio
                   border
@@ -274,6 +274,12 @@
                   v-model="editFamerDetails.marital_status"
                   label="Married"
                   >Married</el-radio
+                >
+                <el-radio
+                  border
+                  v-model="editFamerDetails.marital_status"
+                  label="Divorced"
+                  >Divorced</el-radio
                 >
               </el-form-item>
             </el-col>

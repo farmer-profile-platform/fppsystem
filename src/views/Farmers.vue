@@ -271,6 +271,7 @@ export default {
     getFarmers() {
       this.tableLoading = true;
       if (this.internetStatus) {
+        this.syncOfflineFarmersData();
         farmersService
           .getFarmers()
           .then((response) => {

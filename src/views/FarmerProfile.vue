@@ -24,7 +24,7 @@
             </p>
             <p style="font-size: 12px;">
               <b style="font-size:12px;">Added on:</b>
-              {{ getDateFormat(farmer.createdAt) }}
+              {{ getDateFormat(farmer.created) }}
             </p>
             <el-button type="text" size="mini">
               <i class="el-icon-star-on" style="color:gold; font-size:18px"></i>
@@ -502,6 +502,9 @@ export default {
       this.loading = true;
       this.farmer = this.$route.query.farmer;
       this.farmer.name = this.farmer.firstName + ' ' + this.farmer.lastName;
+      this.farmer.created = this.farmer.createdAt
+        ? this.farmer.createdAt
+        : Date.now();
       this.loading = false;
     },
     showEditModal() {

@@ -1,15 +1,33 @@
 import is from 'is_js';
 import authService from "../api/auth";
 import activityService from '../api/activities';
+import farmersService from '../api/farmers';
 import { mapGetters } from "vuex"
 
 export default {
   computed: {
     ...mapGetters({
       token: 'getToken',
+      newFarmersOffline: 'getNewFarmersOffline',
+      editedFarmersOffline: 'getEditedFarmersOffline'
     })
   },
   methods: {
+    syncOfflineFarmersData() {
+      // console.log(is.empty(this.newFarmersOffline))
+      if (this.newFarmersOffline.length > 0) {
+        farmersService
+          .addFarmer(this.newFarmersOffline)
+          .then((response) => {
+            this.$store.dispatch('emptyFarmerData')
+            console.log('offline', response);
+          })
+          .catch((errors) => {
+            this.errorMessage(errors.error);
+          });
+      }
+
+    },
     checkInternet() {
       if (navigator.onLine) {
         this.$store.dispatch('update_internet_status', navigator.onLine);
@@ -31,11 +49,16 @@ export default {
       }
     },
     getDateFormat(currentDate) {
-      const date = new Date(currentDate)
-      const dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'short', day: '2-digit' })
-      const [{ value: month }, , { value: day }, , { value: year }] = dateTimeFormat.formatToParts(date)
+      if (currentDate) {
+        const date = new Date(currentDate)
+        const dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'short', day: '2-digit' })
+        const [{ value: month }, , { value: day }, , { value: year }] = dateTimeFormat.formatToParts(date)
 
-      return `${day}-${month}-${year}`
+        return `${day}-${month}-${year}`
+      } else {
+        return 'None';
+      }
+
     },
     getActivityColor(action) {
       let color;
@@ -82,6 +105,8 @@ export default {
       const url = this.getHostName()
       if (pic == "no-photo.jpg") {
         return url + 'photo_default.png'
+      } else if (pic.includes('blob:')) {
+        return pic
       } else {
         return url + pic
       }
@@ -141,8 +166,8 @@ export default {
       self.$store.dispatch('logout');
       self.$router.push("/login")
       authService.logout()
-        .then(() => { this.successMessage('User Logout') }).catch(() => {
-          this.errorMessage('Contact System Administrator')
+        .then(() => { this.successMessage('User Logout') }).catch((errors) => {
+          this.errorMessage(errors.error)
         })
     }
   }

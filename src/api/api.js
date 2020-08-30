@@ -15,12 +15,6 @@ export default {
   handleError(response) {
     let r = Object.assign({}, response)
     let payload = r.response.data
-    // if (payload.userMessage === 'Unauthenticated.') {
-    //   store.dispatch('logout')
-    //     .then(() => {
-    //       router.push('/auth')
-    //     })
-    // }
     return payload
   },
   get(url, params = {}) {

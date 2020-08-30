@@ -136,8 +136,8 @@ export default {
       activityService
         .getActivities()
         .then((response) => {
-          if (response.data.length > 10) {
-            response.data.length = 10;
+          if (response.data.length > 7) {
+            response.data.length = 7;
           }
           this.loadTable(response.data);
         })

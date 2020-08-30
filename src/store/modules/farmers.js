@@ -1,14 +1,15 @@
 const state = {
   farmers: [],
-  newFarmers: [],
-  editedFarmers: [],
+  newFarmersOffline: [],
+  editedFarmersOffline: [],
+  supportedFarmers: [],
   internetStatus: true
 }
 
 const getters = {
   getFarmers: (state) => state.farmers,
-  getNewFarmers: (state) => state.newFarmers,
-  getEditedFarmers: (state) => state.editedFarmers,
+  getNewFarmersOffline: (state) => state.newFarmersOffline,
+  getEditedFarmersOffline: (state) => state.editedFarmers,
   internetStatus: (state) => state.internetStatus
 }
 
@@ -32,12 +33,13 @@ const mutations = {
     state.farmers = farmers;
   },
   ADD_FARMER: (state, farmer) => {
-    state.newFarmers.push(farmer);
+    state.newFarmersOffline.push(farmer);
     state.farmers.push(farmer);
   },
   SET_FARMER_DATA_EMPTY: (state) => {
-    state.farmers = [],
-      state.newFarmers = []
+    state.farmers = []
+    state.newFarmersOffline = []
+    state.editedFarmersOffline = []
   },
   UPDATE_INTERNET_STATUS: (state, status) => {
     state.internetStatus = status;

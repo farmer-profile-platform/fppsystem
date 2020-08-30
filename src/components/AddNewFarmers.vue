@@ -11,9 +11,11 @@
         v-model="activeTab"
         class="mt-4 px-2"
         stretch
+        type="card"
         v-loading="loading"
       >
-        <el-tab-pane label="Personal Bio" name="personal">
+        <el-tab-pane name="personal">
+          <span slot="label"><i class="el-icon-user"></i> Personal Bio</span>
           <el-row :gutter="20">
             <el-col :span="6">
               <el-form-item label="Title">
@@ -163,7 +165,7 @@
                     type="file"
                     ref="photo"
                     style="display: none"
-                    @change="updateImage($event, 'photo')"
+                    @change="updateImage2($event, 'photo')"
                   />
                   <el-button @click="$refs.photo.click()" type="text">
                     <b style="color:#2fa512;">
@@ -199,7 +201,7 @@
                     type="file"
                     ref="idCard"
                     style="display: none"
-                    @change="updateImage($event, 'idCard')"
+                    @change="updateImage2($event, 'idCard')"
                   />
                   <el-button @click="$refs.idCard.click()" type="text">
                     <b style="color:#2fa512;">
@@ -235,7 +237,7 @@
                     type="file"
                     ref="fingerprint"
                     style="display: none"
-                    @change="updateImage($event, 'fingerPrint')"
+                    @change="updateImage2($event, 'fingerPrint')"
                   />
                   <el-button @click="$refs.fingerprint.click()" type="text">
                     <b style="color:#2fa512;">
@@ -270,9 +272,12 @@
         </el-tab-pane>
 
         <!-- House Hold information -->
-        <el-tab-pane label="Household Info" name="household">
+        <el-tab-pane name="household">
+          <span slot="label"
+            ><i class="el-icon-s-home"></i> Household Info</span
+          >
           <el-row :gutter="20">
-            <el-col :span="6">
+            <el-col :span="10">
               <el-form-item label="Marital Status">
                 <el-radio
                   border
@@ -285,6 +290,12 @@
                   v-model="addFamerDetails.marital_status"
                   label="Married"
                   >Married</el-radio
+                >
+                <el-radio
+                  border
+                  v-model="addFamerDetails.marital_status"
+                  label="Divorced"
+                  >Divorced</el-radio
                 >
               </el-form-item>
             </el-col>
@@ -441,7 +452,11 @@
         </el-tab-pane>
 
         <!-- Farm Information -->
-        <el-tab-pane label="Farm Info" name="farm">
+        <el-tab-pane name="farm">
+          <span slot="label">
+            <i class="el-icon-map-location"></i>
+            Farm Info
+          </span>
           <h3 class="mb-1">Farm History</h3>
           <el-row :gutter="20">
             <el-col :span="5">
@@ -595,7 +610,11 @@
         </el-tab-pane>
 
         <!-- Farm yield Income -->
-        <el-tab-pane label="Farm Yield Income" name="income">
+        <el-tab-pane name="income">
+          <span slot="label">
+            <i class="el-icon-grape"></i>
+            Farm Yield Income
+          </span>
           <h3 class="mb-1">
             Crop ( {{ addFamerDetails.harvestYield.length }} )
           </h3>
@@ -674,7 +693,8 @@
         </el-tab-pane>
 
         <!-- Bank Information -->
-        <el-tab-pane label="Bank Details" name="bank">
+        <el-tab-pane name="bank">
+          <span slot="label"><i class="el-icon-eleme"></i> Bank Details</span>
           <h3 class="mb-1">
             Banks Details ( {{ addFamerDetails.bank.length }} )
           </h3>
@@ -998,6 +1018,28 @@ export default {
         .catch((errors) => {
           this.errorMessage(errors.error);
         });
+    },
+    updateImage2(e, type) {
+      let self = this;
+      let file = e.target.files[0];
+      let urlSrc = URL.createObjectURL(file);
+      if (file['size'] < 2111775) {
+        if (type == 'photo') {
+          self.addFamerDetails.photo = urlSrc;
+        } else if (type == 'idCard') {
+          self.addFamerDetails.idCard = urlSrc;
+        } else if (type == 'fingerPrint') {
+          self.addFamerDetails.fingerprint = urlSrc;
+        }
+        this.successNotification('Uploaded Successfully');
+      } else {
+        this.$alert('Use images less than 2megabyte', 'Error', {
+          confirmButtonText: 'OK',
+          type: 'warning',
+        });
+      }
+      // let urlSrc = URL.createObjectURL(files[0]);
+      // this.addFamerDetails.fingerprint = urlSrc;
     },
     confirmFarmerAddition() {
       this.$confirm(

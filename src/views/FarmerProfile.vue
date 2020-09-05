@@ -202,23 +202,28 @@
 
             <!-- Children Information -->
             <h3 class="mb-1 mt-1">Children</h3>
-            <p>Number of Children</p>
-            <h5>{{ farmer.num_children }}</h5>
+            <div v-if="farmer.num_children > 0">
+              <p>Number of Children</p>
+              <h5>{{ farmer.num_children }}</h5>
 
-            <div v-for="children in farmer.children" :key="children.name">
-              <el-row type="flex" justify="space-between" class="mt-1">
-                <el-col :span="5">
-                  <p>Child Name</p>
-                  <h5>{{ children.name }}</h5>
-                </el-col>
-                <el-col :span="6">
-                  <p>Age</p>
-                  <h5>{{ getuserAge(children.dob) }} years</h5>
-                </el-col>
-                <el-col :span="6"> </el-col>
-                <el-col :span="6"> </el-col>
-              </el-row>
-              <hr />
+              <div v-for="children in farmer.children" :key="children.name">
+                <el-row type="flex" justify="space-between" class="mt-1">
+                  <el-col :span="5">
+                    <p>Child Name</p>
+                    <h5>{{ children.name }}</h5>
+                  </el-col>
+                  <el-col :span="6">
+                    <p>Age</p>
+                    <h5>{{ getuserAge(children.dob) }} years</h5>
+                  </el-col>
+                  <el-col :span="6"> </el-col>
+                  <el-col :span="6"> </el-col>
+                </el-row>
+                <hr />
+              </div>
+            </div>
+            <div v-else>
+              <span>Has no children</span>
             </div>
           </div>
         </el-collapse-item>
@@ -355,7 +360,7 @@
         <el-collapse-item title="Farm Input Support" name="6">
           <div
             class="profile-tab-bg pt-0"
-            v-if="checkEmptyArray(farmer.inputSupport) == false"
+            v-if="farmer.inputSupport.length > 0"
           >
             <div v-for="(support, index) in farmer.inputSupport" :key="index">
               <h4 class="mb-1 mt-1" style="color:green;">{{ support.year }}</h4>
@@ -400,8 +405,8 @@
               <hr />
             </div>
           </div>
-          <div v-else-if="checkEmptyArray(farmer.inputSupport) == true">
-            <h3>No input support added</h3>
+          <div v-else>
+            <span>No Input Support Added</span>
           </div>
         </el-collapse-item>
 

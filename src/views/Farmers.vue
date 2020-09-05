@@ -288,7 +288,6 @@ export default {
         this.tableLoading = false;
         this.tableData = this.farmers;
         this.total = this.tableData.length;
-        console.log('table', this.tableData);
       }
     },
     showInputSupport(id, name) {

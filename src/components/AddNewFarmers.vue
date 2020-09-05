@@ -165,7 +165,7 @@
                     type="file"
                     ref="photo"
                     style="display: none"
-                    @change="updateImage2($event, 'photo')"
+                    @change="updateImage($event, 'photo')"
                   />
                   <el-button @click="$refs.photo.click()" type="text">
                     <b style="color:#2fa512;">
@@ -201,7 +201,7 @@
                     type="file"
                     ref="idCard"
                     style="display: none"
-                    @change="updateImage2($event, 'idCard')"
+                    @change="updateImage($event, 'idCard')"
                   />
                   <el-button @click="$refs.idCard.click()" type="text">
                     <b style="color:#2fa512;">
@@ -237,7 +237,7 @@
                     type="file"
                     ref="fingerprint"
                     style="display: none"
-                    @change="updateImage2($event, 'fingerPrint')"
+                    @change="updateImage($event, 'fingerPrint')"
                   />
                   <el-button @click="$refs.fingerprint.click()" type="text">
                     <b style="color:#2fa512;">
@@ -277,26 +277,18 @@
             ><i class="el-icon-s-home"></i> Household Info</span
           >
           <el-row :gutter="20">
-            <el-col :span="10">
+            <el-col :span="12">
               <el-form-item label="Marital Status">
-                <el-radio
-                  border
-                  v-model="addFamerDetails.marital_status"
-                  label="Single"
-                  >Single</el-radio
-                >
-                <el-radio
-                  border
-                  v-model="addFamerDetails.marital_status"
-                  label="Married"
-                  >Married</el-radio
-                >
-                <el-radio
-                  border
-                  v-model="addFamerDetails.marital_status"
-                  label="Divorced"
-                  >Divorced</el-radio
-                >
+                <el-radio-group v-model="addFamerDetails.marital_status">
+                  <el-radio
+                    v-for="status in maritalStatus"
+                    :key="status"
+                    border
+                    size="small"
+                    :label="status"
+                    >{{ status }}</el-radio
+                  >
+                </el-radio-group>
               </el-form-item>
             </el-col>
           </el-row>
@@ -705,7 +697,21 @@
             <el-row :gutter="20">
               <el-col :span="8">
                 <el-form-item label="Bank Name">
-                  <el-input v-model="bank.name" />
+                  <el-select
+                    v-model="bank.name"
+                    clearable
+                    filterable
+                    allow-create
+                    default-first-option
+                    style="width:100%; margin-top:-12px"
+                  >
+                    <el-option
+                      v-for="bank in fsps"
+                      :key="bank"
+                      :label="bank"
+                      :value="bank"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="9">
@@ -872,6 +878,9 @@ export default {
         photo: 'no-photo.jpg',
         fingerprint: 'no-photo.jpg',
         idCard: 'no-photo.jpg',
+        fingerprintFile: {},
+        photoFile: {},
+        idCardFile: {},
         num_children: 0,
         years_farming: 1,
         farmLandOwnershipType: '',
@@ -945,6 +954,7 @@ export default {
         'BECE',
         'None',
       ],
+      maritalStatus: ['Single', 'Married', 'Divorced', 'Windowed'],
       rules: {
         firstName: [
           {
@@ -991,6 +1001,7 @@ export default {
     },
     ...mapGetters({
       internetStatus: 'internetStatus',
+      fsps: 'getFsps',
     }),
   },
   methods: {
@@ -1003,33 +1014,56 @@ export default {
       const files = e.target.files;
       const formData = new FormData();
       formData.append('file', files[0]);
-      farmersService
-        .uploadFarmerFiles(formData)
-        .then((response) => {
-          if (type == 'photo') {
-            self.addFamerDetails.photo = response.data;
-          } else if (type == 'idCard') {
-            self.addFamerDetails.idCard = response.data;
-          } else if (type == 'fingerPrint') {
-            self.addFamerDetails.fingerprint = response.data;
-          }
-          this.successNotification('Uploaded Successfully');
-        })
-        .catch((errors) => {
-          this.errorMessage(errors.error);
-        });
+      if (this.internetStatus == true) {
+        farmersService
+          .uploadFarmerFiles(formData)
+          .then((response) => {
+            if (type == 'photo') {
+              self.addFamerDetails.photo = response.data;
+            } else if (type == 'idCard') {
+              self.addFamerDetails.idCard = response.data;
+            } else if (type == 'fingerPrint') {
+              self.addFamerDetails.fingerprint = response.data;
+            }
+            self.successNotification('Uploaded Successfully');
+          })
+          .catch((errors) => {
+            self.errorMessage(errors.error);
+          });
+      } else {
+        let file = files[0];
+        let urlSrc = URL.createObjectURL(file);
+        self.updateImageOffline(file, type, urlSrc);
+      }
     },
-    updateImage2(e, type) {
-      let self = this;
-      let file = e.target.files[0];
-      let urlSrc = URL.createObjectURL(file);
+    updateImageOffline(file, type, urlSrc) {
+      let newFile = {};
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = (file) => {
+        console.log(file);
+        console.log(reader.result);
+        newFile.name = file.name;
+        newFile.lastModified = file.lastModified;
+        newFile.lastModifiedDate = file.lastModifiedDate;
+        newFile.size = file.size;
+        newFile.type = file.type;
+        newFile.base64 = reader.result;
+        newFile.webkitRelativePath = file.webkitRelativePath;
+      };
+
+      console.log(newFile);
+
       if (file['size'] < 2111775) {
         if (type == 'photo') {
-          self.addFamerDetails.photo = urlSrc;
+          this.addFamerDetails.photo = urlSrc;
+          this.addFamerDetails.photoFile = newFile;
         } else if (type == 'idCard') {
-          self.addFamerDetails.idCard = urlSrc;
+          this.addFamerDetails.idCard = urlSrc;
+          this.addFamerDetails.idCardFile = newFile;
         } else if (type == 'fingerPrint') {
-          self.addFamerDetails.fingerprint = urlSrc;
+          this.addFamerDetails.fingerprint = urlSrc;
+          this.addFamerDetails.fingerprintFile = newFile;
         }
         this.successNotification('Uploaded Successfully');
       } else {
@@ -1038,8 +1072,6 @@ export default {
           type: 'warning',
         });
       }
-      // let urlSrc = URL.createObjectURL(files[0]);
-      // this.addFamerDetails.fingerprint = urlSrc;
     },
     confirmFarmerAddition() {
       this.$confirm(

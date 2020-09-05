@@ -263,24 +263,16 @@
           <el-row :gutter="20">
             <el-col :span="10">
               <el-form-item label="Marital Status">
-                <el-radio
-                  border
-                  v-model="editFamerDetails.marital_status"
-                  label="Single"
-                  >Single</el-radio
-                >
-                <el-radio
-                  border
-                  v-model="editFamerDetails.marital_status"
-                  label="Married"
-                  >Married</el-radio
-                >
-                <el-radio
-                  border
-                  v-model="editFamerDetails.marital_status"
-                  label="Divorced"
-                  >Divorced</el-radio
-                >
+                <el-radio-group v-model="editFamerDetails.marital_status">
+                  <el-radio
+                    v-for="status in maritalStatus"
+                    :key="status"
+                    border
+                    size="small"
+                    :label="status"
+                    >{{ status }}</el-radio
+                  >
+                </el-radio-group>
               </el-form-item>
             </el-col>
           </el-row>
@@ -681,7 +673,21 @@
             <el-row :gutter="20">
               <el-col :span="8">
                 <el-form-item label="Bank Name">
-                  <el-input v-model="bank.name" />
+                  <el-select
+                    v-model="bank.name"
+                    clearable
+                    filterable
+                    allow-create
+                    default-first-option
+                    style="width:100%; margin-top:-12px"
+                  >
+                    <el-option
+                      v-for="bank in fsps"
+                      :key="bank"
+                      :label="bank"
+                      :value="bank"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="9">
@@ -818,6 +824,7 @@
 
 <script>
 import farmersService from '../api/farmers';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'EditFarmer',
@@ -917,6 +924,7 @@ export default {
         'BECE',
         'None',
       ],
+      maritalStatus: ['Single', 'Married', 'Divorced', 'Windowed'],
       rules: {
         firstName: [
           {
@@ -958,6 +966,10 @@ export default {
     married: function() {
       return this.editFamerDetails.marital_status == 'Married';
     },
+    ...mapGetters({
+      internetStatus: 'internetStatus',
+      fsps: 'getFsps',
+    }),
   },
   methods: {
     getFarmerDetails() {
@@ -1027,23 +1039,43 @@ export default {
     updateImage(e, type) {
       let self = this;
       const files = e.target.files;
+      let urlSrc = URL.createObjectURL(files[0]);
       const formData = new FormData();
       formData.append('file', files[0]);
-      farmersService
-        .uploadFarmerFiles(formData)
-        .then((response) => {
+      if (this.internetStatus == true) {
+        farmersService
+          .uploadFarmerFiles(formData)
+          .then((response) => {
+            if (type == 'photo') {
+              self.editFamerDetails.photo = response.data;
+            } else if (type == 'idCard') {
+              self.editFamerDetails.idCard = response.data;
+            } else if (type == 'fingerPrint') {
+              self.editFamerDetails.fingerprint = response.data;
+            }
+            self.successNotification('Uploaded Successfully');
+          })
+          .catch((errors) => {
+            self.errorMessage(errors.error);
+          });
+      } else {
+        let file = files[0];
+        if (file['size'] < 2111775) {
           if (type == 'photo') {
-            self.editFamerDetails.photo = response.data;
+            self.addFamerDetails.photo = urlSrc;
           } else if (type == 'idCard') {
-            self.editFamerDetails.idCard = response.data;
+            self.addFamerDetails.idCard = urlSrc;
           } else if (type == 'fingerPrint') {
-            self.editFamerDetails.fingerprint = response.data;
+            self.addFamerDetails.fingerprint = urlSrc;
           }
-          this.successNotification('Uploaded Successfully');
-        })
-        .catch((errors) => {
-          this.errorMessage(errors.error);
-        });
+          self.successNotification('Uploaded Successfully');
+        } else {
+          self.$alert('Use images less than 2megabyte', 'Error', {
+            confirmButtonText: 'OK',
+            type: 'warning',
+          });
+        }
+      }
     },
     addCropHarvest() {
       this.infoMessage('Added another crop');

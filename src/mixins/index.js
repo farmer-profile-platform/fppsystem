@@ -14,19 +14,31 @@ export default {
   },
   methods: {
     syncOfflineFarmersData() {
-      // console.log(is.empty(this.newFarmersOffline))
       if (this.newFarmersOffline.length > 0) {
         farmersService
           .addFarmer(this.newFarmersOffline)
-          .then((response) => {
-            this.$store.dispatch('emptyFarmerData')
-            console.log('offline', response);
+          .then(() => {
+            this.$store.dispatch('emptyFarmerData', 'new')
           })
           .catch((errors) => {
             this.errorMessage(errors.error);
           });
       }
-
+    },
+    syncOfflineEditedData() {
+      if (this.editedFarmersOffline.length > 0) {
+        this.editedFarmersOffline.map(function (editedData) {
+          farmersService
+            .updateFarmer(editedData)
+            .then(() => {
+              this.$store.dispatch('emptyFarmerData', 'edited')
+            })
+            .catch((errors) => {
+              this.errorMessage(errors.error);
+            });
+          return editedData;
+        })
+      }
     },
     checkInternet() {
       if (navigator.onLine) {

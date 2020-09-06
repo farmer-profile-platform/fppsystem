@@ -74,9 +74,6 @@ const mutations = {
         state.editedFarmersOffline = []
         break;
     }
-    state.farmers = []
-    state.newFarmersOffline = []
-    state.editedFarmersOffline = []
   },
   UPDATE_INTERNET_STATUS: (state, status) => {
     state.internetStatus = status;

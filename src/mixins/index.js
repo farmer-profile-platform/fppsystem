@@ -15,6 +15,11 @@ export default {
   methods: {
     syncOfflineFarmersData() {
       if (this.newFarmersOffline.length > 0) {
+        // let newData = this.newFarmersOffline.map(function (farmer) {
+        //   farmer.photo = ''
+        //   farmer.fingerprint = ''
+        //   farmer.idCard = ''
+        // })
         farmersService
           .addFarmer(this.newFarmersOffline)
           .then(() => {
@@ -30,14 +35,13 @@ export default {
         this.editedFarmersOffline.map(function (editedData) {
           farmersService
             .updateFarmer(editedData)
-            .then(() => {
-              this.$store.dispatch('emptyFarmerData', 'edited')
-            })
+            .then(() => { })
             .catch((errors) => {
               this.errorMessage(errors.error);
             });
           return editedData;
         })
+        this.$store.dispatch('emptyFarmerData', 'edited')
       }
     },
     checkInternet() {

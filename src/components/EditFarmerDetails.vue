@@ -1039,43 +1039,23 @@ export default {
     updateImage(e, type) {
       let self = this;
       const files = e.target.files;
-      let urlSrc = URL.createObjectURL(files[0]);
       const formData = new FormData();
       formData.append('file', files[0]);
-      if (this.internetStatus == true) {
-        farmersService
-          .uploadFarmerFiles(formData)
-          .then((response) => {
-            if (type == 'photo') {
-              self.editFamerDetails.photo = response.data;
-            } else if (type == 'idCard') {
-              self.editFamerDetails.idCard = response.data;
-            } else if (type == 'fingerPrint') {
-              self.editFamerDetails.fingerprint = response.data;
-            }
-            self.successNotification('Uploaded Successfully');
-          })
-          .catch((errors) => {
-            self.errorMessage(errors.error);
-          });
-      } else {
-        let file = files[0];
-        if (file['size'] < 2111775) {
+      farmersService
+        .uploadFarmerFiles(formData)
+        .then((response) => {
           if (type == 'photo') {
-            self.addFamerDetails.photo = urlSrc;
+            self.editFamerDetails.photo = response.data;
           } else if (type == 'idCard') {
-            self.addFamerDetails.idCard = urlSrc;
+            self.editFamerDetails.idCard = response.data;
           } else if (type == 'fingerPrint') {
-            self.addFamerDetails.fingerprint = urlSrc;
+            self.editFamerDetails.fingerprint = response.data;
           }
           self.successNotification('Uploaded Successfully');
-        } else {
-          self.$alert('Use images less than 2megabyte', 'Error', {
-            confirmButtonText: 'OK',
-            type: 'warning',
-          });
-        }
-      }
+        })
+        .catch((errors) => {
+          self.errorMessage(errors.error);
+        });
     },
     addCropHarvest() {
       this.infoMessage('Added another crop');

@@ -878,9 +878,9 @@ export default {
         photo: 'no-photo.jpg',
         fingerprint: 'no-photo.jpg',
         idCard: 'no-photo.jpg',
-        fingerprintFile: {},
-        photoFile: {},
-        idCardFile: {},
+        // fingerprintFile: null,
+        // photoFile: null,
+        // idCardFile: null,
         num_children: 0,
         years_farming: 1,
         farmLandOwnershipType: '',
@@ -1039,31 +1039,28 @@ export default {
     updateImageOffline(file, type, urlSrc) {
       let newFile = {};
       let reader = new FileReader();
+      // reader.readAsArrayBuffer(file)
       reader.readAsDataURL(file);
-      reader.onloadend = (file) => {
-        console.log(file);
-        console.log(reader.result);
+      reader.onloadend = (e) => {
         newFile.name = file.name;
         newFile.lastModified = file.lastModified;
         newFile.lastModifiedDate = file.lastModifiedDate;
         newFile.size = file.size;
         newFile.type = file.type;
-        newFile.base64 = reader.result;
+        newFile.base64 = e.target.result;
         newFile.webkitRelativePath = file.webkitRelativePath;
       };
-
-      console.log(newFile);
 
       if (file['size'] < 2111775) {
         if (type == 'photo') {
           this.addFamerDetails.photo = urlSrc;
-          this.addFamerDetails.photoFile = newFile;
+          // this.addFamerDetails.photoFile = newFile;
         } else if (type == 'idCard') {
           this.addFamerDetails.idCard = urlSrc;
-          this.addFamerDetails.idCardFile = newFile;
+          // this.addFamerDetails.idCardFile = newFile;
         } else if (type == 'fingerPrint') {
           this.addFamerDetails.fingerprint = urlSrc;
-          this.addFamerDetails.fingerprintFile = newFile;
+          // this.addFamerDetails.fingerprintFile = newFile;
         }
         this.successNotification('Uploaded Successfully');
       } else {

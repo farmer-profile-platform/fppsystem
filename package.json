@@ -1,6 +1,6 @@
 {
   "name": "famer_pro_web",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -10,12 +10,15 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "canvas": "^2.6.1",
+    "chart.js": "^2.9.3",
     "core-js": "^3.6.5",
     "element-ui": "^2.13.2",
     "is_js": "^0.9.0",
     "pdfmake": "^0.1.68",
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",
+    "vue-chartjs": "^3.5.1",
     "vue-headful": "^2.1.0",
     "vue-router": "^3.2.0",
     "vuex": "^3.4.0",

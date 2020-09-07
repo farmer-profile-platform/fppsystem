@@ -36,6 +36,17 @@
       </el-col>
     </el-row>
     <el-row :gutter="20" class="mt-3">
+      <el-col :span="10">
+        <el-card shadow="always" style="background: rgba(255,255,255,.3);">
+          <div slot="header" class="clearfix">
+            <span>Total Amount Support</span>
+            <el-button style="float: right; padding: 3px 0" type="text"
+              >GH₵ 2030</el-button
+            >
+          </div>
+          <bar-chart :height="120" :width="280" v-if="loaded" />
+        </el-card>
+      </el-col>
       <el-col :span="12">
         <h5 class="mb-1">Recent Activities of Users</h5>
         <el-table :data="activities" style="width: 100%" stripe>
@@ -94,19 +105,34 @@
 import dashboardService from '../api/dashboard';
 import activityService from '../api/activities';
 import DashBoardCard from './DashBoardCard';
+import BarChart from './charts/BarChart';
 import { mapGetters } from 'vuex';
 
 export default {
   name: 'adminDashboard',
   components: {
     DashBoardCard,
+    BarChart,
   },
   data() {
     return {
+      loaded: false,
       activities: [],
       farmersTotal: 0,
       usersTotal: 0,
       supportTotal: 0,
+      dashboardCardData: [
+        {
+          title: '',
+          total: this.farmersTotal,
+          titleText: 'Total Number of users working on the platform.',
+          bgColor: 'suppBg',
+          progColor: '#4fc2ab',
+          yrExpert: '500',
+          percentage: 'getPercentageData(supportTotal, 500)',
+        },
+      ],
+      squareBoxes: [],
     };
   },
   created() {
@@ -131,13 +157,15 @@ export default {
           this.supportTotal = response.data.totalSupports;
         })
         .catch((errors) => this.errorMessage(errors.error));
+
+      this.loaded = true;
     },
     getActivities() {
       activityService
         .getActivities()
         .then((response) => {
-          if (response.data.length > 7) {
-            response.data.length = 7;
+          if (response.data.length > 5) {
+            response.data.length = 5;
           }
           this.loadTable(response.data);
         })

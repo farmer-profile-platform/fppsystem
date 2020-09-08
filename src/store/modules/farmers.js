@@ -4,7 +4,7 @@ const state = {
   editedFarmersOffline: [],
   supportedFarmers: [],
   internetStatus: true,
-  fsps: [
+  banks: [
     'Access Bank Ghana Plc',
     'Absa Bank Ghana Limited',
     'Agricultural Development Bank of Ghana',
@@ -29,7 +29,14 @@ const state = {
     'United Bank for Africa Ghana Limited',
     'Universal Merchant Bank Limited',
     'Zenith Bank Ghana Limited',
-
+  ],
+  ruralBanks: [
+    'Adansi Rural Bank',
+    'Ahafo Ano Rural Bank',
+    'Abokobi Area Rural Bank Limited',
+    'Ada Rural Bank Limited',
+    'Adonten Community Bank Limited',
+    'Afram Rural Bank Limited'
   ]
 }
 
@@ -37,7 +44,8 @@ const getters = {
   getFarmers: (state) => state.farmers,
   getNewFarmersOffline: (state) => state.newFarmersOffline,
   getEditedFarmersOffline: (state) => state.editedFarmers,
-  getFsps: (state) => state.fsps,
+  getBanks: (state) => state.banks,
+  getRuralBanks: (state) => state.ruralBanks,
   internetStatus: (state) => state.internetStatus
 }
 

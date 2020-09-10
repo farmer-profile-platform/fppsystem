@@ -712,7 +712,7 @@
             </el-row>
             <el-row :gutter="20">
               <el-col :span="8">
-                <el-form-item label="Fsp Name">
+                <el-form-item label="FSP Name">
                   <el-select
                     v-if="addFamerDetails.fsp_type == 'Bank'"
                     v-model="bank.name"
@@ -730,7 +730,7 @@
                     ></el-option>
                   </el-select>
 
-                  <!-- Saving & loans -->
+                  <!-- Rural Banks -->
                   <el-select
                     v-if="addFamerDetails.fsp_type == 'Rural Bank'"
                     v-model="bank.name"
@@ -759,7 +759,7 @@
                     style="width:100%; margin-top:-12px"
                   >
                     <el-option
-                      v-for="bank in fsps"
+                      v-for="bank in savingsLoans"
                       :key="bank"
                       :label="bank"
                       :value="bank"
@@ -1058,6 +1058,7 @@ export default {
       internetStatus: 'internetStatus',
       banks: 'getBanks',
       ruralBanks: 'getRuralBanks',
+      savingsLoans: 'getSavingsLoans',
     }),
   },
   methods: {

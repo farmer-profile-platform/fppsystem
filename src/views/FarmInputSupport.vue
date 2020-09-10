@@ -101,7 +101,7 @@
                 <router-link
                   :to="{
                     name: 'Farmer Profile',
-                    params: { id: props.row._id, name: props.row.firstName },
+                    query: { farmer: props.row },
                   }"
                 >
                   <el-dropdown-item>
@@ -203,17 +203,18 @@
                 v-for="(input, index) in props.row.inputs"
                 :key="index"
                 class="flex_justify_between"
+                style="border-bottom: 1px solid #E6E6E6; margin-bottom: 5px;"
               >
                 <div class="support_table">
-                  <span>Type</span>
+                  <span><b>Type</b></span>
                   <span class="support_value">{{ input.type }}</span>
                 </div>
                 <div class="support_table">
-                  <span>Name</span>
+                  <span><b>Name</b></span>
                   <span class="support_value">{{ input.name }}</span>
                 </div>
                 <div class="support_table">
-                  <span>Unit Price</span>
+                  <span><b>Unit Price</b></span>
                   <span class="support_value"
                     ><el-tag size="mini" type="success"
                       >GH₵ {{ input.unit_price }}</el-tag
@@ -221,11 +222,11 @@
                   </span>
                 </div>
                 <div class="support_table">
-                  <span>Quantity</span>
+                  <span><b>Quantity</b></span>
                   <span class="support_value">{{ input.quantity }}</span>
                 </div>
                 <div class="support_table">
-                  <span>Total</span>
+                  <span><b>Total</b></span>
                   <span class="support_value"
                     ><el-tag size="mini" type="success"
                       >GH₵ {{ input.total }}</el-tag

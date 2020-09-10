@@ -23,7 +23,22 @@
         >
           <el-col :span="8">
             <el-form-item label="Input Type">
-              <el-input v-model="support.type" />
+              <el-select
+                v-model="support.type"
+                style="width:100%; margin-top:-12px"
+              >
+                <el-option
+                  v-for="type in inputTypes"
+                  :key="type"
+                  :label="type.label"
+                  :value="type.value"
+                >
+                  <span style="float: left">{{ type.value }}</span>
+                  <span style="float: right; color: #8492a6; font-size: 13px">{{
+                    type.label
+                  }}</span>
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="7">
@@ -172,6 +187,25 @@ export default {
           },
         ],
       },
+      inputTypes: [
+        {
+          value: 'Seedling',
+          label: 'Organic Input & Agrochemical (Fertilizers)',
+        },
+        {
+          value: 'Farm Technology',
+          label:
+            'Crop Insurance, Crop disease diagnotics tools, Irrigation tech',
+        },
+        {
+          value: 'Farm Implements ',
+          label: 'Tractor and other farm machinery',
+        },
+        {
+          value: 'Farmer Capacity Training',
+          label: 'Farmer Capacity Training',
+        },
+      ],
     };
   },
   created() {

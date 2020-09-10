@@ -671,9 +671,26 @@
             :key="bankIndex"
           >
             <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item label="FSP type">
+                  <el-radio-group v-model="editFamerDetails.fsp_type">
+                    <el-radio
+                      v-for="fsp in fspTypes"
+                      :key="fsp"
+                      border
+                      size="small"
+                      :label="fsp"
+                      >{{ fsp }}</el-radio
+                    >
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
               <el-col :span="8">
-                <el-form-item label="Bank Name">
+                <el-form-item label="FSP Name">
                   <el-select
+                    v-if="editFamerDetails.fsp_type == 'Bank'"
                     v-model="bank.name"
                     clearable
                     filterable
@@ -682,7 +699,43 @@
                     style="width:100%; margin-top:-12px"
                   >
                     <el-option
-                      v-for="bank in fsps"
+                      v-for="bank in banks"
+                      :key="bank"
+                      :label="bank"
+                      :value="bank"
+                    ></el-option>
+                  </el-select>
+
+                  <!-- Rural Banks -->
+                  <el-select
+                    v-if="editFamerDetails.fsp_type == 'Rural Bank'"
+                    v-model="bank.name"
+                    clearable
+                    filterable
+                    allow-create
+                    default-first-option
+                    style="width:100%; margin-top:-12px"
+                  >
+                    <el-option
+                      v-for="bank in ruralBanks"
+                      :key="bank"
+                      :label="bank"
+                      :value="bank"
+                    ></el-option>
+                  </el-select>
+
+                  <!-- Saving & loans -->
+                  <el-select
+                    v-if="editFamerDetails.fsp_type == 'Savings & Loans'"
+                    v-model="bank.name"
+                    clearable
+                    filterable
+                    allow-create
+                    default-first-option
+                    style="width:100%; margin-top:-12px"
+                  >
+                    <el-option
+                      v-for="bank in savingsLoans"
                       :key="bank"
                       :label="bank"
                       :value="bank"
@@ -857,6 +910,7 @@ export default {
         farmLandOwnershipType: '',
         num_farmLands: '',
         farm_location: '',
+        fsp_type: 'Rural Bank',
         spouse: [
           {
             firstName: '',
@@ -925,6 +979,7 @@ export default {
         'None',
       ],
       maritalStatus: ['Single', 'Married', 'Divorced', 'Windowed'],
+      fspTypes: ['Savings & Loans', 'Bank', 'Rural Bank'],
       rules: {
         firstName: [
           {
@@ -968,7 +1023,9 @@ export default {
     },
     ...mapGetters({
       internetStatus: 'internetStatus',
-      fsps: 'getFsps',
+      banks: 'getBanks',
+      ruralBanks: 'getRuralBanks',
+      savingsLoans: 'getSavingsLoans',
     }),
   },
   methods: {
@@ -1004,6 +1061,7 @@ export default {
       this.editFamerDetails.years_farming = this.farmer.years_farming;
       this.editFamerDetails.num_farmLands = this.farmer.num_farmLands;
       this.editFamerDetails.spouse = this.farmer.spouse;
+      this.editFamerDetails.fsp_type = this.farmer.fsp_type;
       this.editFamerDetails.children = this.farmer.children;
       this.editFamerDetails.harvestYield = this.farmer.harvestYield;
       this.editFamerDetails.bank = this.farmer.bank;

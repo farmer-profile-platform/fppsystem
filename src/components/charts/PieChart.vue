@@ -1,9 +1,9 @@
 <script>
-import { Bar } from 'vue-chartjs';
+import { Pie } from 'vue-chartjs';
 import is from 'is_js';
 
 export default {
-  extends: Bar,
+  extends: Pie,
   // props: ['data', 'labels', 'title', 'bgColor', 'borderColor'],
   watch: {
     data: function() {
@@ -18,28 +18,32 @@ export default {
       if (is.not.undefined(this.$refs.canvas)) {
         this.renderChart(
           {
-            labels: ['2018', '2019', '2020'],
+            labels: [
+              'Seedling',
+              'Farm Technology',
+              'Farm Implements',
+              'Farmer Capacity Training',
+            ],
             datasets: [
               {
-                data: [1500, 3000, 1200],
-                label: 'Supports this year GH₵',
-                borderColor: 'transparent',
-                backgroundColor: '#F44335',
-                barPercentage: 0.5,
-                categoryPercentage: 1,
+                data: [12, 20, 9, 18],
+                borderColor: 'white',
+                backgroundColor: ['#2CB96B', 'red', 'orange', '#4FC2AB'],
+                borderWidth: 4,
+                hoverBorderWidth: 6,
               },
             ],
           },
           {
-            responsive: true,
-            maintainAspectRatio: false,
+            cutoutPercentage: 0,
+            maintainAspectRatio: true,
             legend: {
-              display: false,
+              display: true,
             },
             scales: {
               xAxes: [
                 {
-                  display: false,
+                  display: true,
                 },
               ],
               yAxes: [

@@ -274,5 +274,13 @@ footer p {
   display: block;
 }
 
+.dashboard-support-card {
+  display: flex;
+  justify-content: space-evenly;
+  border: 1px solid #e2dfdf;
+  padding: 7px 0px;
+  border-radius: 10px;
+}
+
 
 @media (min-width: 1200px) {}

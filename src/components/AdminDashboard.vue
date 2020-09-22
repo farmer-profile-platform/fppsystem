@@ -35,9 +35,55 @@
         />
       </el-col>
     </el-row>
+    <el-card class="box-card mt-2">
+      <div slot="header" class="clearfix">
+        <span>Input Supports Metrics</span>
+        <el-button style="float: right; padding: 3px 0" type="text"
+          >Operation button</el-button
+        >
+      </div>
+
+      <el-row type="flex" class="row-bg">
+        <el-col :span="11">
+          <div>
+            <el-card shadow="hover" style="background: rgba(255,255,255,.3);">
+              <div slot="header" class="clearfix">
+                <span>Total Amount Support</span>
+                <el-button style="float: right; padding: 3px 0" type="text"
+                  >GH₵ 2030</el-button
+                >
+              </div>
+              <bar-chart :height="120" :width="280" v-if="loaded" />
+            </el-card>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div>
+            <pie-chart v-if="loaded" />
+          </div>
+        </el-col>
+        <el-col :span="5">
+          <div class="dashboard-support-card">
+            <div>
+              <el-progress
+                type="circle"
+                :percentage="80"
+                color="#8e71c7"
+                width="60"
+                stroke-width="5"
+              ></el-progress>
+            </div>
+            <div>
+              <h4>Cancelled Visits</h4>
+              <p>Last Month - 12 Mar 2020</p>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+    </el-card>
     <el-row :gutter="20" class="mt-3">
       <el-col :span="10">
-        <el-card shadow="always" style="background: rgba(255,255,255,.3);">
+        <el-card shadow="hover" style="background: rgba(255,255,255,.3);">
           <div slot="header" class="clearfix">
             <span>Total Amount Support</span>
             <el-button style="float: right; padding: 3px 0" type="text"
@@ -106,6 +152,7 @@ import dashboardService from '../api/dashboard';
 import activityService from '../api/activities';
 import DashBoardCard from './DashBoardCard';
 import BarChart from './charts/BarChart';
+import PieChart from './charts/PieChart';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -113,6 +160,7 @@ export default {
   components: {
     DashBoardCard,
     BarChart,
+    PieChart,
   },
   data() {
     return {
@@ -121,17 +169,6 @@ export default {
       farmersTotal: 0,
       usersTotal: 0,
       supportTotal: 0,
-      dashboardCardData: [
-        {
-          title: '',
-          total: this.farmersTotal,
-          titleText: 'Total Number of users working on the platform.',
-          bgColor: 'suppBg',
-          progColor: '#4fc2ab',
-          yrExpert: '500',
-          percentage: 'getPercentageData(supportTotal, 500)',
-        },
-      ],
       squareBoxes: [],
     };
   },

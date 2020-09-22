@@ -198,7 +198,7 @@ export default {
             'Crop Insurance, Crop disease diagnotics tools, Irrigation tech',
         },
         {
-          value: 'Farm Implements ',
+          value: 'Farm Implements',
           label: 'Tractor and other farm machinery',
         },
         {

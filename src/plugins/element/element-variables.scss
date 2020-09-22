@@ -51,6 +51,8 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts';
   height: 50px;
   line-height: 50px;
   padding-left: 0 !important;
+  color: #2fa512;
+  font-weight: bold;
 
   a {
     color: #2fa512;
@@ -72,4 +74,8 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts';
   padding: 8px 25px 5px 8px;
   border-bottom: 1px solid #EBEEF5;
   box-sizing: border-box;
+}
+
+.el-menu-item.is-active {
+  background-color: #d4f5da;
 }

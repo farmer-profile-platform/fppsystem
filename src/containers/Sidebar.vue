@@ -24,20 +24,20 @@
       </span>
     </div>
     <hr />
-    <el-menu :default-openeds="['1', '4']">
-      <el-menu-item index="1">
-        <router-link to="/dashboard">
+    <el-menu :default-openeds="['1']">
+      <router-link to="/dashboard">
+        <el-menu-item index="1">
           <i class="el-icon-s-home"></i>
           Dashboard
-        </router-link>
-      </el-menu-item>
+        </el-menu-item>
+      </router-link>
       <hr />
-      <el-menu-item index="2">
-        <router-link to="/farmers">
+      <router-link to="/farmers">
+        <el-menu-item index="2">
           <i class="el-icon-user-solid"></i>
           Farmers Profile
-        </router-link>
-      </el-menu-item>
+        </el-menu-item>
+      </router-link>
       <hr />
       <el-menu-item index="3">
         <router-link to="/farmer-input-support">

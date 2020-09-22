@@ -21,7 +21,7 @@
       </span>
     </div>
     <div>
-      <el-progress :percentage="percentage" :color="progColor"></el-progress>
+      <el-progress :percentage="10" :color="progColor"></el-progress>
     </div>
   </el-card>
 </template>
@@ -29,15 +29,7 @@
 <script>
 export default {
   name: 'DashBoardCard',
-  props: [
-    'title',
-    'total',
-    'titleText',
-    'bgColor',
-    'progColor',
-    'percentage',
-    'yrExpert',
-  ],
+  props: ['title', 'total', 'titleText', 'bgColor', 'progColor', 'yrExpert'],
 };
 </script>
 

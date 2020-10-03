@@ -212,7 +212,7 @@ a {
 }
 
 .fa-rotate-45 {
-  transform: rotate(90deg)
+  transform: rotate(90deg);
 }
 
 .d-flex {
@@ -280,7 +280,5 @@ footer p {
   border: 1px solid #e2dfdf;
   padding: 7px 0px;
   border-radius: 10px;
+  margin-left: 10px;
 }
-
-
-@media (min-width: 1200px) {}

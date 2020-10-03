@@ -39,19 +39,19 @@
         </el-menu-item>
       </router-link>
       <hr />
-      <el-menu-item index="3">
-        <router-link to="/farmer-input-support">
+      <router-link to="/farmer-input-support">
+        <el-menu-item index="3">
           <i class="el-icon-s-flag"></i>
           Farmer Input Support
-        </router-link>
-      </el-menu-item>
+        </el-menu-item>
+      </router-link>
       <hr />
-      <el-menu-item index="4" v-if="isAdmin">
-        <router-link to="/users">
+      <router-link to="/users">
+        <el-menu-item index="4" v-if="isAdmin">
           <i class="el-icon-s-custom"></i>
           Users
-        </router-link>
-      </el-menu-item>
+        </el-menu-item>
+      </router-link>
     </el-menu>
     <hr />
 

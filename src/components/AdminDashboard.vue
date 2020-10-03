@@ -35,52 +35,60 @@
         />
       </el-col>
     </el-row>
-    <el-card class="box-card mt-2">
-      <div slot="header" class="clearfix">
-        <span>Input Supports Metrics</span>
-        <el-button style="float: right; padding: 3px 0" type="text"
-          >Operation button</el-button
-        >
-      </div>
 
-      <el-row type="flex" class="row-bg">
-        <el-col :span="11">
-          <div>
-            <el-card shadow="hover" style="background: rgba(255,255,255,.3);">
-              <div slot="header" class="clearfix">
-                <span>Total Amount Support</span>
-                <el-button style="float: right; padding: 3px 0" type="text"
-                  >GH₵ 2030</el-button
+    <el-row type="flex" class="row-bg">
+      <el-col :span="18">
+        <el-card class="box-card mt-2">
+          <div slot="header" class="clearfix">
+            <span>Input Supports Metrics</span>
+            <el-button style="float: right; padding: 3px 0" type="text"
+              >Operation button</el-button
+            >
+          </div>
+
+          <el-row type="flex" class="row-bg">
+            <el-col :span="13">
+              <div>
+                <el-card
+                  shadow="hover"
+                  style="background: rgba(255,255,255,.3);"
                 >
+                  <div slot="header" class="clearfix">
+                    <span>Total Amount Support</span>
+                    <el-button style="float: right; padding: 3px 0" type="text"
+                      >GH₵ 2030</el-button
+                    >
+                  </div>
+                  <bar-chart :height="120" :width="280" v-if="loaded" />
+                </el-card>
               </div>
-              <bar-chart :height="120" :width="280" v-if="loaded" />
-            </el-card>
-          </div>
-        </el-col>
-        <el-col :span="8">
+            </el-col>
+            <el-col :span="11">
+              <div>
+                <pie-chart v-if="loaded" />
+              </div>
+            </el-col>
+          </el-row>
+        </el-card>
+      </el-col>
+      <el-col :span="5">
+        <div class="dashboard-support-card">
           <div>
-            <pie-chart v-if="loaded" />
+            <el-progress
+              type="circle"
+              :percentage="80"
+              color="#8e71c7"
+              width="60"
+              stroke-width="5"
+            ></el-progress>
           </div>
-        </el-col>
-        <el-col :span="5">
-          <div class="dashboard-support-card">
-            <div>
-              <el-progress
-                type="circle"
-                :percentage="80"
-                color="#8e71c7"
-                width="60"
-                stroke-width="5"
-              ></el-progress>
-            </div>
-            <div>
-              <h4>Cancelled Visits</h4>
-              <p>Last Month - 12 Mar 2020</p>
-            </div>
+          <div>
+            <h4>Cancelled Visits</h4>
+            <p>Last Month - 12 Mar 2020</p>
           </div>
-        </el-col>
-      </el-row>
-    </el-card>
+        </div>
+      </el-col>
+    </el-row>
     <el-row :gutter="20" class="mt-3">
       <el-col :span="10">
         <el-card shadow="hover" style="background: rgba(255,255,255,.3);">

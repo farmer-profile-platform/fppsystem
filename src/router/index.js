@@ -25,9 +25,17 @@ const routes = [
     component: Main,
     children: [
       {
-        path: "/dashboard",
+        path: "/dashboard/:tab?",
         name: "Dashboard",
-        component: Dashboard
+        component: Dashboard,
+        meta: {
+          defaultTab: 'home',
+          defaultPath: '/dashboard',
+          tabs: [
+            { name: 'Home', route: 'home' },
+            { name: 'Activity Log', route: 'activity' },
+          ],
+        }
       },
       {
         path: "/farmers",

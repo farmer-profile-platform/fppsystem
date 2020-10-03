@@ -66,6 +66,11 @@
             </el-tag>
           </template>
         </el-table-column>
+        <el-table-column label="Last Active">
+          <template slot-scope="props">
+            <span>{{ getDateFormat(props.row.lastActive) }}</span>
+          </template>
+        </el-table-column>
         <el-table-column align="right">
           <template slot-scope="props">
             <el-button

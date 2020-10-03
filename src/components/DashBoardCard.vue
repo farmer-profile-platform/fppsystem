@@ -29,7 +29,14 @@
 <script>
 export default {
   name: 'DashBoardCard',
-  props: ['title', 'total', 'titleText', 'bgColor', 'progColor', 'yrExpert'],
+  props: {
+    title: String,
+    total: Number,
+    titleText: String,
+    bgColor: String,
+    progColor: String,
+    yrExpert: Number,
+  },
 };
 </script>
 

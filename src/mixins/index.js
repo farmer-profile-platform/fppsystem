@@ -7,12 +7,15 @@ import { mapGetters } from "vuex"
 export default {
   computed: {
     ...mapGetters({
-      token: 'getToken',
       newFarmersOffline: 'getNewFarmersOffline',
       editedFarmersOffline: 'getEditedFarmersOffline'
     })
   },
   methods: {
+    hasInputSupport(farmer) {
+      let s = farmer.inputSupports;
+      return Array.isArray(s) || s.length;
+    },
     syncOfflineFarmersData() {
       if (this.newFarmersOffline.length > 0) {
         // let newData = this.newFarmersOffline.map(function (farmer) {

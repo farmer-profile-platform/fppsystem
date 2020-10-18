@@ -85,13 +85,9 @@
           <template slot-scope="props">
             <el-tag
               size="mini"
-              :type="props.row.inputSupport.length == 0 ? 'warning' : 'success'"
+              :type="hasInputSupport(props.row) ? 'success' : 'warning'"
             >
-              {{
-                props.row.inputSupport.length === 0
-                  ? 'Not supported'
-                  : 'Supported'
-              }}
+              {{ hasInputSupport(props.row) ? 'Supported' : 'Not supported' }}
             </el-tag>
           </template>
         </el-table-column>
@@ -129,7 +125,7 @@
 
                 <el-dropdown-item>
                   <span
-                    v-if="props.row.inputSupport.length == 0"
+                    v-if="!hasInputSupport(props.row)"
                     @click="
                       showInputSupport(props.row._id, props.row.firstName)
                     "

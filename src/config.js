@@ -20,5 +20,6 @@ export default {
   USERS_URL: API_URL + 'users',
   DASHBOARD_URL: API_URL + 'dashboard/reports',
   TOTAL_INPUT_SUPPORT_URL: API_URL + 'dashboard/supports',
-  ACTIVITIES_URL: API_URL + 'activities'
+  ACTIVITIES_URL: API_URL + 'activities',
+  SUPPORTS_URL: API_URL + 'supports'
 }

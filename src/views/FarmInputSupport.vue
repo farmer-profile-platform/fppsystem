@@ -70,18 +70,18 @@
           <template slot-scope="props">
             <span>
               <span style="font-size:11px;">
-                Year: {{ props.row.inputSupport[0].year }}
+                Year: {{ props.row.inputSupports[0].year }}
               </span>
               <br />
               <span style="font-size:11px;">
                 Grand Total: GH₵
-                {{ props.row.inputSupport[0].grand_total }} </span
+                {{ props.row.inputSupports[0].grand_total }} </span
               ><br />
               <el-button
                 type="text"
                 icon="el-icon-view"
                 size="mini"
-                @click="showInputs(props.row.inputSupport)"
+                @click="showInputs(props.row.inputSupports)"
                 >View all</el-button
               >
             </span>
@@ -89,12 +89,6 @@
         </el-table-column>
         <el-table-column align="right">
           <template slot-scope="props">
-            <el-button
-              type="primary"
-              plain
-              size="mini"
-              icon="el-icon-download"
-            ></el-button>
             <el-dropdown class="ml-1">
               <i class="el-icon-more fa-rotate-45"></i>
               <el-dropdown-menu slot="dropdown">
@@ -323,7 +317,7 @@ export default {
       this.inputSupportTitle = 'Update Farm Support for ' + farmer.name;
       this.selectedId = farmer._id;
       this.selectedName = farmer.name;
-      this.selectedInputs = farmer.inputSupport;
+      this.selectedInputs = farmer.inputSupports;
       this.showUpdateSupportModal = true;
     },
     farmerEdited() {

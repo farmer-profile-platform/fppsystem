@@ -352,17 +352,14 @@
         <!-- Analytics -->
         <el-collapse-item title="Analytics" name="5">
           <div>
-            Will be done later on.
+            No analytics.
           </div>
         </el-collapse-item>
 
         <!-- Farm input support -->
         <el-collapse-item title="Farm Input Support" name="6">
-          <div
-            class="profile-tab-bg pt-0"
-            v-if="farmer.inputSupport.length > 0"
-          >
-            <div v-for="(support, index) in farmer.inputSupport" :key="index">
+          <div class="profile-tab-bg pt-0" v-if="hasInputSupport(farmer)">
+            <div v-for="(support, index) in farmer.inputSupports" :key="index">
               <h4 class="mb-1 mt-1" style="color:green;">{{ support.year }}</h4>
               <el-row
                 type="flex"

@@ -9,7 +9,7 @@
     <p>{{ titleText }}</p>
     <div class="flex_justify_between">
       <span class="dashboard_card_total">
-        {{ total }}
+        <b v-show="bgColor == 'amntBg'">GH₵</b> {{ total }}
       </span>
       <span class="dashboard_card_text">
         <span

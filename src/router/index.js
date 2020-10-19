@@ -6,9 +6,9 @@ import authService from "../api/auth";
 
 import Main from "@/containers/Main.vue";
 import Dashboard from "@/views/dashboard/Dashboard.vue";
-import Farmers from "@/views/Farmers";
-import FarmInputSupport from "@/views/FarmInputSupport"
-import FarmerProfile from "@/views/FarmerProfile";
+import Farmers from "@/views/farmers/Farmers";
+import FarmInputSupport from "@/views/farmers/FarmInputSupport"
+import FarmerProfile from "@/views/farmers/FarmerProfile";
 import Users from "@/views/users/Users";
 import UserProfile from "@/views/users/UserProfile";
 

@@ -26,7 +26,7 @@
                 <el-option
                   v-for="type in inputTypes"
                   :key="type"
-                  :label="type.label"
+                  :label="type.value"
                   :value="type.value"
                 >
                   <span style="float: left">{{ type.value }}</span>

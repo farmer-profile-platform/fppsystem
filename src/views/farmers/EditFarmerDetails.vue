@@ -876,7 +876,7 @@
 </template>
 
 <script>
-import farmersService from '../api/farmers';
+import farmersService from '../../api/farmers';
 import { mapGetters } from 'vuex';
 
 export default {

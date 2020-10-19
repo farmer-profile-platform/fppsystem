@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="pageLoad">
     <el-row :gutter="20">
       <el-col :span="8">
         <DashBoardCard
@@ -50,12 +50,12 @@
             <el-col :span="9">
               <DashBoardCard
                 title="TOTAL AMOUNT SUPPORTED (GH₵)"
-                :total="4002"
+                :total="amountTotal"
                 titleText="Total Amount we've supported farmers with and our % expectations for the year."
                 bgColor="amntBg"
                 progColor="#52725f"
                 :yrExpert="9000"
-                :percentage="getPercentageData(4002, 9000)"
+                :percentage="getPercentageData(amountTotal, 9000)"
               />
               <br /><br />
               <div>
@@ -66,7 +66,14 @@
                   <div slot="header" class="clearfix">
                     <span>Total Amount Support per Year</span>
                   </div>
-                  <bar-chart :height="120" :width="280" v-if="loaded" />
+                  <bar-chart
+                    :height="120"
+                    :width="280"
+                    v-if="loaded"
+                    :data="barChartData.data"
+                    :labels="barChartData.labels"
+                    :title="barChartData.title"
+                  />
                 </el-card>
               </div>
             </el-col>
@@ -79,28 +86,12 @@
           </el-row>
         </el-card>
       </el-col>
-      <!-- <div class="dashboard-support-card">
-          <div>
-            <el-progress
-              type="circle"
-              :percentage="80"
-              color="#8e71c7"
-              :width="60"
-              :stroke-width="5"
-            ></el-progress>
-          </div>
-          <div>
-            <h4>Cancelled Visits</h4>
-            <p>Last Month - 12 Mar 2020</p>
-          </div>
-        </div> -->
     </el-row>
   </div>
 </template>
 
 <script>
 import dashboardService from '../api/dashboard';
-import activityService from '../api/activities';
 import DashBoardCard from './DashBoardCard';
 import BarChart from './charts/BarChart';
 import PieChart from './charts/PieChart';
@@ -115,12 +106,17 @@ export default {
   },
   data() {
     return {
+      pageLoad: true,
       loaded: false,
-      activities: [],
       farmersTotal: 0,
       usersTotal: 0,
       supportTotal: 0,
-      squareBoxes: [],
+      amountTotal: 0,
+      barChartData: {
+        data: [1500, 3000, 1200],
+        labels: ['2018', '2019', '2020'],
+        title: 'Supports this year GH₵',
+      },
     };
   },
   created() {
@@ -134,7 +130,6 @@ export default {
   methods: {
     init() {
       this.getDashboardData();
-      this.getActivities();
     },
     getDashboardData() {
       dashboardService
@@ -143,35 +138,13 @@ export default {
           this.farmersTotal = response.data.totalFarmers;
           this.usersTotal = response.data.usersTotal;
           this.supportTotal = response.data.totalSupports;
-        })
-        .catch((errors) => this.errorMessage(errors.error));
+          this.amountTotal = response.data.totalAmountSupported;
+          this.barChartData.labels = response.data.inputYears;
+          this.barChartData.data = response.data.amountsInYears;
 
-      this.loaded = true;
-    },
-    getActivities() {
-      activityService
-        .getActivities()
-        .then((response) => {
-          if (response.data.length > 5) {
-            response.data.length = 5;
-          }
-          this.loadTable(response.data);
+          this.loaded = true;
+          this.pageLoad = false;
         })
-        .catch((errors) => this.errorMessage(errors.error));
-    },
-    loadTable(activity) {
-      let self = this;
-      let data = activity.map(function(act) {
-        act.user.name =
-          act.user._id === self.user._id ? 'Yourself' : act.user.name;
-        return act;
-      });
-      this.activities = data;
-    },
-    deleteActivity(id) {
-      activityService
-        .deleteActivity(id)
-        .then(() => this.getActivities())
         .catch((errors) => this.errorMessage(errors.error));
     },
   },

@@ -1,7 +1,5 @@
 <template>
   <div>
-    <!-- <router-link to="/add-farmer">
-    </router-link> -->
     <el-button
       icon="el-icon-plus"
       plain
@@ -85,9 +83,15 @@
           <template slot-scope="props">
             <el-tag
               size="mini"
-              :type="hasInputSupport(props.row) ? 'success' : 'warning'"
+              :type="
+                hasInputSupport(props.row.inputSupports) ? 'success' : 'warning'
+              "
             >
-              {{ hasInputSupport(props.row) ? 'Supported' : 'Not supported' }}
+              {{
+                hasInputSupport(props.row.inputSupports)
+                  ? 'Supported'
+                  : 'Not supported'
+              }}
             </el-tag>
           </template>
         </el-table-column>
@@ -125,7 +129,7 @@
 
                 <el-dropdown-item>
                   <span
-                    v-if="!hasInputSupport(props.row)"
+                    v-if="!hasInputSupport(props.row.inputSupports)"
                     @click="
                       showInputSupport(props.row._id, props.row.firstName)
                     "
@@ -212,11 +216,11 @@
 </template>
 
 <script>
-import farmersService from '../api/farmers';
-import AddNewFarmers from '../components/AddNewFarmers';
-import EditFarmerDetails from '../components/EditFarmerDetails';
-import AddFarmInputSupport from '../components/AddFarmInputSupport';
-import FarmerProfileDownload from '../components/FarmerProfileDownload';
+import farmersService from '../../api/farmers';
+import AddNewFarmers from '../../components/AddNewFarmers';
+import EditFarmerDetails from './EditFarmerDetails';
+import AddFarmInputSupport from '../../components/AddFarmInputSupport';
+import FarmerProfileDownload from '../../components/FarmerProfileDownload';
 import { mapGetters } from 'vuex';
 
 export default {

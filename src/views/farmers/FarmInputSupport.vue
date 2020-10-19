@@ -237,9 +237,9 @@
 </template>
 
 <script>
-import farmersService from '../api/farmers';
-import EditFarmerDetails from '../components/EditFarmerDetails';
-import AddFarmInputSupport from '../components/AddFarmInputSupport';
+import farmersService from '../../api/farmers';
+import EditFarmerDetails from './EditFarmerDetails';
+import AddFarmInputSupport from '../../components/AddFarmInputSupport';
 
 export default {
   name: 'farmers',

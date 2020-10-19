@@ -971,7 +971,6 @@ export default {
             ],
           },
         ],
-        inputSupport: [],
         bank: [
           {
             name: '',

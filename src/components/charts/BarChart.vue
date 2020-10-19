@@ -4,7 +4,7 @@ import is from 'is_js';
 
 export default {
   extends: Bar,
-  // props: ['data', 'labels', 'title', 'bgColor', 'borderColor'],
+  props: ['data', 'labels', 'title'],
   watch: {
     data: function() {
       this.init();
@@ -18,11 +18,11 @@ export default {
       if (is.not.undefined(this.$refs.canvas)) {
         this.renderChart(
           {
-            labels: ['2018', '2019', '2020'],
+            labels: this.labels,
             datasets: [
               {
-                data: [1500, 3000, 1200],
-                label: 'Supports this year GH₵',
+                data: this.data,
+                label: this.title,
                 borderColor: 'transparent',
                 backgroundColor: '#F44335',
                 barPercentage: 0.5,

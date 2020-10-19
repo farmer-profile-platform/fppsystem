@@ -12,9 +12,9 @@ export default {
     })
   },
   methods: {
-    hasInputSupport(farmer) {
-      let s = farmer.inputSupports;
-      return Array.isArray(s) || s.length;
+    hasInputSupport(inputSupports) {
+      let s = inputSupports;
+      return Array.isArray(s) && s.length;
     },
     syncOfflineFarmersData() {
       if (this.newFarmersOffline.length > 0) {

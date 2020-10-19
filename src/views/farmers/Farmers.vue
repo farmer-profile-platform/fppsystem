@@ -1,13 +1,22 @@
 <template>
   <div>
-    <el-button
-      icon="el-icon-plus"
-      plain
-      type="primary"
-      size="small"
-      @click="addFarmerModal"
-      >Add New Farmer</el-button
-    >
+    <div class="flex_justify_between">
+      <el-button
+        icon="el-icon-plus"
+        plain
+        type="primary"
+        size="small"
+        @click="addFarmerModal"
+        >Add New Farmer</el-button
+      >
+      <el-button
+        icon="el-icon-delete"
+        type="danger"
+        size="mini"
+        v-if="actionButtons"
+        >Delete All</el-button
+      >
+    </div>
     <div>
       <el-input
         placeholder="Search farmers by thier names"
@@ -233,6 +242,8 @@ export default {
   },
   data() {
     return {
+      actionButtons: false,
+      farmerSelected: null,
       tableData: [],
       farmer: {},
       tableLoading: false,

@@ -54,8 +54,8 @@
                 titleText="Total Amount we've supported farmers with and our % expectations for the year."
                 bgColor="amntBg"
                 progColor="#52725f"
-                :yrExpert="9000"
-                :percentage="getPercentageData(amountTotal, 9000)"
+                :yrExpert="20000"
+                :percentage="getPercentageData(amountTotal, 20000)"
               />
               <br /><br />
               <div>
@@ -120,7 +120,7 @@ export default {
     };
   },
   created() {
-    this.init();
+    this.getDashboardData();
   },
   computed: {
     ...mapGetters({
@@ -128,9 +128,6 @@ export default {
     }),
   },
   methods: {
-    init() {
-      this.getDashboardData();
-    },
     getDashboardData() {
       dashboardService
         .getReports()

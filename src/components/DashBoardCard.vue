@@ -21,7 +21,7 @@
       </span>
     </div>
     <div>
-      <el-progress :percentage="10" :color="progColor"></el-progress>
+      <el-progress :percentage="percentage" :color="progColor"></el-progress>
     </div>
   </el-card>
 </template>
@@ -36,6 +36,7 @@ export default {
     bgColor: String,
     progColor: String,
     yrExpert: Number,
+    percentage: Number,
   },
 };
 </script>
@@ -50,7 +51,7 @@ export default {
     0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
 
-#frmBg {
+#farmersBg {
   background-color: #2cb96b;
 }
 
@@ -62,6 +63,9 @@ export default {
   background-color: #0cd0e1;
 }
 
+#amntBg {
+  background-color: #52725f;
+}
 .dashboard_card_total {
   font-size: 40px;
   font-weight: bold;

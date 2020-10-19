@@ -6,7 +6,7 @@
           title="FARMERS TOTAL"
           :total="farmersTotal"
           titleText="Total Number of Farmers registered on platform."
-          bgColor="frmBg"
+          bgColor="farmersBg"
           progColor="#2cb96b"
           :yrExpert="1000"
           :percentage="getPercentageData(farmersTotal, 1000)"
@@ -37,33 +37,41 @@
     </el-row>
 
     <el-row type="flex" class="row-bg">
-      <el-col :span="18">
+      <el-col :span="24">
         <el-card class="box-card mt-2">
           <div slot="header" class="clearfix">
-            <span>Input Supports Metrics</span>
+            <span>Input Support Metrics</span>
             <el-button style="float: right; padding: 3px 0" type="text"
-              >Operation button</el-button
+              >Support Type</el-button
             >
           </div>
 
           <el-row type="flex" class="row-bg">
-            <el-col :span="13">
+            <el-col :span="9">
+              <DashBoardCard
+                title="TOTAL AMOUNT SUPPORTED (GH₵)"
+                :total="4002"
+                titleText="Total Amount we've supported farmers with and our % expectations for the year."
+                bgColor="amntBg"
+                progColor="#52725f"
+                :yrExpert="9000"
+                :percentage="getPercentageData(4002, 9000)"
+              />
+              <br /><br />
               <div>
                 <el-card
                   shadow="hover"
                   style="background: rgba(255,255,255,.3);"
                 >
                   <div slot="header" class="clearfix">
-                    <span>Total Amount Support</span>
-                    <el-button style="float: right; padding: 3px 0" type="text"
-                      >GH₵ 2030</el-button
-                    >
+                    <span>Total Amount Support per Year</span>
                   </div>
                   <bar-chart :height="120" :width="280" v-if="loaded" />
                 </el-card>
               </div>
             </el-col>
-            <el-col :span="11">
+            <el-col :span="2"> </el-col>
+            <el-col :span="10">
               <div>
                 <pie-chart v-if="loaded" />
               </div>
@@ -71,8 +79,7 @@
           </el-row>
         </el-card>
       </el-col>
-      <el-col :span="5">
-        <div class="dashboard-support-card">
+      <!-- <div class="dashboard-support-card">
           <div>
             <el-progress
               type="circle"
@@ -86,71 +93,7 @@
             <h4>Cancelled Visits</h4>
             <p>Last Month - 12 Mar 2020</p>
           </div>
-        </div>
-      </el-col>
-    </el-row>
-    <el-row :gutter="20" class="mt-3">
-      <el-col :span="10">
-        <el-card shadow="hover" style="background: rgba(255,255,255,.3);">
-          <div slot="header" class="clearfix">
-            <span>Total Amount Support</span>
-            <el-button style="float: right; padding: 3px 0" type="text"
-              >GH₵ 2030</el-button
-            >
-          </div>
-          <bar-chart :height="120" :width="280" v-if="loaded" />
-        </el-card>
-      </el-col>
-      <el-col :span="12">
-        <h5 class="mb-1">Recent Activities of Users</h5>
-        <el-table :data="activities" style="width: 100%" stripe>
-          <el-table-column label="Info">
-            <template slot-scope="props">
-              <span>{{ props.row.name }}</span>
-              <br />
-              <span style="font-size:11px;">
-                By: <el-tag size="mini">{{ props.row.user.name }}</el-tag>
-              </span>
-            </template>
-          </el-table-column>
-          <el-table-column label="Date" align="center">
-            <template slot-scope="props">
-              <span>{{ getDateFormat(props.row.createdAt) }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="Activity" align="center">
-            <template slot-scope="props">
-              <span :style="`color:${getActivityColor(props.row.action)};`">{{
-                props.row.action
-              }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column align="right">
-            <template slot-scope="props">
-              <el-popconfirm
-                confirmButtonText="OK"
-                cancelButtonText="No, Thanks"
-                icon="el-icon-info"
-                iconColor="red"
-                title="Are you sure to delete this?"
-                @onConfirm="deleteActivity(props.row._id)"
-              >
-                <el-button
-                  slot="reference"
-                  size="mini"
-                  type="danger"
-                  icon="el-icon-delete"
-                />
-              </el-popconfirm>
-            </template>
-          </el-table-column>
-        </el-table>
-        <div class="align_center">
-          <router-link to="/activities">
-            <el-button type="text">View all</el-button>
-          </router-link>
-        </div>
-      </el-col>
+        </div> -->
     </el-row>
   </div>
 </template>

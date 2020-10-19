@@ -269,8 +269,8 @@
 </template>
 
 <script>
-import userService from '../api/users';
-import farmersService from '../api/farmers';
+import userService from '../../api/users';
+import farmersService from '../../api/farmers';
 import { mapGetters } from 'vuex';
 
 export default {

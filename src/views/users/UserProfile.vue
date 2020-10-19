@@ -95,7 +95,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import userService from '../api/users';
+import userService from '../../api/users';
 
 export default {
   name: 'UsersProfile',

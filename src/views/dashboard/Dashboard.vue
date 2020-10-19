@@ -23,7 +23,7 @@ export default {
       default: () => {
         return [
           {
-            tabName: 'home',
+            tabName: 'analysis',
             component: 'home',
           },
           {

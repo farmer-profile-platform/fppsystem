@@ -39,7 +39,7 @@ export default {
             scales: {
               xAxes: [
                 {
-                  display: false,
+                  display: true,
                 },
               ],
               yAxes: [

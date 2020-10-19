@@ -9,9 +9,8 @@ import Dashboard from "@/views/dashboard/Dashboard.vue";
 import Farmers from "@/views/Farmers";
 import FarmInputSupport from "@/views/FarmInputSupport"
 import FarmerProfile from "@/views/FarmerProfile";
-import Users from "@/views/Users";
-import UserProfile from "@/views/UserProfile";
-import Activities from "@/views/Activities";
+import Users from "@/views/users/Users";
+import UserProfile from "@/views/users/UserProfile";
 
 import Login from "@/views/Login";
 
@@ -29,10 +28,10 @@ const routes = [
         name: "Dashboard",
         component: Dashboard,
         meta: {
-          defaultTab: 'home',
+          defaultTab: 'analysis',
           defaultPath: '/dashboard',
           tabs: [
-            { name: 'Home', root: 'home', route: '/dashboard/home' },
+            { name: 'Analysis', root: 'analysis', route: '/dashboard/analysis' },
             { name: 'Activity Log', root: 'activity', route: '/dashboard/activity' },
           ],
         }
@@ -62,11 +61,6 @@ const routes = [
         name: "User Profile",
         component: UserProfile
       },
-      {
-        path: "/activities",
-        name: "User Activities",
-        component: Activities
-      }
     ]
   },
   {

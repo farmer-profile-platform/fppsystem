@@ -346,7 +346,10 @@
 
         <!-- Farm input support -->
         <el-collapse-item title="Farm Input Support" name="6">
-          <div class="profile-tab-bg pt-0" v-if="hasInputSupport(farmer)">
+          <div
+            class="profile-tab-bg pt-0"
+            v-if="hasInputSupport(farmer.inputSupports)"
+          >
             <div v-for="(support, index) in farmer.inputSupports" :key="index">
               <h4 class="mb-1 mt-1" style="color:green;">{{ support.year }}</h4>
               <el-row

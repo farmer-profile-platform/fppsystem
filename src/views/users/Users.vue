@@ -71,13 +71,13 @@
             <span>{{ getDateFormat(props.row.lastActive) }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="right">
+        <el-table-column align="right" width="300">
           <template slot-scope="props">
             <el-button
               :type="props.row.suspended ? 'success' : 'info'"
               plain
               size="mini"
-              icon="el-icon-cancel"
+              icon="el-icon-close"
               @click="confirmSuspend(props.row.suspended, props.row._id)"
               >{{ props.row.suspended ? 'Activate' : 'Suspend' }}</el-button
             >
@@ -270,7 +270,6 @@
 
 <script>
 import userService from '../../api/users';
-import farmersService from '../../api/farmers';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -493,8 +492,8 @@ export default {
       const files = e.target.files;
       const formData = new FormData();
       formData.append('file', files[0]);
-      farmersService
-        .uploadFarmerFiles(formData)
+      userService
+        .uploadUserPhoto(this.editUserForm.id, formData)
         .then((response) => {
           if (action == 'add') {
             this.addUserForm.profile_pic = response.data;

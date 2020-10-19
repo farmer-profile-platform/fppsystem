@@ -77,7 +77,6 @@ export default {
       } else {
         return 'None';
       }
-
     },
     getActivityColor(action) {
       let color;
@@ -93,6 +92,12 @@ export default {
           break;
         case 'Deleted':
           color = "#ff4949"
+          break;
+        case 'Support Deleted':
+          color = "red"
+          break;
+        case 'Support Updated':
+          color = "blue"
           break;
       }
       return color

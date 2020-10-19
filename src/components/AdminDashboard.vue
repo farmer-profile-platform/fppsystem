@@ -78,8 +78,8 @@
               type="circle"
               :percentage="80"
               color="#8e71c7"
-              width="60"
-              stroke-width="5"
+              :width="60"
+              :stroke-width="5"
             ></el-progress>
           </div>
           <div>

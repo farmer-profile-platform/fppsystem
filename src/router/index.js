@@ -5,7 +5,7 @@ import { store } from "../store/";
 import authService from "../api/auth";
 
 import Main from "@/containers/Main.vue";
-import Dashboard from "@/views/Dashboard.vue";
+import Dashboard from "@/views/dashboard/Dashboard.vue";
 import Farmers from "@/views/Farmers";
 import FarmInputSupport from "@/views/FarmInputSupport"
 import FarmerProfile from "@/views/FarmerProfile";
@@ -32,8 +32,8 @@ const routes = [
           defaultTab: 'home',
           defaultPath: '/dashboard',
           tabs: [
-            { name: 'Home', route: 'home' },
-            { name: 'Activity Log', route: 'activity' },
+            { name: 'Home', root: 'home', route: '/dashboard/home' },
+            { name: 'Activity Log', root: 'activity', route: '/dashboard/activity' },
           ],
         }
       },

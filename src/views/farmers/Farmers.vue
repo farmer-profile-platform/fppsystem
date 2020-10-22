@@ -194,7 +194,7 @@
         <p>Take note of the unit details and amounts.</p>
       </template>
       <AddFarmInputSupport
-        :selectedId.sync="selectedId"
+        :selectedFarmerId.sync="selectedFarmerId"
         :selectedName="selectedName"
         v-on:addedInput="inputAdded"
       />
@@ -255,7 +255,7 @@ export default {
       editTitle: '',
       inputSupportTitle: '',
       downloadTitle: '',
-      selectedId: null,
+      selectedFarmerId: null,
       selectedName: '',
       currentPage: 1,
       total: 3,
@@ -303,7 +303,7 @@ export default {
       }
     },
     showInputSupport(id, name) {
-      this.selectedId = id;
+      this.selectedFarmerId = id;
       this.selectedName = name;
       this.inputSupportTitle = 'Add Farm Support for ' + name;
       this.showInputSupportModal = true;

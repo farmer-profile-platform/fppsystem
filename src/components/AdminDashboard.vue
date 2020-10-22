@@ -3,6 +3,7 @@
     <el-row :gutter="20">
       <el-col :span="8">
         <DashBoardCard
+          type="totalFarmers"
           title="FARMERS TOTAL"
           :total="farmersTotal"
           titleText="Total Number of Farmers registered on platform."
@@ -14,6 +15,7 @@
       </el-col>
       <el-col :span="8">
         <DashBoardCard
+          type="totalSupport"
           title="FARMERS SUPPORT TOTAL"
           :total="supportTotal"
           titleText="Total Number of Farmers we're providing support"
@@ -25,6 +27,7 @@
       </el-col>
       <el-col :span="8">
         <DashBoardCard
+          type="totalUsers"
           title="USERS TOTAL"
           :total="usersTotal"
           titleText="Total Number of users working on the platform."
@@ -49,6 +52,7 @@
           <el-row type="flex" class="row-bg">
             <el-col :span="9">
               <DashBoardCard
+                type="amountSupported"
                 title="TOTAL AMOUNT SUPPORTED (GH₵)"
                 :total="amountTotal"
                 titleText="Total Amount we've supported farmers with and our % expectations for the year."
@@ -80,7 +84,7 @@
             <el-col :span="2"> </el-col>
             <el-col :span="10">
               <div>
-                <pie-chart v-if="loaded" />
+                <dughnut-chart v-if="loaded" />
               </div>
             </el-col>
           </el-row>
@@ -94,7 +98,7 @@
 import dashboardService from '../api/dashboard';
 import DashBoardCard from './DashBoardCard';
 import BarChart from './charts/BarChart';
-import PieChart from './charts/PieChart';
+import DughnutChart from './charts/DughnutChart';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -102,7 +106,7 @@ export default {
   components: {
     DashBoardCard,
     BarChart,
-    PieChart,
+    DughnutChart,
   },
   data() {
     return {

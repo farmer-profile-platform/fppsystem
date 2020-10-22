@@ -33,6 +33,10 @@ hr {
   border: 1px solid rgb(240, 240, 240);
 }
 
+hr.sp {
+  border: 1px solid rgb(13, 75, 8);
+}
+
 /* hr.hr-addFarmer {
   border: 1px solid grey;
 } */
@@ -274,11 +278,7 @@ footer p {
   display: block;
 }
 
-.dashboard-support-card {
-  display: flex;
-  justify-content: space-evenly;
-  border: 1px solid #e2dfdf;
-  padding: 7px 0px;
-  border-radius: 10px;
-  margin-left: 10px;
+.dashboard-dropdown {
+  margin-top: 10px;
+  margin-left: 15px;
 }

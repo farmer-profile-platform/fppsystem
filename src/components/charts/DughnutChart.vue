@@ -1,9 +1,9 @@
 <script>
-import { Pie } from 'vue-chartjs';
+import { Doughnut } from 'vue-chartjs';
 import is from 'is_js';
 
 export default {
-  extends: Pie,
+  extends: Doughnut,
   // props: ['data', 'labels', 'title', 'bgColor', 'borderColor'],
   watch: {
     data: function() {
@@ -35,15 +35,15 @@ export default {
             ],
           },
           {
-            cutoutPercentage: 0,
-            maintainAspectRatio: true,
+            cutoutPercentage: 50,
+            maintainAspectRatio: false,
             legend: {
               display: true,
             },
             scales: {
               xAxes: [
                 {
-                  display: true,
+                  display: false,
                 },
               ],
               yAxes: [

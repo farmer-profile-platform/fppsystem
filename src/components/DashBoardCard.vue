@@ -4,7 +4,24 @@
       <span class="dashboard_card_head" :id="bgColor">
         {{ title }}
       </span>
-      <i class="el-icon-more fa-rotate-45"></i>
+      <span class="dashboard-dropdown">
+        <el-dropdown>
+          <el-button
+            icon="el-icon-arrow-down"
+            size="mini"
+            type="text"
+          ></el-button>
+
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item v-if="type == 'amountSupported'"
+              >View Chart</el-dropdown-item
+            >
+            <el-dropdown-item v-else
+              ><span @click="goToTable(type)">View Data</span>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </span>
     </div>
     <p>{{ titleText }}</p>
     <div class="flex_justify_between">
@@ -30,6 +47,7 @@
 export default {
   name: 'DashBoardCard',
   props: {
+    type: String,
     title: String,
     total: Number,
     titleText: String,
@@ -37,6 +55,21 @@ export default {
     progColor: String,
     yrExpert: Number,
     percentage: Number,
+  },
+  methods: {
+    goToTable(type) {
+      switch (type) {
+        case 'totalFarmers':
+          this.$router.push('/farmers');
+          break;
+        case 'totalSupport':
+          this.$router.push('/farmer-input-support');
+          break;
+        case 'totalUsers':
+          this.$router.push('/users');
+          break;
+      }
+    },
   },
 };
 </script>

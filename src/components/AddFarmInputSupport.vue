@@ -14,7 +14,7 @@
           style="color:red; margin-top: 30px;"
           size="mini"
           @click="removeInputSupport(year._id, index)"
-          >Delete Input Support Year</el-button
+          >Delete all input support for this year( {{ year.year }} )</el-button
         >
         <el-row :gutter="20" v-for="(support, idx) in year.inputs" :key="idx">
           <el-col :span="8">
@@ -109,7 +109,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <hr />
+        <hr class="sp" />
       </div>
       <br />
       <div>
@@ -118,7 +118,7 @@
           type="info"
           class="full-width"
           @click="addInputSupportField"
-          >Add Year</el-button
+          >Add Input Support for Another Year</el-button
         >
       </div>
       <br /><br />
@@ -146,7 +146,7 @@ export default {
   name: 'AddInputSupport',
   props: {
     selectedName: String,
-    selectedId: String,
+    selectedFarmerId: String,
     selectedInputs: {
       type: Array,
       default: function() {
@@ -208,17 +208,17 @@ export default {
   },
   created() {
     this.inputSupportForm.inputSupport = this.selectedInputs;
-    console.log(this.inputSupportForm.inputSupport);
+    this.inputSupportForm.inputSupport[0].farmer = this.selectedFarmerId;
   },
   methods: {
     addInputSupportField() {
       let s = {
-        farmer: this.selectedId,
+        farmer: this.selectedFarmerId,
         year: '2020',
         grand_total: 0,
         inputs: [
           {
-            type: 'Seedling',
+            type: 'None',
             name: 'None',
             unit_price: 0,
             quantity: 1,
@@ -230,7 +230,6 @@ export default {
         .addInputSupport(s)
         .then((response) => {
           s = response.data;
-          console.log(s);
           this.infoMessage('Added another year');
           this.inputSupportForm.inputSupport.push(s);
         })
@@ -251,23 +250,27 @@ export default {
     },
     updateInputSupport(support) {
       this.btnLoading = true;
+      console.log(support);
       supportService
         .updateSupport(support)
         .then(() => {
           this.addActivity(
-            { _id: this.selectedId, name: this.selectedName },
+            { _id: this.selectedFarmerId, name: this.selectedName },
             'Support Updated'
           );
           this.btnLoading = false;
           this.$emit('addedInput');
         })
-        .catch((errors) => this.errorMessage(errors.error));
+        .catch((errors) => {
+          this.btnLoading = false;
+          this.errorMessage(errors.error);
+        });
     },
     removeInputSupport(id, index) {
       this.inputSupportForm.inputSupport.splice(index, 1);
       supportService.deleteSupport(id).then(() => {
         this.addActivity(
-          { _id: this.selectedId, name: this.selectedName },
+          { _id: this.selectedFarmerId, name: this.selectedName },
           'Support Deleted'
         );
         this.successNotification('Success', 'Support deleted');

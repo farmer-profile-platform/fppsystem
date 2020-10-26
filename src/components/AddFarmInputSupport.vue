@@ -98,7 +98,13 @@
         <el-row :gutter="20">
           <el-col :span="10">
             <el-form-item label="Year">
-              <el-input v-model="year.year" placeholder="2019" />
+              <el-select
+                v-model="year.year"
+                style="width:100%; margin-top:-12px"
+              >
+                <el-option label="2020" value="2020"></el-option>
+                <el-option label="2019" value="2019"></el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="10">

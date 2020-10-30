@@ -282,3 +282,7 @@ footer p {
   margin-top: 10px;
   margin-left: 15px;
 }
+
+a.canvasjs-chart-credit {
+  display: none;
+}

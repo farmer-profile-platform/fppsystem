@@ -115,6 +115,7 @@ export default {
     },
     getPercentageData(data, total) {
       let percentage = data / total * 100
+      percentage = Math.round(percentage)
       return percentage;
     },
     getHostName() {

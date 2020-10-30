@@ -13,9 +13,9 @@
           ></el-button>
 
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item v-if="type == 'amountSupported'"
-              >View Chart</el-dropdown-item
-            >
+            <el-dropdown-item v-if="type == 'amountSupported'">
+              <span @click="showBarChart = true">View Chart</span>
+            </el-dropdown-item>
             <el-dropdown-item v-else
               ><span @click="goToTable(type)">View Data</span>
             </el-dropdown-item>
@@ -40,10 +40,22 @@
     <div>
       <el-progress :percentage="percentage" :color="progColor"></el-progress>
     </div>
+
+    <el-dialog
+      title="Yearly Data for Inout Supports (GH₵)"
+      :visible.sync="showBarChart"
+      width="40%"
+    >
+      <div>
+        <BarChart :chartData="chartData" />
+      </div>
+    </el-dialog>
   </el-card>
 </template>
 
 <script>
+import BarChart from './charts/BarChart';
+
 export default {
   name: 'DashBoardCard',
   props: {
@@ -55,6 +67,20 @@ export default {
     progColor: String,
     yrExpert: Number,
     percentage: Number,
+    chartData: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
+  },
+  components: {
+    BarChart,
+  },
+  data() {
+    return {
+      showBarChart: false,
+    };
   },
   methods: {
     goToTable(type) {

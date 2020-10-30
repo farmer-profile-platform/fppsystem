@@ -11,8 +11,6 @@ import Activity from './Activity';
 Vue.component('home', { template: '<Home />' });
 Vue.component('activity', { template: '<Activity />' });
 
-let route = [];
-
 export default {
   name: 'Dashboard',
   extends: BaseView,
@@ -36,12 +34,16 @@ export default {
     tabs: {
       type: Array,
       default: () => {
-        return route;
+        return [
+          { name: 'Analysis', root: 'analysis', route: '/dashboard/analysis' },
+          {
+            name: 'Activity Log',
+            root: 'activity',
+            route: '/dashboard/activity',
+          },
+        ];
       },
     },
-  },
-  mounted() {
-    this.tabs = this.$route.meta.tabs;
   },
 };
 </script>

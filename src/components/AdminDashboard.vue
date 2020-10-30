@@ -50,7 +50,7 @@
           </div>
 
           <el-row type="flex" class="row-bg">
-            <el-col :span="9">
+            <el-col :span="10">
               <DashBoardCard
                 type="amountSupported"
                 title="TOTAL AMOUNT SUPPORTED (GH₵)"
@@ -60,31 +60,12 @@
                 progColor="#52725f"
                 :yrExpert="20000"
                 :percentage="getPercentageData(amountTotal, 20000)"
+                :chartData="barChartData"
               />
-              <br /><br />
-              <div>
-                <el-card
-                  shadow="hover"
-                  style="background: rgba(255,255,255,.3);"
-                >
-                  <div slot="header" class="clearfix">
-                    <span>Total Amount Support per Year</span>
-                  </div>
-                  <bar-chart
-                    :height="120"
-                    :width="280"
-                    v-if="loaded"
-                    :data="barChartData.data"
-                    :labels="barChartData.labels"
-                    :title="barChartData.title"
-                  />
-                </el-card>
-              </div>
             </el-col>
-            <el-col :span="2"> </el-col>
-            <el-col :span="10">
+            <el-col :span="14">
               <div>
-                <dughnut-chart v-if="loaded" />
+                <DoughnutChart :chartData="pieChartData" v-if="loaded" />
               </div>
             </el-col>
           </el-row>
@@ -97,33 +78,28 @@
 <script>
 import dashboardService from '../api/dashboard';
 import DashBoardCard from './DashBoardCard';
-import BarChart from './charts/BarChart';
-import DughnutChart from './charts/DughnutChart';
+import DoughnutChart from './charts/DoughnutChart';
 import { mapGetters } from 'vuex';
 
 export default {
   name: 'adminDashboard',
   components: {
     DashBoardCard,
-    BarChart,
-    DughnutChart,
+    DoughnutChart,
   },
   data() {
     return {
-      pageLoad: true,
       loaded: false,
+      pageLoad: true,
       farmersTotal: 0,
       usersTotal: 0,
       supportTotal: 0,
       amountTotal: 0,
-      barChartData: {
-        data: [1500, 3000, 1200],
-        labels: ['2018', '2019', '2020'],
-        title: 'Supports this year GH₵',
-      },
+      pieChartData: [{ y: 0, label: 'Seedling' }],
+      barChartData: [{ y: 0, label: '2020' }],
     };
   },
-  created() {
+  mounted() {
     this.getDashboardData();
   },
   computed: {
@@ -140,13 +116,27 @@ export default {
           this.usersTotal = response.data.usersTotal;
           this.supportTotal = response.data.totalSupports;
           this.amountTotal = response.data.totalAmountSupported;
-          this.barChartData.labels = response.data.inputYears;
-          this.barChartData.data = response.data.amountsInYears;
+          this.loadPieChartdata(response.data.inputSupportTypes);
+          this.loadBarChartdata(response.data.supportsYearly);
 
-          this.loaded = true;
           this.pageLoad = false;
         })
         .catch((errors) => this.errorMessage(errors.error));
+    },
+    loadBarChartdata(data) {
+      const cxd = data.map((element) => {
+        delete element._id;
+        return element;
+      });
+      this.barChartData = cxd;
+    },
+    loadPieChartdata(data) {
+      const cxd = data.map((element) => {
+        delete element._id;
+        return element;
+      });
+      this.pieChartData = cxd;
+      this.loaded = true;
     },
   },
 };

@@ -1,5 +1,8 @@
 <template>
-  <div id="barChart-container" style="height: 200px; width: 100%;"></div>
+  <div
+    id="chart-container"
+    style="width: 100%; height: 300px; margin: auto"
+  ></div>
 </template>
 
 <script>
@@ -7,28 +10,33 @@ var CanvasJS = require('../../assets/canvasjs.min.js');
 CanvasJS = CanvasJS.Chart ? CanvasJS : window.CanvasJS;
 
 export default {
-  name: 'barChart',
+  name: 'DoughnutChart',
   props: {
     chartData: {
       type: Array,
       default: () => {
         return [];
       },
-      required: true,
     },
   },
   data() {
     return {
       chart: null,
       chartOptions: {
-        theme: 'light2',
+        exportFileName: 'Doughnut Chart',
+        exportEnabled: true,
         animationEnabled: true,
+        legend: {
+          cursor: 'pointer',
+          itemclick: 'explodePie',
+        },
         data: [
           {
-            type: 'column',
+            type: 'doughnut',
             showInLegend: true,
-            legendMarkerColor: 'grey',
-            toolTipContent: '<b>{label}: </b> GH₵{y}',
+            innerRadius: 50,
+            indexLabel: '{name} - #percent%',
+            toolTipContent: '<b>{name}:</b> {y} (#percent%)',
             dataPoints: this.chartData,
           },
         ],
@@ -36,7 +44,7 @@ export default {
     };
   },
   mounted() {
-    this.chart = new CanvasJS.Chart('barChart-container', this.chartOptions);
+    this.chart = new CanvasJS.Chart('chart-container', this.chartOptions);
     this.chart.render();
   },
 };

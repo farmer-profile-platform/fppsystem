@@ -33,7 +33,7 @@ export default {
         data: [
           {
             type: 'doughnut',
-            showInLegend: true,
+            showInLegend: false,
             innerRadius: 50,
             indexLabel: '{name} - #percent%',
             toolTipContent: '<b>{name}:</b> {y} (#percent%)',

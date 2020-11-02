@@ -32,7 +32,10 @@
             >
           </div>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="7">
+          <el-button size="mini" @click="goBack">
+            Back
+          </el-button>
           <el-button
             size="mini"
             icon="el-icon-edit"
@@ -531,6 +534,9 @@ export default {
         .catch((errors) => {
           this.errorMessage(errors.error);
         });
+    },
+    goBack() {
+      this.$router.go(-1);
     },
   },
 };

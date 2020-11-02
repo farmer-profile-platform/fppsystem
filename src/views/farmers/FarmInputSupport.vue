@@ -109,12 +109,12 @@
                     Update Support
                   </span>
                 </el-dropdown-item>
-                <el-dropdown-item>
+                <!-- <el-dropdown-item>
                   <span @click="showEditModal(props.row)">
                     <i class="el-icon-edit" style="margin-right: 10px"></i>
                     Edit Farmer Details
                   </span>
-                </el-dropdown-item>
+                </el-dropdown-item> -->
                 <el-dropdown-item divided>
                   <span @click="confirmDelete(props.row._id)">
                     <i class="el-icon-delete" style="margin-right: 10px"></i>

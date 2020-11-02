@@ -881,7 +881,9 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'EditFarmer',
-  props: ['farmer'],
+  props: {
+    farmer: Object,
+  },
   data() {
     return {
       editFamerDetails: {
@@ -1035,7 +1037,7 @@ export default {
       this.editFamerDetails.firstName = this.farmer.firstName;
       this.editFamerDetails.lastName = this.farmer.lastName;
       this.editFamerDetails.name =
-        this.editFamerDetails.firstName + this.editFamerDetails.lastName;
+        this.editFamerDetails.firstName + ' ' + this.editFamerDetails.lastName;
       this.editFamerDetails.aka = this.farmer.aka;
       this.editFamerDetails.dob = this.farmer.dob;
       this.editFamerDetails.phone = this.farmer.phone;

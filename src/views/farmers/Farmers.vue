@@ -147,12 +147,12 @@
                     Add Farm Support
                   </span>
                 </el-dropdown-item>
-                <el-dropdown-item>
+                <!-- <el-dropdown-item>
                   <span @click="showEditModal(props.row)">
                     <i class="el-icon-edit" style="margin-right: 10px"></i>
                     Edit Farmer
                   </span>
-                </el-dropdown-item>
+                </el-dropdown-item> -->
                 <el-dropdown-item divided>
                   <span @click="confirmDelete(props.row._id, props.row.name)">
                     <i class="el-icon-delete" style="margin-right: 10px"></i>
@@ -201,7 +201,11 @@
     </el-dialog>
 
     <!-- Edit farmer details -->
-    <el-dialog :visible.sync="showEditFarmerModal" fullscreen>
+    <el-dialog
+      :visible.sync="showEditFarmerModal"
+      fullscreen
+      :before-close="closeEditModal"
+    >
       <template slot="title">
         <h3>{{ editTitle }}</h3>
         <p>Edit field and make sure all required fields has data.</p>
@@ -312,6 +316,11 @@ export default {
       this.editTitle = `Edit Farmer Details for ${farmer.name} (${farmer.farmerId})`;
       this.farmer = farmer;
       this.showEditFarmerModal = true;
+    },
+    closeEditModal() {
+      this.farmer = {};
+      this.showEditFarmerModal = false;
+      console.log('edited');
     },
     confirmDelete(id, name) {
       this.$confirm('This will permanently delete farmer data', 'Warning', {

@@ -973,13 +973,13 @@ export default {
             name: '',
             branch: '',
             acc_name: '',
-            acc_number: '',
+            acc_number: '000',
             swift_code: 'None',
           },
         ],
         momo: [
           {
-            phone: '',
+            phone: '024444444',
             name: '',
             network: '',
           },

@@ -1,11 +1,11 @@
 function getApiUrl() {
   let hn = window.location.hostname
   if (hn === 'localhost') {
-    return '127.0.0.1:5000/api/v1'
+    return 'http://api.fppghana.com/api/v1/'
   } else if (hn == 'fppghana.com') {
-    return 'http://api.fppghana.com/api/v1'
+    return 'http://api.fppghana.com/api/v1/'
   } else {
-    return 'http://api.fppghana.com/api/v1'
+    return 'http://api.fppghana.com/api/v1/'
   }
 }
 

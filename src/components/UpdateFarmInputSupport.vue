@@ -13,7 +13,7 @@
           type="text"
           style="color:red; margin-top: 30px;"
           size="mini"
-          @click="removeInputSupport(index)"
+          @click="removeInputSupport(year._id, index)"
           >Delete all input support for this year( {{ year.year }} )</el-button
         >
         <el-row :gutter="20" v-for="(support, idx) in year.inputs" :key="idx">
@@ -150,10 +150,24 @@
 import supportService from '../api/inputSupports';
 
 export default {
-  name: 'AddInputSupport',
   props: {
     selectedName: String,
     selectedFarmerId: String,
+    selectedInputs: {
+      type: Array,
+      default: function() {
+        return [
+          {
+            farmer: '',
+            year: '',
+            grand_total: 0,
+            inputs: [
+              { type: '', name: '', unit_price: 0, quantity: 1, total: 0 },
+            ],
+          },
+        ];
+      },
+    },
   },
   data() {
     return {
@@ -198,7 +212,9 @@ export default {
     };
   },
   created() {
+    this.inputSupportForm.inputSupport = this.selectedInputs;
     this.inputSupportForm.inputSupport[0].farmer = this.selectedFarmerId;
+    console.log(this.inputSupportForm.inputSupport);
   },
   methods: {
     addInputSupportField() {
@@ -216,8 +232,16 @@ export default {
           },
         ],
       };
-      this.inputSupportForm.inputSupport.push(s);
-      this.infoMessage('Added another year');
+      supportService
+        .addInputSupport(s)
+        .then((response) => {
+          this.inputSupportForm.inputSupport.push(response.data);
+          this.infoMessage('Added another year');
+          console.log(this.inputSupportForm);
+        })
+        .catch((errors) => {
+          this.errorMessage(errors.error);
+        });
     },
     setTotal(input, yrs) {
       input.total = input.unit_price * input.quantity;
@@ -229,28 +253,35 @@ export default {
     },
     loopOverSupports() {
       this.inputSupportForm.inputSupport.forEach((support) =>
-        this.addInputSupport(support)
+        this.updateInputSupport(support)
       );
     },
-    addInputSupport(support) {
+    updateInputSupport(support) {
       this.btnLoading = true;
       supportService
-        .addInputSupport(support)
+        .updateSupport(support)
         .then(() => {
           this.addActivity(
             { _id: this.selectedFarmerId, name: this.selectedName },
-            'Support Added'
+            'Support Updated'
           );
           this.btnLoading = false;
-          this.$emit('addedInput');
+          this.$emit('updateInput');
         })
         .catch((errors) => {
           this.btnLoading = false;
           this.errorMessage(errors.error);
         });
     },
-    removeInputSupport(index) {
+    removeInputSupport(id, index) {
       this.inputSupportForm.inputSupport.splice(index, 1);
+      supportService.deleteSupport(id).then(() => {
+        this.addActivity(
+          { _id: this.selectedFarmerId, name: this.selectedName },
+          'Support Deleted'
+        );
+        this.successNotification('Success', 'Support deleted');
+      });
     },
   },
 };

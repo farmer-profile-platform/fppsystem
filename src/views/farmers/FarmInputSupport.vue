@@ -158,11 +158,11 @@
         <h3>{{ inputSupportTitle }}</h3>
         <p>Take note of the unit details and amounts.</p>
       </template>
-      <AddFarmInputSupport
-        :selectedId.sync="selectedId"
+      <UpdateFarmInputSupport
+        :selectedFarmerId.sync="selectedFarmerId"
         :selectedName="selectedName"
         :selectedInputs.sync="selectedInputs"
-        v-on:addedInput="inputUpdated"
+        v-on:updateInput="inputUpdated"
       />
     </el-dialog>
 
@@ -239,13 +239,13 @@
 <script>
 import farmersService from '../../api/farmers';
 import EditFarmerDetails from './EditFarmerDetails';
-import AddFarmInputSupport from '../../components/AddFarmInputSupport';
+import UpdateFarmInputSupport from '../../components/UpdateFarmInputSupport';
 
 export default {
   name: 'farmers',
   components: {
     EditFarmerDetails,
-    AddFarmInputSupport,
+    UpdateFarmInputSupport,
   },
   data() {
     return {
@@ -257,7 +257,7 @@ export default {
       showUpdateSupportModal: false,
       inputSupportTitle: '',
       selectedName: '',
-      selectedId: '',
+      selectedFarmerId: '',
       selectedInputs: [],
       editTitle: '',
       farmer: {},
@@ -315,7 +315,7 @@ export default {
     },
     showSupportUpdate(farmer) {
       this.inputSupportTitle = 'Update Farm Support for ' + farmer.name;
-      this.selectedId = farmer._id;
+      this.selectedFarmerId = farmer._id;
       this.selectedName = farmer.name;
       this.selectedInputs = farmer.inputSupports;
       this.showUpdateSupportModal = true;

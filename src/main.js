@@ -6,7 +6,6 @@ import { store } from "./store/";
 
 import "@/assets/css/base.css";
 import "./plugins/element/index.js";
-import "./registerServiceWorker";
 
 Vue.mixin(mixin)
 Vue.config.productionTip = false;

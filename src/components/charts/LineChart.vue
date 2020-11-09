@@ -1,5 +1,8 @@
 <template>
-  <div id="chart-container" style="height: 250px;"></div>
+  <div
+    id="chart-container"
+    style="width: 100%; height: 280px; margin: auto"
+  ></div>
 </template>
 
 <script>
@@ -7,7 +10,7 @@ var CanvasJS = require('../../assets/canvasjs.min.js');
 CanvasJS = CanvasJS.Chart ? CanvasJS : window.CanvasJS;
 
 export default {
-  name: 'DoughnutChart',
+  name: 'LineChart',
   props: {
     chartData: {
       type: Array,
@@ -20,21 +23,14 @@ export default {
     return {
       chart: null,
       chartOptions: {
-        exportFileName: 'Doughnut Chart',
-        exportEnabled: true,
-        animationEnabled: true,
-        legend: {
-          cursor: 'pointer',
-          itemclick: 'explodePie',
-        },
         data: [
           {
-            type: 'doughnut',
-            showInLegend: false,
-            innerRadius: 50,
-            indexLabel: '{name} - #percent%',
-            toolTipContent: '<b>{name}:</b> GH₵{y} (#percent%)',
-            dataPoints: this.chartData,
+            type: 'line',
+            indexLabelFontSize: 16,
+            dataPoints: [
+              { y: 3200, label: '2020' },
+              { y: 800, label: '2019' },
+            ],
           },
         ],
       },

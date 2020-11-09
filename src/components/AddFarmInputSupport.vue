@@ -24,8 +24,8 @@
                 style="width:100%; margin-top:-12px"
               >
                 <el-option
-                  v-for="type in inputTypes"
-                  :key="type"
+                  v-for="(type, tidx) in inputTypes"
+                  :key="tidx"
                   :label="type.value"
                   :value="type.value"
                 >
@@ -102,6 +102,7 @@
                 v-model="year.year"
                 style="width:100%; margin-top:-12px"
               >
+                <el-option label="2019" value="2019"></el-option>
                 <el-option label="2020" value="2020"></el-option>
                 <el-option label="2021" value="2021"></el-option>
               </el-select>
@@ -175,7 +176,6 @@ export default {
       inputSupportForm: {
         inputSupport: [
           {
-            _id: '',
             farmer: '',
             year: '2020',
             grand_total: 0,
@@ -232,14 +232,8 @@ export default {
           },
         ],
       };
-      supportService
-        .addInputSupport(s)
-        .then((response) => {
-          s = response.data;
-          this.infoMessage('Added another year');
-          this.inputSupportForm.inputSupport.push(s);
-        })
-        .catch((errors) => this.errorMessage(errors.error));
+      this.inputSupportForm.inputSupport.push(s);
+      this.infoMessage('Added another year');
     },
     setTotal(input, yrs) {
       input.total = input.unit_price * input.quantity;
@@ -251,18 +245,18 @@ export default {
     },
     loopOverSupports() {
       this.inputSupportForm.inputSupport.forEach((support) =>
-        this.updateInputSupport(support)
+        this.addInputSupport(support)
       );
     },
-    updateInputSupport(support) {
+    addInputSupport(support) {
       this.btnLoading = true;
       console.log(support);
       supportService
-        .updateSupport(support)
+        .addInputSupport(support)
         .then(() => {
           this.addActivity(
             { _id: this.selectedFarmerId, name: this.selectedName },
-            'Support Updated'
+            'Support Added'
           );
           this.btnLoading = false;
           this.$emit('addedInput');

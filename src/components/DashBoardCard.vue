@@ -42,7 +42,7 @@
     </div>
 
     <el-dialog
-      title="Yearly Data for Inout Supports (GH₵)"
+      title="Yearly Data for Input Supports (GH₵)"
       :visible.sync="showBarChart"
       width="40%"
     >

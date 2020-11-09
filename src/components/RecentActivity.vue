@@ -19,7 +19,7 @@
     </el-tag>
 
     <div class="align_center">
-      <router-link to="/activities">
+      <router-link to="/dashboard/activity">
         <el-button type="text">View all</el-button>
       </router-link>
     </div>

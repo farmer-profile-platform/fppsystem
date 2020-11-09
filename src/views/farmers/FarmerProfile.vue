@@ -342,8 +342,28 @@
 
         <!-- Analytics -->
         <el-collapse-item title="Analytics" name="5">
-          <div>
-            No analytics.
+          <div class="profile-tab-bg pt-0">
+            <el-row type="flex" justify="space-between">
+              <el-col :span="24">
+                <div style="text-align:center; margin-bottom: 15px;">
+                  <el-button
+                    @click="showBarChart = true"
+                    size="mini"
+                    icon="el-icon-view"
+                    >See Farm Yield Income</el-button
+                  >
+                </div>
+                <el-dialog
+                  title="Yearly Farm Yield Income (GH₵)"
+                  :visible.sync="showBarChart"
+                  width="40%"
+                >
+                  <div>
+                    <BarChart :chartData="chartData" />
+                  </div>
+                </el-dialog>
+              </el-col>
+            </el-row>
           </div>
         </el-collapse-item>
 
@@ -473,6 +493,8 @@
 </template>
 
 <script>
+import BarChart from '../../components/charts/BarChart';
+import dashboardService from '../../api/reports';
 import farmersService from '../../api/farmers';
 import EditFarmerDetails from './EditFarmerDetails';
 
@@ -480,14 +502,18 @@ export default {
   name: 'FarmerProfile',
   components: {
     EditFarmerDetails,
+    BarChart,
   },
   data() {
     return {
+      showBarChart: false,
       showEditFarmerModal: false,
       editTitle: '',
       activeTab: 'personal',
       loading: false,
       farmer: {},
+      chartData: [],
+      chartLoaded: false,
     };
   },
   created() {
@@ -501,7 +527,23 @@ export default {
       this.farmer.created = this.farmer.createdAt
         ? this.farmer.createdAt
         : Date.now();
+      if (this.farmer.farmerId) this.getFarmerAnalysis(this.farmer.farmerId);
       this.loading = false;
+    },
+    getFarmerAnalysis(farmerId) {
+      dashboardService
+        .getFarmerReports(farmerId)
+        .then((response) => {
+          const cxd = response.data.map((element) => {
+            delete element._id;
+            return element;
+          });
+          this.chartData = cxd;
+          // this.chartLoaded = true;
+        })
+        .catch((errors) => {
+          this.errorMessage(errors.error);
+        });
     },
     showEditModal() {
       this.editTitle = 'Edit Farmer Details for ' + this.farmer.name;

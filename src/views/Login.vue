@@ -133,7 +133,7 @@ export default {
             })
             .catch((errors) => {
               console.log(errors);
-              self.errorMessage(errors.error);
+              self.errorMessage('Error with authentication');
               self.btnLoading = false;
             });
         } else {

@@ -3,13 +3,15 @@ function getApiUrl() {
   if (hn === 'localhost') {
     return 'http://api.fppghana.com/api/v1/'
   } else if (hn == 'fppghana.com') {
-    return 'http://api.fppghana.com/api/v1/'
+    return 'https://api-farmer-pro.herokuapp.com/api/v1/'
   } else {
-    return 'http://api.fppghana.com/api/v1/'
+    return 'https://api-farmer-pro.herokuapp.com/api/v1/'
   }
 }
 
 const API_URL = getApiUrl();
+
+// http://api.fppghana.com/api/v1/
 
 export default {
   LOGIN_URL: API_URL + 'auth/login',

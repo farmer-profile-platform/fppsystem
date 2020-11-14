@@ -391,14 +391,8 @@
                 </el-form-item>
               </el-col>
               <el-col :span="10">
-                <el-form-item label="Date of Birth">
-                  <el-date-picker
-                    type="date"
-                    placeholder="Date of birth"
-                    style="width: 100%; margin-top:-12px"
-                    v-model="child.dob"
-                  >
-                  </el-date-picker>
+                <el-form-item label="Child's Age">
+                  <el-input v-model.number="child.dob" />
                 </el-form-item>
               </el-col>
               <el-col :span="3">

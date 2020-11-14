@@ -205,7 +205,7 @@
                   </el-col>
                   <el-col :span="6">
                     <p>Age</p>
-                    <h5>{{ getuserAge(children.dob) }} years</h5>
+                    <h5>{{ children.dob }} years</h5>
                   </el-col>
                   <el-col :span="6"> </el-col>
                   <el-col :span="6"> </el-col>

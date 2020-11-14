@@ -20,7 +20,7 @@ export default {
     return {
       chart: null,
       chartOptions: {
-        exportFileName: 'Doughnut Chart',
+        exportFileName: 'Input Types Chart',
         exportEnabled: true,
         animationEnabled: true,
         legend: {
@@ -30,7 +30,7 @@ export default {
         data: [
           {
             type: 'doughnut',
-            showInLegend: false,
+            showInLegend: true,
             innerRadius: 50,
             indexLabel: '{name} - #percent%',
             toolTipContent: '<b>{name}:</b> GH₵{y} (#percent%)',

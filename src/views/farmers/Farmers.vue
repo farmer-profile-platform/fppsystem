@@ -9,13 +9,6 @@
         @click="addFarmerModal"
         >Add New Farmer</el-button
       >
-      <el-button
-        icon="el-icon-delete"
-        type="danger"
-        size="mini"
-        v-if="actionButtons"
-        >Delete All</el-button
-      >
     </div>
     <div>
       <el-input

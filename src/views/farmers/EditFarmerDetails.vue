@@ -693,10 +693,10 @@
                     style="width:100%; margin-top:-12px"
                   >
                     <el-option
-                      v-for="bank in banks"
-                      :key="bank"
-                      :label="bank"
-                      :value="bank"
+                      v-for="(cb, cbi) in banks"
+                      :key="cbi"
+                      :label="cb"
+                      :value="cb"
                     ></el-option>
                   </el-select>
 
@@ -711,10 +711,10 @@
                     style="width:100%; margin-top:-12px"
                   >
                     <el-option
-                      v-for="bank in ruralBanks"
-                      :key="bank"
-                      :label="bank"
-                      :value="bank"
+                      v-for="(rb, rbindex) in ruralBanks"
+                      :key="rbindex"
+                      :label="rb"
+                      :value="rb"
                     ></el-option>
                   </el-select>
 
@@ -729,10 +729,10 @@
                     style="width:100%; margin-top:-12px"
                   >
                     <el-option
-                      v-for="bank in savingsLoans"
-                      :key="bank"
-                      :label="bank"
-                      :value="bank"
+                      v-for="(sl, slindex) in savingsLoans"
+                      :key="slindex"
+                      :label="sl"
+                      :value="sl"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -875,9 +875,7 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'EditFarmer',
-  props: {
-    farmer: Object,
-  },
+  props: ['farmer'],
   data() {
     return {
       editFamerDetails: {
@@ -1023,6 +1021,9 @@ export default {
       ruralBanks: 'getRuralBanks',
       savingsLoans: 'getSavingsLoans',
     }),
+  },
+  beforeDestroy: function() {
+    console.log('destroyed');
   },
   methods: {
     getFarmerDetails() {

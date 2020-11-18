@@ -12,6 +12,9 @@ export default {
     })
   },
   methods: {
+    // clearEmptyObjects(arrData) {
+
+    // },
     hasInputSupport(inputSupports) {
       let s = inputSupports;
       return Array.isArray(s) && s.length;

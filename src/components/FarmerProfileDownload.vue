@@ -27,31 +27,52 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export default {
   name: 'ProfileDownload',
   props: {
-    farmer: Object,
+    selectedFarmer: Object,
   },
   data() {
     return {
       dataLoading: false,
+      farmer: null,
       spouseInfo: [],
+      childrenInfo: [],
       hasSupport: false,
+      hasSpouse: false,
     };
   },
   created() {
+    this.farmer = this.selectedFarmer;
     this.loadData();
   },
   methods: {
     loadData() {
       let self = this;
       this.spouseInfo = [];
-      this.hasSupport = is.empty(this.farmer.inputSupport);
+      this.childrenInfo = [];
+      this.hasSpouse = this.farmer.marital_status === 'Married' ? true : false;
+      this.farmer.spouse = this.hasSpouse ? this.farmer.spouse : [];
 
-      this.spouseInfo.push(this.getTableTitle('Spouse Information'));
-      this.farmer.spouse.forEach(function(spouse) {
-        for (var i in spouse) {
-          self.addSpouseInfoItem(i, spouse[i]);
-        }
-      });
+      // Spouse Info
+      this.spouseInfo.push(
+        this.getTableTitle(`Spouse Information(${this.farmer.spouse.length})`)
+      );
+      if (this.hasSpouse) {
+        this.farmer.spouse.forEach(function(spouse) {
+          for (var i in spouse) {
+            self.addSpouseInfoItem(i, spouse[i]);
+          }
+        });
+      } else {
+        this.spouseInfo.push([
+          {
+            colSpan: 3,
+            text: 'Farmer has no spouse',
+            alignment: 'left',
+            style: 'tableCell',
+          },
+        ]);
+      }
       this.embedPDF();
+      this.dataLoading = false;
     },
     getTableTitle(title) {
       return [
@@ -62,7 +83,7 @@ export default {
     },
     addSpouseInfoItem(label, answer) {
       this.spouseInfo.push([
-        { text: 1, style: 'tableCellOne' },
+        { text: '', style: 'tableCellOne' },
         { text: label, style: 'tableCell' },
         { text: answer, style: 'tableCell' },
       ]);

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <AppHandler ref="handleAction" model="Application"></AppHandler>
     <div class="flex_justify_between">
       <el-button
         icon="el-icon-plus"
@@ -97,7 +98,7 @@
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column align="right">
+        <el-table-column align="right" width="68px">
           <template slot-scope="props">
             <el-tooltip
               class="item"
@@ -113,6 +114,10 @@
                 @click="downloadProfile(props.row)"
               ></el-button>
             </el-tooltip>
+          </template>
+        </el-table-column>
+        <el-table-column align="right">
+          <template slot-scope="props">
             <el-dropdown class="ml-1">
               <!-- <img src="../assets/images/morep.svg" alt="more" style="margin-top:10px;"/> -->
               <i class="el-icon-more fa-rotate-45"></i>
@@ -132,20 +137,18 @@
                 <el-dropdown-item>
                   <span
                     v-if="!hasInputSupport(props.row.inputSupports)"
-                    @click="
-                      showInputSupport(props.row._id, props.row.firstName)
-                    "
+                    @click="addInputSupport(props.row._id, props.row.firstName)"
                   >
                     <i class="el-icon-s-flag" style="margin-right: 10px"></i>
                     Add Farm Support
                   </span>
                 </el-dropdown-item>
-                <!-- <el-dropdown-item>
-                  <span @click="showEditModal(props.row)">
+                <el-dropdown-item>
+                  <span @click="editFarmer(props.row)">
                     <i class="el-icon-edit" style="margin-right: 10px"></i>
                     Edit Farmer
                   </span>
-                </el-dropdown-item> -->
+                </el-dropdown-item>
                 <el-dropdown-item divided>
                   <span @click="confirmDelete(props.row._id, props.row.name)">
                     <i class="el-icon-delete" style="margin-right: 10px"></i>
@@ -179,84 +182,29 @@
       </template>
       <AddNewFarmers v-on:addedFarmer="farmerAdded" />
     </el-dialog>
-
-    <!-- Add farmer Input Support -->
-    <el-dialog :visible.sync="showInputSupportModal" width="58%">
-      <template slot="title">
-        <h3>{{ inputSupportTitle }}</h3>
-        <p>Take note of the unit details and amounts.</p>
-      </template>
-      <AddFarmInputSupport
-        :selectedFarmerId.sync="selectedFarmerId"
-        :selectedName="selectedName"
-        v-on:addedInput="inputAdded"
-      />
-    </el-dialog>
-
-    <!-- Edit farmer details -->
-    <el-dialog
-      :visible.sync="showEditFarmerModal"
-      fullscreen
-      :before-close="closeEditModal"
-    >
-      <template slot="title">
-        <h3>{{ editTitle }}</h3>
-        <p>Edit field and make sure all required fields has data.</p>
-      </template>
-      <EditFarmerDetails
-        :farmer.sync="farmer"
-        v-on:editedFarmer="farmerEdited"
-      />
-    </el-dialog>
-
-    <!-- Download -->
-    <el-dialog
-      :title="downloadTitle"
-      append-to-body
-      :close-on-click-modal="false"
-      :visible.sync="showDownloadModal"
-    >
-      <FarmerProfileDownload :farmer.sync="farmer" />
-    </el-dialog>
   </div>
 </template>
 
 <script>
 import farmersService from '../../api/farmers';
 import AddNewFarmers from '../../components/AddNewFarmers';
-import EditFarmerDetails from './EditFarmerDetails';
-import AddFarmInputSupport from '../../components/AddFarmInputSupport';
-import FarmerProfileDownload from '../../components/FarmerProfileDownload';
+const AppHandler = () => import('../../handlers/AppHandler');
+
 import { mapGetters } from 'vuex';
 
 export default {
   name: 'farmers',
   components: {
     AddNewFarmers,
-    EditFarmerDetails,
-    AddFarmInputSupport,
-    FarmerProfileDownload,
+    AppHandler,
   },
   data() {
     return {
-      actionButtons: false,
-      farmerSelected: null,
       tableData: [],
-      farmer: {},
       tableLoading: false,
       showAddFarmerModal: false,
-      showEditFarmerModal: false,
-      showInputSupportModal: false,
-      showDownloadModal: false,
-      btnLoading: false,
-      editTitle: '',
-      inputSupportTitle: '',
-      downloadTitle: '',
-      selectedFarmerId: null,
-      selectedName: '',
       currentPage: 1,
       total: 3,
-      inputTotal: 0,
       search: '',
     };
   },
@@ -299,21 +247,15 @@ export default {
         this.total = this.tableData.length;
       }
     },
-    showInputSupport(id, name) {
-      this.selectedFarmerId = id;
-      this.selectedName = name;
-      this.inputSupportTitle = 'Add Farm Support for ' + name;
-      this.showInputSupportModal = true;
+    addInputSupport(farmerId, name) {
+      this.$refs.handleAction.addInputSupportData(
+        farmerId,
+        name,
+        this.getFarmers
+      );
     },
-    showEditModal(farmer) {
-      this.editTitle = `Edit Farmer Details for ${farmer.name} (${farmer.farmerId})`;
-      this.farmer = farmer;
-      this.showEditFarmerModal = true;
-    },
-    closeEditModal() {
-      this.farmer = {};
-      this.showEditFarmerModal = false;
-      console.log('edited');
+    editFarmer(farmer) {
+      this.$refs.handleAction.editFarmerInfo(farmer, this.getFarmers);
     },
     confirmDelete(id, name) {
       this.$confirm('This will permanently delete farmer data', 'Warning', {
@@ -342,21 +284,10 @@ export default {
       this.showAddFarmerModal = true;
     },
     downloadProfile(farmer) {
-      this.downloadTitle =
-        'Download ' + farmer.name + ' Profile (' + farmer.farmerId + ')';
-      this.farmer = farmer;
-      this.showDownloadModal = true;
+      this.$refs.handleAction.viewDownload(farmer);
     },
     farmerAdded() {
       this.showAddFarmerModal = false;
-      this.getFarmers();
-    },
-    farmerEdited() {
-      this.showEditFarmerModal = false;
-      this.getFarmers();
-    },
-    inputAdded() {
-      this.showInputSupportModal = false;
       this.getFarmers();
     },
     handleCurrentChange(page) {

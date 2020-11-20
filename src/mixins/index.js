@@ -12,9 +12,6 @@ export default {
     })
   },
   methods: {
-    // clearEmptyObjects(arrData) {
-
-    // },
     hasInputSupport(inputSupports) {
       let s = inputSupports;
       return Array.isArray(s) && s.length;
@@ -123,7 +120,7 @@ export default {
     },
     getHostName() {
       let hn = window.location.hostname
-      let uploadUrl = hn == 'localhost' ? "http://127.0.0.1:5000/uploads/" : "https://api-farmer-pro.herokuapp.com/uploads/"
+      let uploadUrl = hn == 'localhost' ? "http://127.0.0.1:5000/uploads/" : "https://hopemorganfirm.com/uploads/"
       return uploadUrl;
     },
     checkEmptyArray(data) {

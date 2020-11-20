@@ -27,20 +27,23 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export default {
   name: 'ProfileDownload',
   props: {
-    selectedFarmer: Object,
+    farmer: Object,
   },
   data() {
     return {
       dataLoading: false,
-      farmer: null,
       spouseInfo: [],
       childrenInfo: [],
+      harvestInfo: [],
+      supportsInfo: [],
+      bankInfo: [],
+      momoInfo: [],
       hasSupport: false,
       hasSpouse: false,
+      hasSupports: false,
     };
   },
   created() {
-    this.farmer = this.selectedFarmer;
     this.loadData();
   },
   methods: {
@@ -48,19 +51,20 @@ export default {
       let self = this;
       this.spouseInfo = [];
       this.childrenInfo = [];
+      this.harvestInfo = [];
+      this.supportsInfo = [];
+      this.momoInfo = [];
+      this.bankInfo = [];
       this.hasSpouse = this.farmer.marital_status === 'Married' ? true : false;
       this.farmer.spouse = this.hasSpouse ? this.farmer.spouse : [];
+      this.hasSupports = this.hasInputSupport(this.farmer.inputSupports);
 
       // Spouse Info
       this.spouseInfo.push(
         this.getTableTitle(`Spouse Information(${this.farmer.spouse.length})`)
       );
       if (this.hasSpouse) {
-        this.farmer.spouse.forEach(function(spouse) {
-          for (var i in spouse) {
-            self.addSpouseInfoItem(i, spouse[i]);
-          }
-        });
+        self.addSpouseInfoItem(this.farmer.spouse[0]);
       } else {
         this.spouseInfo.push([
           {
@@ -71,6 +75,84 @@ export default {
           },
         ]);
       }
+
+      // children info
+      this.childrenInfo.push(
+        this.getTableTitle(`Children Information(${this.farmer.num_children})`)
+      );
+      if (this.farmer.num_children > 0) {
+        self.addChildrenInfoItem(this.farmer.children[0]);
+      } else {
+        this.childrenInfo.push([
+          {
+            colSpan: 3,
+            text: 'Farmer has no children',
+            alignment: 'left',
+            style: 'tableCell',
+          },
+        ]);
+      }
+
+      // Harvest info
+      this.harvestInfo.push(this.getTableTitle('Harvest Information'));
+      if (this.farmer.num_children > 0) {
+        self.addHarvestInfoItem(this.farmer.harvestYield[0]);
+      } else {
+        this.harvestInfo.push([
+          {
+            colSpan: 3,
+            text: 'Farmer has no harvest info',
+            alignment: 'left',
+            style: 'tableCell',
+          },
+        ]);
+      }
+
+      // inputSupports info
+      this.supportsInfo.push(this.getTableTitle('Support Information'));
+      if (this.hasSupports) {
+        self.addSupportInfoItem(this.farmer.inputSupports[0]);
+      } else {
+        this.supportsInfo.push([
+          {
+            colSpan: 3,
+            text: 'Farmer has no support yet',
+            alignment: 'left',
+            style: 'tableCell',
+          },
+        ]);
+      }
+
+      // bankInfo
+      this.bankInfo.push(this.getTableTitle('Bank Information'));
+      if (this.farmer.bank.length > 0) {
+        self.addBankInfoItem(this.farmer.bank[0]);
+      } else {
+        this.bankInfo.push([
+          {
+            colSpan: 3,
+            text: 'Farmer has no bank info',
+            alignment: 'left',
+            style: 'tableCell',
+          },
+        ]);
+      }
+
+      // momo info
+      this.momoInfo.push(this.getTableTitle('Mobile Money Information'));
+      if (this.farmer.momo.length > 0) {
+        self.addMomoInfoItem(this.farmer.momo[0]);
+      } else {
+        this.momoInfo.push([
+          {
+            colSpan: 3,
+            text: 'Farmer has no mobile money account',
+            alignment: 'left',
+            style: 'tableCell',
+          },
+        ]);
+      }
+
       this.embedPDF();
       this.dataLoading = false;
     },
@@ -81,11 +163,116 @@ export default {
         '',
       ];
     },
-    addSpouseInfoItem(label, answer) {
+    addSpouseInfoItem(answer) {
       this.spouseInfo.push([
-        { text: '', style: 'tableCellOne' },
-        { text: label, style: 'tableCell' },
-        { text: answer, style: 'tableCell' },
+        { text: '1', style: 'tableCellOne' },
+        { text: 'Name', style: 'tableCell' },
+        { text: answer.firstName + ' ' + answer.lastName, style: 'tableCell' },
+      ]);
+      this.spouseInfo.push([
+        { text: '2', style: 'tableCellOne' },
+        { text: 'Date of Birth', style: 'tableCell' },
+        { text: answer.dob, style: 'tableCell' },
+      ]);
+      this.spouseInfo.push([
+        { text: '3', style: 'tableCellOne' },
+        { text: 'Contact', style: 'tableCell' },
+        { text: answer.phone, style: 'tableCell' },
+      ]);
+    },
+    addChildrenInfoItem(answer) {
+      this.childrenInfo.push([
+        { text: '1', style: 'tableCellOne' },
+        { text: 'Name', style: 'tableCell' },
+        { text: answer.name, style: 'tableCell' },
+      ]);
+      this.childrenInfo.push([
+        { text: '2', style: 'tableCellOne' },
+        { text: 'Age', style: 'tableCell' },
+        { text: answer.dob + ' years', style: 'tableCell' },
+      ]);
+    },
+    addHarvestInfoItem(answer) {
+      this.harvestInfo.push([
+        { text: '1', style: 'tableCellOne' },
+        { text: 'Crop', style: 'tableCell' },
+        { text: answer.crop_name, style: 'tableCell' },
+      ]);
+      this.harvestInfo.push([
+        { text: '2', style: 'tableCellOne' },
+        { text: 'Acres', style: 'tableCell' },
+        { text: answer.acres + ' acres', style: 'tableCell' },
+      ]);
+      this.harvestInfo.push([
+        { text: '3', style: 'tableCellOne' },
+        { text: 'Yearly Harvest', style: 'tableCell' },
+        { text: answer.years[0].yearly_harvest + ' bags', style: 'tableCell' },
+      ]);
+      this.harvestInfo.push([
+        { text: '4', style: 'tableCellOne' },
+        { text: 'Yearly Income', style: 'tableCell' },
+        { text: 'GHc ' + answer.years[0].yearly_income, style: 'tableCell' },
+      ]);
+      this.harvestInfo.push([
+        { text: '5', style: 'tableCellOne' },
+        { text: 'Year', style: 'tableCell' },
+        { text: answer.years[0].year, style: 'tableCell' },
+      ]);
+    },
+    addSupportInfoItem(answer) {
+      this.supportsInfo.push([
+        { text: '1', style: 'tableCellOne' },
+        { text: 'Year', style: 'tableCell' },
+        { text: answer.year, style: 'tableCell' },
+      ]);
+      this.supportsInfo.push([
+        { text: '2', style: 'tableCellOne' },
+        { text: 'Grand Total', style: 'tableCell' },
+        { text: 'GHc ' + answer.grand_total, style: 'tableCell' },
+      ]);
+      this.supportsInfo.push([
+        { text: '3', style: 'tableCellOne' },
+        { text: 'Number of Inputs', style: 'tableCell' },
+        { text: answer.inputs.length, style: 'tableCell' },
+      ]);
+    },
+    addBankInfoItem(answer) {
+      this.bankInfo.push([
+        { text: '1', style: 'tableCellOne' },
+        { text: 'Name', style: 'tableCell' },
+        { text: answer.name, style: 'tableCell' },
+      ]);
+      this.bankInfo.push([
+        { text: '2', style: 'tableCellOne' },
+        { text: 'Branch', style: 'tableCell' },
+        { text: answer.branch, style: 'tableCell' },
+      ]);
+      this.bankInfo.push([
+        { text: '3', style: 'tableCellOne' },
+        { text: 'Account Number', style: 'tableCell' },
+        { text: answer.acc_number, style: 'tableCell' },
+      ]);
+      this.bankInfo.push([
+        { text: '4', style: 'tableCellOne' },
+        { text: 'Name on Account', style: 'tableCell' },
+        { text: answer.acc_name, style: 'tableCell' },
+      ]);
+    },
+    addMomoInfoItem(answer) {
+      this.momoInfo.push([
+        { text: '1', style: 'tableCellOne' },
+        { text: 'Name', style: 'tableCell' },
+        { text: answer.name, style: 'tableCell' },
+      ]);
+      this.momoInfo.push([
+        { text: '2', style: 'tableCellOne' },
+        { text: 'Number', style: 'tableCell' },
+        { text: answer.phone, style: 'tableCell' },
+      ]);
+      this.momoInfo.push([
+        { text: '3', style: 'tableCellOne' },
+        { text: 'Network', style: 'tableCell' },
+        { text: answer.network, style: 'tableCell' },
       ]);
     },
     getFileName() {
@@ -128,6 +315,7 @@ export default {
         id_number: this.farmer.id_number,
         years_farming: this.farmer.years_farming,
         photo: this.getImageFile(this.farmer.photo),
+        farm_location: this.farmer.farm_location,
       };
       return details[detail];
     },
@@ -327,6 +515,7 @@ export default {
                     bold: true,
                     text: 'Years of Farming:',
                   },
+                  { margin: [0, 0, 0, 3], bold: true, text: 'Farm Location:' },
                 ],
               },
               {
@@ -352,11 +541,20 @@ export default {
                     margin: [0, 0, 0, 3],
                     text: this.getProfileDetails('years_farming'),
                   },
+                  {
+                    margin: [0, 0, 0, 3],
+                    text: this.getProfileDetails('farm_location'),
+                  },
                 ],
               },
             ],
           },
           self.addTable(self.spouseInfo),
+          self.addTable(self.childrenInfo),
+          self.addTable(self.harvestInfo),
+          self.addTable(self.supportsInfo),
+          self.addTable(self.bankInfo),
+          self.addTable(self.momoInfo),
         ],
         styles: {
           topsection: {

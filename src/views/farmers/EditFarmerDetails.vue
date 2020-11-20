@@ -1023,6 +1023,7 @@ export default {
     }),
   },
   beforeDestroy: function() {
+    this.farmer = null;
     console.log('destroyed');
   },
   methods: {

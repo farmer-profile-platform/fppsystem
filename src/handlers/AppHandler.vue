@@ -9,7 +9,7 @@
       :visible.sync="showDownloadModal"
     >
       <FarmerProfileDownload
-        :selectedFarmer.sync="selectedFarmer"
+        :farmer.sync="selectedFarmer"
         v-if="showDownloadModal"
       />
     </el-dialog>

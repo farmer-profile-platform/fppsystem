@@ -378,7 +378,7 @@
                 <el-input-number
                   v-model="addFamerDetails.num_children"
                   :min="0"
-                  :max="30"
+                  :max="100"
                 />
               </el-form-item>
             </el-col>
@@ -392,7 +392,9 @@
               </el-col>
               <el-col :span="10">
                 <el-form-item label="Child's Age">
-                  <el-input v-model.number="child.dob" />
+                  <el-input type="number" v-model="child.dob">
+                    <template slot="append">years</template>
+                  </el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="3">

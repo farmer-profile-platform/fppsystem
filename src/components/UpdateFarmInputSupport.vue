@@ -96,7 +96,7 @@
           <hr />
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="10">
+          <el-col :span="8">
             <el-form-item label="Year">
               <el-select
                 v-model="year.year"
@@ -108,7 +108,15 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="10">
+          <el-col :span="7">
+            <el-form-item label="Season">
+              <el-select v-model="year.season" placeholder="Select">
+                <el-option label="Major Season" value="major" />
+                <el-option label="Minor Season" value="minor" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="9">
             <el-form-item label="Grand Total">
               <el-input v-model="year.grand_total" type="number" disabled>
                 <template slot="prepend">GH₵</template>
@@ -191,36 +199,24 @@ export default {
         ],
       },
       inputTypes: [
-        {
-          value: 'Seedling',
-          label: 'Organic Input & Agrochemical (Fertilizers)',
-        },
-        {
-          value: 'Farm Technology',
-          label:
-            'Crop Insurance, Crop disease diagnotics tools, Irrigation tech',
-        },
-        {
-          value: 'Farm Implements',
-          label: 'Tractor and other farm machinery',
-        },
-        {
-          value: 'Farmer Capacity Training',
-          label: 'Farmer Capacity Training',
-        },
+        'Seeds',
+        'FarmTech',
+        'Training',
+        'Fertilizers',
+        'Crop Insurance',
       ],
     };
   },
   created() {
     this.inputSupportForm.inputSupport = this.selectedInputs;
     this.inputSupportForm.inputSupport[0].farmer = this.selectedFarmerId;
-    console.log(this.inputSupportForm.inputSupport);
   },
   methods: {
     addInputSupportField() {
       let s = {
         farmer: this.selectedFarmerId,
         year: '2020',
+        season: 'minor',
         grand_total: 0,
         inputs: [
           {
@@ -237,7 +233,6 @@ export default {
         .then((response) => {
           this.inputSupportForm.inputSupport.push(response.data);
           this.infoMessage('Added another year');
-          console.log(this.inputSupportForm);
         })
         .catch((errors) => {
           this.errorMessage(errors.error);

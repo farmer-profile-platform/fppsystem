@@ -178,7 +178,7 @@
     <el-dialog :visible.sync="showAddFarmerModal" fullscreen>
       <template slot="title">
         <h3>Add Farmer</h3>
-        <p>Plaese fill all fields for accurate data reports.</p>
+        <p>Please fill all fields for accurate data reports.</p>
       </template>
       <AddNewFarmers v-on:addedFarmer="farmerAdded" />
     </el-dialog>

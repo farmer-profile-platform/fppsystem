@@ -307,7 +307,7 @@ export default {
         name: [
           {
             required: true,
-            message: 'Select user role',
+            message: 'Select user name',
             trigger: 'blur',
           },
         ],

@@ -887,7 +887,7 @@ export default {
         aka: '',
         dob: '',
         phone: '',
-        email: '',
+        email: 'email@email.com',
         marital_status: 'Single',
         hometown: '',
         nationality: '',
@@ -1026,7 +1026,6 @@ export default {
   },
   beforeDestroy: function() {
     this.farmer = null;
-    console.log('destroyed');
   },
   methods: {
     getFarmerDetails() {

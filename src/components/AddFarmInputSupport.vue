@@ -29,10 +29,6 @@
                   :label="type.value"
                   :value="type.value"
                 >
-                  <span style="float: left">{{ type.value }}</span>
-                  <span style="float: right; color: #8492a6; font-size: 13px">{{
-                    type.label
-                  }}</span>
                 </el-option>
               </el-select>
             </el-form-item>
@@ -96,7 +92,7 @@
           <hr />
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="10">
+          <el-col :span="8">
             <el-form-item label="Year">
               <el-select
                 v-model="year.year"
@@ -105,6 +101,14 @@
                 <el-option label="2019" value="2019"></el-option>
                 <el-option label="2020" value="2020"></el-option>
                 <el-option label="2021" value="2021"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="Season">
+              <el-select v-model="year.season" placeholder="Select">
+                <el-option label="Major Season" value="major" />
+                <el-option label="Minor Season" value="minor" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -163,6 +167,7 @@ export default {
           {
             farmer: '',
             year: '2020',
+            season: '',
             grand_total: 0,
             inputs: [
               {
@@ -177,23 +182,11 @@ export default {
         ],
       },
       inputTypes: [
-        {
-          value: 'Seedling',
-          label: 'Organic Input & Agrochemical (Fertilizers)',
-        },
-        {
-          value: 'Farm Technology',
-          label:
-            'Crop Insurance, Crop disease diagnotics tools, Irrigation tech',
-        },
-        {
-          value: 'Farm Implements',
-          label: 'Tractor and other farm machinery',
-        },
-        {
-          value: 'Farmer Capacity Training',
-          label: 'Farmer Capacity Training',
-        },
+        'Seeds',
+        'FarmTech',
+        'Training',
+        'Fertilizers',
+        'Crop Insurance',
       ],
     };
   },
@@ -205,6 +198,7 @@ export default {
       let s = {
         farmer: this.selectedFarmerId,
         year: '2020',
+        season: '',
         grand_total: 0,
         inputs: [
           {

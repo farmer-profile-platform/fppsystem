@@ -520,29 +520,29 @@
                 </el-form-item>
               </el-col>
               <el-col :span="5">
-                <el-form-item label="Major Season">
+                <el-form-item label="Major Season (50kg/bag)">
                   <el-input
-                    type="number"
-                    v-model="year.major_season_harvest"
-                    placeholder="In bags"
+                    @input="setHarvestTotal(year)"
+                    v-model.number="year.major_season_harvest"
+                    placeholder="50kg/bag"
                   />
                 </el-form-item>
               </el-col>
               <el-col :span="5">
-                <el-form-item label="Minor Season">
+                <el-form-item label="Minor Season (50kg/bag)">
                   <el-input
-                    type="number"
-                    v-model="year.minor_season_harvest"
-                    placeholder="In bags"
+                    @input="setHarvestTotal(year)"
+                    v-model.number="year.minor_season_harvest"
+                    placeholder="50kg/bag"
                   />
                 </el-form-item>
               </el-col>
               <el-col :span="5">
                 <el-form-item label="Yearly Harvest">
                   <el-input
+                    disabled
                     type="number"
                     v-model="year.yearly_harvest"
-                    placeholder="In bags"
                   />
                 </el-form-item>
               </el-col>
@@ -646,16 +646,20 @@
                 <el-form-item label="Major Season">
                   <el-input
                     v-model.number="year.major_season_income"
-                    @input="setTotal(year)"
-                  />
+                    @input="setYieldTotal(year)"
+                  >
+                    <template slot="prepend">GH₵</template>
+                  </el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="5">
                 <el-form-item label="Minor Season">
                   <el-input
                     v-model.number="year.minor_season_income"
-                    @input="setTotal(year)"
-                  />
+                    @input="setYieldTotal(year)"
+                  >
+                    <template slot="prepend">GH₵</template>
+                  </el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="5">
@@ -913,7 +917,7 @@ export default {
         aka: '',
         dob: '',
         phone: '',
-        email: '',
+        email: 'youremail@email.com',
         marital_status: 'Single',
         hometown: '',
         nationality: 'Ghanaian',
@@ -954,9 +958,9 @@ export default {
             years: [
               {
                 year: '',
-                major_season_harvest: '',
-                minor_season_harvest: '',
-                yearly_harvest: '',
+                major_season_harvest: 0,
+                minor_season_harvest: 0,
+                yearly_harvest: 0,
                 major_season_income: 0,
                 minor_season_income: 0,
                 yearly_income: 0,
@@ -1165,8 +1169,12 @@ export default {
         this.$emit('addedFarmer');
       }
     },
-    setTotal(year) {
+    setYieldTotal(year) {
       year.yearly_income = year.major_season_income + year.minor_season_income;
+    },
+    setHarvestTotal(year) {
+      year.yearly_harvest =
+        year.major_season_harvest + year.minor_season_harvest;
     },
     handleContinue(nextTab) {
       this.activeTab = nextTab;

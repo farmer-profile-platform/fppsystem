@@ -350,16 +350,16 @@
                     @click="showBarChart = true"
                     size="mini"
                     icon="el-icon-view"
-                    >See Farm Yield Income</el-button
+                    >See Farm Income and Input Analysis</el-button
                   >
                 </div>
                 <el-dialog
                   title="Yearly Farm Yield Income (GH₵)"
                   :visible.sync="showBarChart"
-                  width="40%"
+                  width="50%"
                 >
                   <div>
-                    <BarChart :chartData="chartData" />
+                    <DoubleChart :chartData="chartData" />
                   </div>
                 </el-dialog>
               </el-col>
@@ -493,7 +493,7 @@
 </template>
 
 <script>
-import BarChart from '../../components/charts/BarChart';
+import DoubleChart from '../../components/charts/DoubleChart';
 import dashboardService from '../../api/reports';
 import farmersService from '../../api/farmers';
 import EditFarmerDetails from './EditFarmerDetails';
@@ -502,7 +502,7 @@ export default {
   name: 'FarmerProfile',
   components: {
     EditFarmerDetails,
-    BarChart,
+    DoubleChart,
   },
   data() {
     return {
@@ -512,7 +512,7 @@ export default {
       activeTab: 'personal',
       loading: false,
       farmer: {},
-      chartData: [],
+      chartData: {},
       chartLoaded: false,
     };
   },
@@ -527,19 +527,31 @@ export default {
       this.farmer.created = this.farmer.createdAt
         ? this.farmer.createdAt
         : Date.now();
-      if (this.farmer.farmerId) this.getFarmerAnalysis(this.farmer.farmerId);
+      if (this.farmer._id) this.getFarmerAnalysis(this.farmer._id);
       this.loading = false;
     },
     getFarmerAnalysis(farmerId) {
       dashboardService
         .getFarmerReports(farmerId)
         .then((response) => {
-          const cxd = response.data.map((element) => {
+          let is = response.data.inputSupport;
+
+          let harvestYield = response.data.harvestIncome.map((element) => {
             delete element._id;
             return element;
           });
-          this.chartData = cxd;
-          // this.chartLoaded = true;
+
+          if (Array.isArray(is) && is.length) {
+            let inputInfo = is.map((element) => {
+              delete element._id;
+              return element;
+            });
+            this.chartData.inputInfo = inputInfo;
+          } else {
+            this.chartData.inputInfo = [{ label: '', y: 0 }];
+          }
+
+          this.chartData.harvestIncome = harvestYield;
         })
         .catch((errors) => {
           this.errorMessage(errors.error);

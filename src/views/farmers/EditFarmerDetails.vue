@@ -66,7 +66,7 @@
           <el-row :gutter="20">
             <el-col :span="8">
               <el-form-item label="Email Address">
-                <el-input v-model="editFamerDetails.email" />
+                <el-input v-model="editFamerDetails.e_address" />
               </el-form-item>
             </el-col>
             <el-col :span="8">
@@ -861,7 +861,7 @@ export default {
         aka: '',
         dob: '',
         phone: '',
-        email: 'email@email.com',
+        e_address: '',
         marital_status: 'Single',
         hometown: '',
         nationality: '',
@@ -1014,7 +1014,7 @@ export default {
       this.editFamerDetails.aka = this.farmer.aka;
       this.editFamerDetails.dob = this.farmer.dob;
       this.editFamerDetails.phone = this.farmer.phone;
-      this.editFamerDetails.email = this.farmer.email;
+      this.editFamerDetails.e_address = this.farmer.e_address;
       this.editFamerDetails.marital_status = this.farmer.marital_status;
       this.editFamerDetails.hometown = this.farmer.hometown;
       this.editFamerDetails.nationality = this.farmer.nationality;

@@ -93,7 +93,7 @@
             </el-col>
             <el-col :span="6">
               <p>Email Address</p>
-              <h5>{{ farmer.email }}</h5>
+              <h5>{{ farmer.e_address }}</h5>
             </el-col>
             <el-col :span="6">
               <p>Home Town</p>

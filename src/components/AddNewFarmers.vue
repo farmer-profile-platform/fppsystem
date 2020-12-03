@@ -71,7 +71,7 @@
           <el-row :gutter="20">
             <el-col :span="6">
               <el-form-item label="Email Address">
-                <el-input v-model="addFamerDetails.email" />
+                <el-input v-model="addFamerDetails.e_address" />
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -885,7 +885,7 @@ export default {
         aka: '',
         dob: '',
         phone: '',
-        email: 'youremail@email.com',
+        e_address: 'youremail@email.com',
         marital_status: 'Single',
         hometown: '',
         nationality: 'Ghanaian',

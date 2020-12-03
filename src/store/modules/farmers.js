@@ -4,47 +4,12 @@ const state = {
   editedFarmersOffline: [],
   supportedFarmers: [],
   internetStatus: true,
-  savingsLoans: [
-    'ABii National Savings and Loans Ltd',
-    'Adehyeman Savings and Loans Company Ltd',
-    'Advans Ghana Savings and Loans Ltd',
-    'Asa Savings and Loans Company Limited',
-    'Assurance Savings and Loans Ltd',
-    'Bayport Savings and Loans Plc',
-    'Best Point Savings and Loans Ltd',
-    'Bond Savings and Loans Ltd',
-    'Direct Savings and Loans Limited',
-    'Equity Savings and Loans Ltd.',
-    'Izwe Savings and Loans Ltd.',
-    'UniCredit Ghana',
-    'Jins Savings and Loans Ltd.',
-    'Multi Credit Savings & Loans Co. Ltd.',
-    'SIC Life Savings and Loans Ltd.',
-    'Sinapi Aba Savings and Loans Company Ltd',
-    'Utrak Savings and Loans Ltd',
-  ],
-  ruralBanks: [
-    'Adansi Rural Bank',
-    'Ahafo Ano Rural Bank',
-    'Abokobi Area Rural Bank Limited',
-    'Ada Rural Bank Limited',
-    'Adonten Community Bank Limited',
-    'Afram Rural Bank Limited',
-    'Atiwa Rural Bank Limited',
-    'Ahantaman Rural Bank Limited',
-    'Ahafo Community Bank Limited',
-    'Agona Rural Bank Limited',
-    'Adonten Community Bank Limited',
-    'Atiwa Rural Bank Limited',
-  ],
 }
 
 const getters = {
   getFarmers: (state) => state.farmers,
   getNewFarmersOffline: (state) => state.newFarmersOffline,
   getEditedFarmersOffline: (state) => state.editedFarmers,
-  getRuralBanks: (state) => state.ruralBanks,
-  getSavingsLoans: (state) => state.savingsLoans,
   internetStatus: (state) => state.internetStatus
 }
 

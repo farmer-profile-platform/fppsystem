@@ -180,7 +180,7 @@
         <h3>Add Farmer</h3>
         <p>Please fill all fields for accurate data reports.</p>
       </template>
-      <AddNewFarmers v-on:addedFarmer="farmerAdded" />
+      <AddNewFarmers v-on:addedFarmer="farmerAdded" v-if="showAddFarmerModal" />
     </el-dialog>
   </div>
 </template>

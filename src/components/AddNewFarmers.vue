@@ -697,7 +697,10 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="FSP type">
-                  <el-radio-group v-model="addFamerDetails.fsp_type">
+                  <el-radio-group
+                    v-model="addFamerDetails.fsp_type"
+                    @change="searchFsp"
+                  >
                     <el-radio
                       v-for="fsp in fspTypes"
                       :key="fsp"
@@ -714,55 +717,19 @@
               <el-col :span="8">
                 <el-form-item label="FSP Name">
                   <el-select
-                    v-if="addFamerDetails.fsp_type == 'Bank'"
                     v-model="bank.name"
                     clearable
                     filterable
                     allow-create
                     default-first-option
+                    :loading="fspLoading"
                     style="width:100%; margin-top:-12px"
                   >
                     <el-option
-                      v-for="bank in banks"
-                      :key="bank"
-                      :label="bank"
-                      :value="bank"
-                    ></el-option>
-                  </el-select>
-
-                  <!-- Rural Banks -->
-                  <el-select
-                    v-if="addFamerDetails.fsp_type == 'Rural Bank'"
-                    v-model="bank.name"
-                    clearable
-                    filterable
-                    allow-create
-                    default-first-option
-                    style="width:100%; margin-top:-12px"
-                  >
-                    <el-option
-                      v-for="bank in ruralBanks"
-                      :key="bank"
-                      :label="bank"
-                      :value="bank"
-                    ></el-option>
-                  </el-select>
-
-                  <!-- Saving & loans -->
-                  <el-select
-                    v-if="addFamerDetails.fsp_type == 'Savings & Loans'"
-                    v-model="bank.name"
-                    clearable
-                    filterable
-                    allow-create
-                    default-first-option
-                    style="width:100%; margin-top:-12px"
-                  >
-                    <el-option
-                      v-for="bank in savingsLoans"
-                      :key="bank"
-                      :label="bank"
-                      :value="bank"
+                      v-for="b in fsps"
+                      :key="b._id"
+                      :label="b.name"
+                      :value="b.name"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -903,7 +870,8 @@
 </template>
 
 <script>
-import farmersService from '../api/farmers';
+import farmersService from '@/api/farmers';
+import fspService from '@/api/fsps';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -1004,8 +972,13 @@ export default {
         'BECE',
         'None',
       ],
+      queryParams: {
+        type: '',
+      },
+      fspLoading: false,
+      fsps: [],
       maritalStatus: ['Single', 'Married', 'Divorced', 'Windowed'],
-      fspTypes: ['Savings & Loans', 'Bank', 'Rural Bank'],
+      fspTypes: ['Savings & Loans', 'Bank', 'Rural Bank', 'Credit Union'],
       rules: {
         firstName: [
           {
@@ -1052,12 +1025,27 @@ export default {
     },
     ...mapGetters({
       internetStatus: 'internetStatus',
-      banks: 'getBanks',
-      ruralBanks: 'getRuralBanks',
-      savingsLoans: 'getSavingsLoans',
     }),
   },
   methods: {
+    searchFsp(type) {
+      this.fspLoading = true;
+      this.queryParams.type =
+        type == 'Savings & Loans'
+          ? 'sl'
+          : type == 'Bank'
+          ? 'bank'
+          : type == 'Rural Bank'
+          ? 'rural'
+          : type == 'Credit Union'
+          ? 'credit'
+          : '';
+
+      fspService.getFsps(this.queryParams).then((response) => {
+        this.fsps = response.data;
+        this.fspLoading = false;
+      });
+    },
     addCropHarvest() {
       this.infoMessage('Added another crop');
       this.addFamerDetails.harvestYield.push({ years: [{}] });

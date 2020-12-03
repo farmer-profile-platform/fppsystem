@@ -26,8 +26,8 @@
                 <el-option
                   v-for="(type, tidx) in inputTypes"
                   :key="tidx"
-                  :label="type.value"
-                  :value="type.value"
+                  :label="type"
+                  :value="type"
                 >
                 </el-option>
               </el-select>

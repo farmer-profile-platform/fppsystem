@@ -520,7 +520,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="5">
-                <el-form-item label="Major Season (50kg/bag)">
+                <el-form-item label="Major Season(50kg/bag)">
                   <el-input
                     @input="setHarvestTotal(year)"
                     v-model.number="year.major_season_harvest"

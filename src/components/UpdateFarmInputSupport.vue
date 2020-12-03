@@ -26,8 +26,8 @@
                 <el-option
                   v-for="(type, tidx) in inputTypes"
                   :key="tidx"
-                  :label="type.value"
-                  :value="type.value"
+                  :label="type"
+                  :value="type"
                 >
                   <span style="float: left">{{ type.value }}</span>
                   <span style="float: right; color: #8492a6; font-size: 13px">{{

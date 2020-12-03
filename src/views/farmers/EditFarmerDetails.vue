@@ -503,24 +503,28 @@
                 </el-form-item>
               </el-col>
               <el-col :span="5">
-                <el-form-item label="Major Season">
+                <el-form-item label="Major Season(50kg/bag)">
                   <el-input
-                    v-model="year.major_season_harvest"
-                    placeholder="In bags"
+                    @input="setHarvestTotal(year)"
+                    v-model.number="year.major_season_harvest"
+                    placeholder="50kg/bag"
                   />
                 </el-form-item>
               </el-col>
               <el-col :span="5">
-                <el-form-item label="Minor Season">
+                <el-form-item label="Minor Season(50kg/bag)">
                   <el-input
-                    v-model="year.minor_season_harvest"
-                    placeholder="In bags"
+                    @input="setHarvestTotal(year)"
+                    v-model.number="year.minor_season_harvest"
+                    placeholder="50kg/bag"
                   />
                 </el-form-item>
               </el-col>
               <el-col :span="5">
                 <el-form-item label="Yearly Harvest">
                   <el-input
+                    disabled
+                    type="number"
                     v-model="year.yearly_harvest"
                     placeholder="In bags"
                   />
@@ -620,7 +624,7 @@
                 <el-form-item label="Major Season">
                   <el-input
                     v-model.number="year.major_season_income"
-                    @input="setTotal(year)"
+                    @input="setYieldTotal(year)"
                   />
                 </el-form-item>
               </el-col>
@@ -628,7 +632,7 @@
                 <el-form-item label="Minor Season">
                   <el-input
                     v-model.number="year.minor_season_income"
-                    @input="setTotal(year)"
+                    @input="setYieldTotal(year)"
                   />
                 </el-form-item>
               </el-col>
@@ -669,7 +673,10 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="FSP type">
-                  <el-radio-group v-model="editFamerDetails.fsp_type">
+                  <el-radio-group
+                    v-model="editFamerDetails.fsp_type"
+                    @change="searchFsp"
+                  >
                     <el-radio
                       v-for="fsp in fspTypes"
                       :key="fsp"
@@ -686,55 +693,19 @@
               <el-col :span="8">
                 <el-form-item label="FSP Name">
                   <el-select
-                    v-if="editFamerDetails.fsp_type == 'Bank'"
                     v-model="bank.name"
                     clearable
                     filterable
                     allow-create
                     default-first-option
+                    :loading="fspLoading"
                     style="width:100%; margin-top:-12px"
                   >
                     <el-option
-                      v-for="(cb, cbi) in banks"
-                      :key="cbi"
-                      :label="cb"
-                      :value="cb"
-                    ></el-option>
-                  </el-select>
-
-                  <!-- Rural Banks -->
-                  <el-select
-                    v-if="editFamerDetails.fsp_type == 'Rural Bank'"
-                    v-model="bank.name"
-                    clearable
-                    filterable
-                    allow-create
-                    default-first-option
-                    style="width:100%; margin-top:-12px"
-                  >
-                    <el-option
-                      v-for="(rb, rbindex) in ruralBanks"
-                      :key="rbindex"
-                      :label="rb"
-                      :value="rb"
-                    ></el-option>
-                  </el-select>
-
-                  <!-- Saving & loans -->
-                  <el-select
-                    v-if="editFamerDetails.fsp_type == 'Savings & Loans'"
-                    v-model="bank.name"
-                    clearable
-                    filterable
-                    allow-create
-                    default-first-option
-                    style="width:100%; margin-top:-12px"
-                  >
-                    <el-option
-                      v-for="(sl, slindex) in savingsLoans"
-                      :key="slindex"
-                      :label="sl"
-                      :value="sl"
+                      v-for="b in fsps"
+                      :key="b._id"
+                      :label="b.name"
+                      :value="b.name"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -872,12 +843,15 @@
 </template>
 
 <script>
-import farmersService from '../../api/farmers';
+import farmersService from '@/api/farmers';
+import fspService from '@/api/fsps';
 import { mapGetters } from 'vuex';
 
 export default {
   name: 'EditFarmer',
-  props: ['farmer'],
+  props: {
+    farmer: Object,
+  },
   data() {
     return {
       editFamerDetails: {
@@ -928,12 +902,12 @@ export default {
             years: [
               {
                 year: '',
-                major_season_harvest: '',
-                minor_season_harvest: '',
-                yearly_harvest: '',
-                major_season_income: '',
-                minor_season_income: '',
-                yearly_income: '',
+                major_season_harvest: 0,
+                minor_season_harvest: 0,
+                yearly_harvest: 0,
+                major_season_income: 0,
+                minor_season_income: 0,
+                yearly_income: 0,
               },
             ],
           },
@@ -974,8 +948,13 @@ export default {
         'BECE',
         'None',
       ],
+      queryParams: {
+        type: '',
+      },
+      fspLoading: false,
+      fsps: [],
       maritalStatus: ['Single', 'Married', 'Divorced', 'Windowed'],
-      fspTypes: ['Savings & Loans', 'Bank', 'Rural Bank'],
+      fspTypes: ['Savings & Loans', 'Bank', 'Rural Bank', 'Credit Union'],
       rules: {
         firstName: [
           {
@@ -1019,9 +998,6 @@ export default {
     },
     ...mapGetters({
       internetStatus: 'internetStatus',
-      banks: 'getBanks',
-      ruralBanks: 'getRuralBanks',
-      savingsLoans: 'getSavingsLoans',
     }),
   },
   beforeDestroy: function() {
@@ -1090,8 +1066,23 @@ export default {
         }
       });
     },
-    setTotal(year) {
-      year.yearly_income = year.major_season_income + year.minor_season_income;
+    searchFsp(type) {
+      this.fspLoading = true;
+      this.queryParams.type =
+        type == 'Savings & Loans'
+          ? 'sl'
+          : type == 'Bank'
+          ? 'bank'
+          : type == 'Rural Bank'
+          ? 'rural'
+          : type == 'Credit Union'
+          ? 'credit'
+          : '';
+
+      fspService.getFsps(this.queryParams).then((response) => {
+        this.fsps = response.data;
+        this.fspLoading = false;
+      });
     },
     updateImage(e, type) {
       let self = this;
@@ -1121,6 +1112,13 @@ export default {
     addCropYieldIncome() {
       this.infoMessage('Added another crop');
       this.editFamerDetails.yieldIncome.push({ years: [{}] });
+    },
+    setYieldTotal(year) {
+      year.yearly_income = year.major_season_income + year.minor_season_income;
+    },
+    setHarvestTotal(year) {
+      year.yearly_harvest =
+        year.major_season_harvest + year.minor_season_harvest;
     },
     handleContinue(nextTab) {
       this.activeTab = nextTab;

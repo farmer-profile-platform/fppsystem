@@ -1,6 +1,6 @@
 {
   "name": "famer_pro_web",
-  "version": "1.5.0",
+  "version": "1.7.5",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",

@@ -147,6 +147,7 @@
         <p>Edit field and make sure all required fields has data.</p>
       </template>
       <EditFarmerDetails
+        v-if="showEditFarmerModal"
         :farmer.sync="farmer"
         v-on:editedFarmer="farmerEdited"
       />
@@ -159,6 +160,7 @@
         <p>Take note of the unit details and amounts.</p>
       </template>
       <UpdateFarmInputSupport
+        v-if="showUpdateSupportModal"
         :selectedFarmerId.sync="selectedFarmerId"
         :selectedName="selectedName"
         :selectedInputs.sync="selectedInputs"

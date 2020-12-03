@@ -140,13 +140,13 @@
                     @click="addInputSupport(props.row._id, props.row.firstName)"
                   >
                     <i class="el-icon-s-flag" style="margin-right: 10px"></i>
-                    Add Farm Support
+                    Add Farm Input
                   </span>
                 </el-dropdown-item>
                 <el-dropdown-item>
                   <span @click="editFarmer(props.row)">
                     <i class="el-icon-edit" style="margin-right: 10px"></i>
-                    Edit Farmer
+                    Edit Farmer Details
                   </span>
                 </el-dropdown-item>
                 <el-dropdown-item divided>

@@ -1,6 +1,6 @@
 import is from 'is_js';
-import authService from "../api/auth";
-import activityService from '../api/activities';
+import authService from "@/api/auth";
+import activityService from '@/api/activities';
 import farmersService from '../api/farmers';
 import { mapGetters } from "vuex"
 
@@ -17,14 +17,17 @@ export default {
       return Array.isArray(s) && s.length;
     },
     syncOfflineFarmersData() {
+      let self = this;
       if (this.newFarmersOffline.length > 0) {
-        // let newData = this.newFarmersOffline.map(function (farmer) {
-        //   farmer.photo = ''
-        //   farmer.fingerprint = ''
-        //   farmer.idCard = ''
-        // })
+        let newData = this.newFarmersOffline.map(function (farmer) {
+          farmer.photo = self.uploadFile(farmer.photoFile);
+          farmer.fingerprint = self.uploadFile(farmer.fingerprintFile);
+          farmer.idCard = self.uploadFile(farmer.idCardFile);
+          console.log(farmer.idCardFile)
+          return farmer;
+        })
         farmersService
-          .addFarmer(this.newFarmersOffline)
+          .addFarmer(newData)
           .then(() => {
             this.$store.dispatch('emptyFarmerData', 'new')
           })
@@ -57,6 +60,21 @@ export default {
         this.$store.dispatch('update_internet_status', navigator.onLine);
       }
       return navigator.onLine;
+    },
+    uploadFile(file) {
+      let newFile = '';
+      const formData = new FormData();
+      formData.append('file', file);
+      farmersService
+        .uploadFarmerFiles(formData)
+        .then((response) => {
+          newFile = response.data;
+          this.successMessage('uploaded')
+        })
+        .catch(() => {
+          this.errorMessage('Image file failed to upload');
+        });
+      return newFile;
     },
     ucwords: function (str) {
       if (typeof str !== 'undefined') {

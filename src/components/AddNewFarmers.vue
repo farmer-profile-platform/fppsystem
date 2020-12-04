@@ -885,7 +885,7 @@ export default {
         aka: '',
         dob: '',
         phone: '',
-        e_address: 'youremail@email.com',
+        e_address: '',
         marital_status: 'Single',
         hometown: '',
         nationality: 'Ghanaian',
@@ -1041,10 +1041,16 @@ export default {
           ? 'credit'
           : '';
 
-      fspService.getFsps(this.queryParams).then((response) => {
-        this.fsps = response.data;
-        this.fspLoading = false;
-      });
+      fspService
+        .getFsps(this.queryParams)
+        .then((response) => {
+          this.fsps = response.data;
+          this.fspLoading = false;
+        })
+        .catch((errors) => {
+          this.errorMessage(errors.error);
+          this.fspLoading = false;
+        });
     },
     addCropHarvest() {
       this.infoMessage('Added another crop');
@@ -1056,6 +1062,7 @@ export default {
       const formData = new FormData();
       formData.append('file', files[0]);
       if (this.internetStatus == true) {
+        console.log(formData);
         farmersService
           .uploadFarmerFiles(formData)
           .then((response) => {
@@ -1074,34 +1081,22 @@ export default {
       } else {
         let file = files[0];
         let urlSrc = URL.createObjectURL(file);
-        self.updateImageOffline(file, type, urlSrc);
+        self.updateImageOffline(formData, type, urlSrc, file);
       }
     },
-    updateImageOffline(file, type, urlSrc) {
-      let newFile = {};
-      let reader = new FileReader();
-      // reader.readAsArrayBuffer(file)
-      reader.readAsDataURL(file);
-      reader.onloadend = (e) => {
-        newFile.name = file.name;
-        newFile.lastModified = file.lastModified;
-        newFile.lastModifiedDate = file.lastModifiedDate;
-        newFile.size = file.size;
-        newFile.type = file.type;
-        newFile.base64 = e.target.result;
-        newFile.webkitRelativePath = file.webkitRelativePath;
-      };
+    updateImageOffline(formData, type, urlSrc, file) {
+      console.log(formData);
 
       if (file['size'] < 2111775) {
         if (type == 'photo') {
           this.addFamerDetails.photo = urlSrc;
-          // this.addFamerDetails.photoFile = newFile;
+          this.addFamerDetails.photoFile = formData;
         } else if (type == 'idCard') {
           this.addFamerDetails.idCard = urlSrc;
-          // this.addFamerDetails.idCardFile = newFile;
+          this.addFamerDetails.idCardFile = formData;
         } else if (type == 'fingerPrint') {
           this.addFamerDetails.fingerprint = urlSrc;
-          // this.addFamerDetails.fingerprintFile = newFile;
+          this.addFamerDetails.fingerprintFile = formData;
         }
         this.successNotification('Uploaded Successfully');
       } else {

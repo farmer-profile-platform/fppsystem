@@ -5,6 +5,13 @@ import farmersService from '../api/farmers';
 import { mapGetters } from "vuex"
 
 export default {
+  data() {
+    return {
+      photo: null,
+      fingerPrint: null,
+      idCard: null
+    }
+  },
   computed: {
     ...mapGetters({
       newFarmersOffline: 'getNewFarmersOffline',
@@ -20,19 +27,23 @@ export default {
       let self = this;
       if (this.newFarmersOffline.length > 0) {
         let newData = this.newFarmersOffline.map(function (farmer) {
-          farmer.photo = self.convertBase64(farmer.photo, farmer.photoFileName);
-          farmer.fingerprint = self.convertBase64(farmer.fingerprint, farmer.fingerprintFileName);
-          farmer.idCard = self.convertBase64(farmer.idCard, farmer.idCardFileName);
-          return farmer;
+          self.convertBase64(farmer.photo, farmer.photoFileName, 'photo');
+          self.convertBase64(farmer.fingerprint, farmer.fingerprintFileName, 'fingerPrint');
+          self.convertBase64(farmer.idCard, farmer.idCardFileName, 'idCard');
+          farmer.photo = self.photo;
+          farmer.fingerprint = self.fingerPrint;
+          farmer.idCard = self.idCard;
+          return farmer
         })
-        farmersService
-          .addFarmer(newData)
-          .then(() => {
-            this.$store.dispatch('emptyFarmerData', 'new')
-          })
-          .catch((errors) => {
-            this.errorMessage(errors.error);
-          });
+        console.log(newData)
+        // farmersService
+        //   .addFarmer(newData)
+        //   .then(() => {
+        //     this.$store.dispatch('emptyFarmerData', 'new')
+        //   })
+        //   .catch((errors) => {
+        //     this.errorMessage(errors.error);
+        //   });
       }
     },
     syncOfflineEditedData() {
@@ -60,19 +71,33 @@ export default {
       }
       return navigator.onLine;
     },
-    convertBase64(fileUrl, fileName) {
-      let newFile = null
+    convertBase64(fileUrl, fileName, type) {
+      let self = this;
       fetch(fileUrl)
         .then((res) => res.blob())
         .then((blob) => {
           const file = new File([blob], fileName, {
-            type: 'image/png',
+            type: 'image/jpg',
           });
-          newFile = file;
-        });
-      console.log(newFile);
 
-      return newFile;
+          const formData = new FormData();
+          formData.append('file', file);
+
+          farmersService.uploadFarmerFiles(formData)
+            .then((response) => {
+              if (type == 'photo') {
+                self.photo = response.data;
+              } else if (type == 'idCard') {
+                self.idCard = response.data;
+              } else if (type == 'fingerPrint') {
+                self.fingerPrint = response.data;
+              }
+              // self.successNotification('Uploaded Successfully');
+            })
+            .catch(() => {
+              self.errorMessage('Image failed to upload');
+            });
+        });
     },
     ucwords: function (str) {
       if (typeof str !== 'undefined') {

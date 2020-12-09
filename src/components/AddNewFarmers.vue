@@ -1062,6 +1062,8 @@ export default {
       const formData = new FormData();
       formData.append('file', files[0]);
 
+      console.log(files[0]);
+
       if (this.internetStatus == true) {
         farmersService
           .uploadFarmerFiles(formData)
@@ -1090,17 +1092,17 @@ export default {
       reader.readAsDataURL(file);
       if (file['size'] < 2111775) {
         if (type == 'photo') {
-          reader.onloadend = (file) => {
+          reader.onloadend = () => {
             self.addFamerDetails.photo = reader.result;
             self.addFamerDetails.photoFileName = file['name'];
           };
         } else if (type == 'idCard') {
-          reader.onloadend = (file) => {
+          reader.onloadend = () => {
             self.addFamerDetails.idCard = reader.result;
             self.addFamerDetails.idCardFileName = file['name'];
           };
         } else if (type == 'fingerPrint') {
-          reader.onloadend = (file) => {
+          reader.onloadend = () => {
             self.addFamerDetails.fingerprint = reader.result;
             self.addFamerDetails.fingerprintFileName = file['name'];
           };

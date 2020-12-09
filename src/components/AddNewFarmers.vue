@@ -1062,7 +1062,7 @@ export default {
       const formData = new FormData();
       formData.append('file', files[0]);
 
-      console.log(files[0]);
+      // console.log(files[0]);
 
       if (this.internetStatus == true) {
         farmersService

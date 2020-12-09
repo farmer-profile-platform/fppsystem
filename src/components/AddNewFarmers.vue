@@ -1061,8 +1061,8 @@ export default {
       const files = e.target.files;
       const formData = new FormData();
       formData.append('file', files[0]);
+
       if (this.internetStatus == true) {
-        console.log(formData);
         farmersService
           .uploadFarmerFiles(formData)
           .then((response) => {
@@ -1080,23 +1080,30 @@ export default {
           });
       } else {
         let file = files[0];
-        let urlSrc = URL.createObjectURL(file);
-        self.updateImageOffline(formData, type, urlSrc, file);
+        // let urlSrc = URL.createObjectURL(file);
+        self.updateImageOffline(type, file);
       }
     },
-    updateImageOffline(formData, type, urlSrc, file) {
-      console.log(formData);
-
+    updateImageOffline(type, file) {
+      let self = this;
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
       if (file['size'] < 2111775) {
         if (type == 'photo') {
-          this.addFamerDetails.photo = urlSrc;
-          this.addFamerDetails.photoFile = formData;
+          reader.onloadend = (file) => {
+            self.addFamerDetails.photo = reader.result;
+            self.addFamerDetails.photoFileName = file['name'];
+          };
         } else if (type == 'idCard') {
-          this.addFamerDetails.idCard = urlSrc;
-          this.addFamerDetails.idCardFile = formData;
+          reader.onloadend = (file) => {
+            self.addFamerDetails.idCard = reader.result;
+            self.addFamerDetails.idCardFileName = file['name'];
+          };
         } else if (type == 'fingerPrint') {
-          this.addFamerDetails.fingerprint = urlSrc;
-          this.addFamerDetails.fingerprintFile = formData;
+          reader.onloadend = (file) => {
+            self.addFamerDetails.fingerprint = reader.result;
+            self.addFamerDetails.fingerprintFileName = file['name'];
+          };
         }
         this.successNotification('Uploaded Successfully');
       } else {

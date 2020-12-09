@@ -20,10 +20,9 @@ export default {
       let self = this;
       if (this.newFarmersOffline.length > 0) {
         let newData = this.newFarmersOffline.map(function (farmer) {
-          farmer.photo = self.uploadFile(farmer.photoFile);
-          farmer.fingerprint = self.uploadFile(farmer.fingerprintFile);
-          farmer.idCard = self.uploadFile(farmer.idCardFile);
-          console.log(farmer.idCardFile)
+          farmer.photo = self.convertBase64(farmer.photo, farmer.photoFileName);
+          farmer.fingerprint = self.convertBase64(farmer.fingerprint, farmer.fingerprintFileName);
+          farmer.idCard = self.convertBase64(farmer.idCard, farmer.idCardFileName);
           return farmer;
         })
         farmersService
@@ -61,19 +60,18 @@ export default {
       }
       return navigator.onLine;
     },
-    uploadFile(file) {
-      let newFile = '';
-      const formData = new FormData();
-      formData.append('file', file);
-      farmersService
-        .uploadFarmerFiles(formData)
-        .then((response) => {
-          newFile = response.data;
-          this.successMessage('uploaded')
-        })
-        .catch(() => {
-          this.errorMessage('Image file failed to upload');
+    convertBase64(fileUrl, fileName) {
+      let newFile = null
+      fetch(fileUrl)
+        .then((res) => res.blob())
+        .then((blob) => {
+          const file = new File([blob], fileName, {
+            type: 'image/png',
+          });
+          newFile = file;
         });
+      console.log(newFile);
+
       return newFile;
     },
     ucwords: function (str) {
@@ -149,6 +147,8 @@ export default {
       if (pic == "no-photo.jpg") {
         return url + 'photo_default.png'
       } else if (pic.includes('blob:')) {
+        return pic
+      } else if (pic.includes('data:')) {
         return pic
       } else {
         return url + pic

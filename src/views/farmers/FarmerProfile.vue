@@ -534,15 +534,22 @@ export default {
       dashboardService
         .getFarmerReports(farmerId)
         .then((response) => {
-          let is = response.data.inputSupport;
+          let inputTotal = response.data.inputSupport;
 
-          let harvestYield = response.data.harvestIncome.map((element) => {
+          let harvestYieldIncome = response.data.harvestIncome.map(
+            (element) => {
+              delete element._id;
+              return element;
+            }
+          );
+
+          let harvestedBags = response.data.harvestedBags.map((element) => {
             delete element._id;
             return element;
           });
 
-          if (Array.isArray(is) && is.length) {
-            let inputInfo = is.map((element) => {
+          if (Array.isArray(inputTotal) && inputTotal.length) {
+            let inputInfo = inputTotal.map((element) => {
               delete element._id;
               return element;
             });
@@ -551,7 +558,8 @@ export default {
             this.chartData.inputInfo = [{ label: '', y: 0 }];
           }
 
-          this.chartData.harvestIncome = harvestYield;
+          this.chartData.harvestIncome = harvestYieldIncome;
+          this.chartData.harvestedBags = harvestedBags;
         })
         .catch((errors) => {
           this.errorMessage(errors.error);

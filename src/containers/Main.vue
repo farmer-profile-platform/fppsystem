@@ -14,7 +14,7 @@
         </el-main>
         <footer class="flex_justify_between">
           <p>Farmer Pro Platform © 2020. All right reserved.</p>
-          <p>v-1.9.5</p>
+          <p>v-1.9.7</p>
         </footer>
       </el-container>
     </el-container>

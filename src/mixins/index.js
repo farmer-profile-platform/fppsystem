@@ -7,9 +7,9 @@ import { mapGetters } from "vuex"
 export default {
   data() {
     return {
-      photo: null,
-      fingerPrint: null,
-      idCard: null
+      photo: '',
+      fingerPrint: '',
+      idCard: ''
     }
   },
   computed: {
@@ -27,9 +27,9 @@ export default {
       let self = this;
       if (this.newFarmersOffline.length > 0) {
         let newData = this.newFarmersOffline.map(function (farmer) {
-          self.convertBase64(farmer.photo, farmer.photoFileName, 'photo');
-          self.convertBase64(farmer.fingerprint, farmer.fingerprintFileName, 'fingerPrint');
-          self.convertBase64(farmer.idCard, farmer.idCardFileName, 'idCard');
+          self.convertToFile(farmer.photo, farmer.photoFileName, 'photo');
+          self.convertToFile(farmer.fingerprint, farmer.fingerprintFileName, 'fingerPrint');
+          self.convertToFile(farmer.idCard, farmer.idCardFileName, 'idCard');
           farmer.photo = self.photo;
           farmer.fingerprint = self.fingerPrint;
           farmer.idCard = self.idCard;
@@ -71,9 +71,9 @@ export default {
       }
       return navigator.onLine;
     },
-    convertBase64(fileUrl, fileName, type) {
+    convertToFile(base64Url, fileName, type) {
       let self = this;
-      fetch(fileUrl)
+      fetch(base64Url)
         .then((res) => res.blob())
         .then((blob) => {
           const file = new File([blob], fileName, {

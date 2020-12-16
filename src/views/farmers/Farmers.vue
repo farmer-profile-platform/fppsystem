@@ -284,7 +284,7 @@ export default {
       this.showAddFarmerModal = true;
     },
     downloadProfile(farmer) {
-      this.$refs.handleAction.viewDownload(farmer);
+      this.$refs.handleAction.viewDownload(farmer, this.getFarmers);
     },
     farmerAdded() {
       this.showAddFarmerModal = false;

@@ -55,7 +55,7 @@ export default {
             dataPoints: this.chartData.harvestIncome,
           },
           {
-            type: 'line',
+            type: 'spline',
             name: 'No. of Harvested bags',
             legendText: 'Harvest yield bags',
             axisYType: 'secondary',

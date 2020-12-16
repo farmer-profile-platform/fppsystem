@@ -81,12 +81,13 @@ export default {
     };
   },
   methods: {
-    viewDownload(farmer) {
+    viewDownload(farmer, refreshData) {
       this.selectedId = farmer._id;
       this.selectedTitle =
         'Download ' + farmer.name + ' Profile (' + farmer.farmerId + ')';
       this.selectedFarmer = farmer;
       this.showDownloadModal = true;
+      this.successFunc = refreshData;
     },
     addInputSupportData(id, name, refreshData) {
       this.selectedId = id;
@@ -107,6 +108,7 @@ export default {
     },
     closeModal(done) {
       done();
+      this.successFunc();
     },
     farmerEdited() {
       this.showEditFarmerModal = false;

@@ -144,22 +144,22 @@ export default {
           margin: [0, -10, 0, 0],
           border: [true, false, true, true],
         },
-        { text: income[0].year, bold: true, fontSize: 14 },
-        { text: income[1].year, bold: true, fontSize: 14 },
+        { text: income[0].year, bold: true, fontSize: 14, alignment: 'center' },
+        { text: income[1].year, bold: true, fontSize: 14, alignment: 'center' },
       ]);
       this.incomeInfo.push([
-        { text: 'Major' },
-        { text: 'GHc ' + income[0].major_season_income },
+        { text: 'Major', alignment: 'center' },
+        { text: income[0].major_season_income, alignment: 'center' },
         { text: income[1].major_season_income },
       ]);
       this.incomeInfo.push([
-        { text: 'Minor' },
-        { text: income[0].minor_season_income },
+        { text: 'Minor', alignment: 'center' },
+        { text: income[0].minor_season_income, alignment: 'center' },
         { text: income[1].minor_season_income },
       ]);
       this.incomeInfo.push([
         { text: 'Annual Total', bold: true, fontSize: 16 },
-        { text: income[0].yearly_income },
+        { text: income[0].yearly_income, alignment: 'center' },
         { text: income[1].yearly_income },
       ]);
     },
@@ -195,12 +195,20 @@ export default {
           alignment: 'center',
         },
       ]);
-      this.supportsInfo.push([{ text: 'Major' }, { text: '-' }, { text: '-' }]);
-      this.supportsInfo.push([{ text: 'Minor' }, { text: '-' }, { text: '-' }]);
+      this.supportsInfo.push([
+        { text: 'Major', alignment: 'center' },
+        { text: '-' },
+        { text: '-' },
+      ]);
+      this.supportsInfo.push([
+        { text: 'Minor', alignment: 'center' },
+        { text: '-' },
+        { text: '-' },
+      ]);
       this.supportsInfo.push([
         { text: 'Annual Total', bold: true, fontSize: 16 },
-        { text: support[0].grand_total },
-        { text: support[1].grand_total },
+        { text: support[0].grand_total, alignment: 'center' },
+        { text: support[1].grand_total, alignment: 'center' },
       ]);
     },
     getLineCanvas() {
@@ -323,17 +331,7 @@ export default {
         footer: function(currentPage, pageCount) {
           return [
             {
-              canvas: [
-                {
-                  type: 'line',
-                  x1: 50,
-                  y1: 10,
-                  x2: 575,
-                  y2: 10,
-                  lineColor: 'black',
-                  lineWidth: 3,
-                },
-              ],
+              canvas: self.getLineCanvas(),
             },
             {
               fontSize: 10,

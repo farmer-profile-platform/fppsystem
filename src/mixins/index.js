@@ -27,23 +27,29 @@ export default {
       let self = this;
       if (this.newFarmersOffline.length > 0) {
         let newData = this.newFarmersOffline.map(function (farmer) {
-          self.convertToFile(farmer.photo, farmer.photoFileName, 'photo');
-          self.convertToFile(farmer.fingerprint, farmer.fingerprintFileName, 'fingerPrint');
-          self.convertToFile(farmer.idCard, farmer.idCardFileName, 'idCard');
-          farmer.photo = self.photo;
-          farmer.fingerprint = self.fingerPrint;
-          farmer.idCard = self.idCard;
+          console.log(farmer.photo)
+          self.dataURLtoFile(farmer.photo, farmer.photoFileName, 'photo');
+          self.dataURLtoFile(farmer.fingerprint, farmer.fingerprintFileName, 'fingerPrint');
+          self.dataURLtoFile(farmer.idCard, farmer.idCardFileName, 'idCard');
+          setTimeout(function () {
+            farmer.photo = self.photo;
+            farmer.fingerprint = self.fingerPrint
+            farmer.idCard = self.idCard;
+            delete farmer.photoFileName;
+            delete farmer.fingerprintFileName;
+            delete farmer.idCardFileName;
+          }, 15000);
+
           return farmer
         })
-        console.log(newData)
-        // farmersService
-        //   .addFarmer(newData)
-        //   .then(() => {
-        //     this.$store.dispatch('emptyFarmerData', 'new')
-        //   })
-        //   .catch((errors) => {
-        //     this.errorMessage(errors.error);
-        //   });
+        farmersService
+          .addFarmer(newData)
+          .then(() => {
+            this.$store.dispatch('emptyFarmerData', 'new')
+          })
+          .catch((errors) => {
+            this.errorMessage(errors.error);
+          });
       }
     },
     syncOfflineEditedData() {
@@ -71,13 +77,15 @@ export default {
       }
       return navigator.onLine;
     },
-    convertToFile(base64Url, fileName, type) {
+    dataURLtoFile(base64Url, fileName, type) {
       let self = this;
+      const imageType = fileName.split('.')[1];
+
       fetch(base64Url)
         .then((res) => res.blob())
         .then((blob) => {
           const file = new File([blob], fileName, {
-            type: 'image/jpg',
+            type: `image/${imageType}`,
           });
 
           const formData = new FormData();
@@ -92,7 +100,7 @@ export default {
               } else if (type == 'fingerPrint') {
                 self.fingerPrint = response.data;
               }
-              // self.successNotification('Uploaded Successfully');
+              self.successNotification('Uploaded Successfully');
             })
             .catch(() => {
               self.errorMessage('Image failed to upload');

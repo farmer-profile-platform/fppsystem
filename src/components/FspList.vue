@@ -21,6 +21,25 @@
       >
         <el-table-column label="Name" prop="name" />
         <el-table-column label="Type" prop="type" />
+        <el-table-column label="Actions">
+          <template slot-scope="props">
+            <el-popconfirm
+              confirmButtonText="OK"
+              cancelButtonText="No, Thanks"
+              icon="el-icon-info"
+              iconColor="red"
+              title="Are you sure to delete this?"
+              @onConfirm="deleteFsp(props.row._id)"
+            >
+              <el-button
+                icon="el-icon-delete"
+                type="danger"
+                size="mini"
+                slot="reference"
+              />
+            </el-popconfirm>
+          </template>
+        </el-table-column>
       </el-table>
     </el-card>
   </div>
@@ -41,6 +60,7 @@ export default {
       tableLoading: false,
       queryParams: {
         type: '',
+        limit: 100,
       },
     };
   },
@@ -61,6 +81,16 @@ export default {
         .catch((errors) => {
           this.errorMessage(errors.error);
           this.tableLoading = false;
+        });
+    },
+    deleteFsp(id) {
+      fspService
+        .removeFsp(id)
+        .then(() => {
+          this.getFsps();
+        })
+        .catch((errors) => {
+          this.errorMessage(errors.error);
         });
     },
   },

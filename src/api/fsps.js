@@ -16,4 +16,10 @@ export default {
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error))
   },
+  removeFsp(id) {
+    let url = config.FSPS_URL + '/' + id
+    return apiService.delete(url)
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error))
+  },
 }

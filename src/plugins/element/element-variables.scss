@@ -79,3 +79,9 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts';
   border-bottom: 1px solid #EBEEF5;
   box-sizing: border-box;
 }
+
+.el-tabs--border-card {
+  background: #FFFFFF;
+  border: 1px solid #DCDFE6;
+  box-shadow: none !important;
+}

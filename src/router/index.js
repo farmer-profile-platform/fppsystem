@@ -10,6 +10,7 @@ import Farmers from "@/views/farmers/Farmers";
 import FarmInputSupport from "@/views/farmers/FarmInputSupport"
 import FarmerProfile from "@/views/farmers/FarmerProfile";
 import Users from "@/views/users/Users";
+import Fsps from "@/views/Fsps";
 import UserProfile from "@/views/users/UserProfile";
 
 import Login from "@/views/Login";
@@ -55,6 +56,11 @@ const routes = [
         path: "/users",
         name: "Users",
         component: Users
+      },
+      {
+        path: "/fsps",
+        name: "Finacial Service Providers",
+        component: Fsps
       },
       {
         path: "/user-profile/:id/:name",

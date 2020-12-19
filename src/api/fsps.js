@@ -11,8 +11,8 @@ export default {
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error))
   },
-  addFsp() {
-    return apiService.post(config.FSPS_URL)
+  addFsp(fsp) {
+    return apiService.post(config.FSPS_URL, fsp)
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error))
   },

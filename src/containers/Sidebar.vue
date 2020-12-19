@@ -52,6 +52,13 @@
           Users
         </el-menu-item>
       </router-link>
+      <hr />
+      <router-link to="/fsps">
+        <el-menu-item index="5">
+          <i class="el-icon-office-building"></i>
+          FSPs
+        </el-menu-item>
+      </router-link>
     </el-menu>
     <hr />
 

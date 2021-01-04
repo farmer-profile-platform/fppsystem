@@ -65,7 +65,8 @@
         </p>
       </el-col>
     </el-row>
-    <el-dialog
+
+    <!-- <el-dialog
       title="Forgot Passowrd"
       :visible.sync="changePasswordVisible"
       width="30%"
@@ -82,7 +83,7 @@
           >Confirm</el-button
         >
       </span>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 

@@ -21,8 +21,16 @@
 <script>
 import is from 'is_js';
 import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+// import pdfFonts from 'pdfmake/build/vfs_fonts';
+// pdfMake.vfs = pdfFonts.pdfMake.vfs;
+pdfMake.fonts = {
+  Montserrat: {
+    normal: 'https://fppghana.com/fonts/Raleway-Regular.ttf',
+    bold: 'https://fppghana.com/fonts/Raleway-Bold.ttf',
+    italics: 'https://fppghana.com/fonts/Raleway-Italic.ttf',
+    bolditalics: 'https://fppghana.com/fonts/Raleway-MediumItalic.ttf',
+  },
+};
 
 export default {
   name: 'ProfileDownload',
@@ -120,7 +128,7 @@ export default {
         { text: harvest[1].minor_season_harvest, alignment: 'center' },
       ]);
       this.harvestInfo.push([
-        { text: 'Annual Total', bold: true, fontSize: 17, alignment: 'center' },
+        { text: 'Annual Total', bold: true, fontSize: 16, alignment: 'center' },
         { text: harvest[0].yearly_harvest, alignment: 'center' },
         { text: harvest[1].yearly_harvest, alignment: 'center' },
       ]);
@@ -160,7 +168,7 @@ export default {
       this.incomeInfo.push([
         { text: 'Annual Total', bold: true, fontSize: 16 },
         { text: income[0].yearly_income, alignment: 'center' },
-        { text: income[1].yearly_income },
+        { text: income[1].yearly_income, alignment: 'center' },
       ]);
     },
 
@@ -211,6 +219,7 @@ export default {
         { text: support[1].grand_total, alignment: 'center' },
       ]);
     },
+
     getLineCanvas() {
       return [
         {
@@ -331,6 +340,7 @@ export default {
         footer: function(currentPage, pageCount) {
           return [
             {
+              margin: [0, 10, 0, 0],
               canvas: self.getLineCanvas(),
             },
             {
@@ -667,6 +677,7 @@ export default {
         defaultStyle: {
           fontSize: 11,
           columnGap: 20,
+          font: 'Montserrat',
         },
       };
     },

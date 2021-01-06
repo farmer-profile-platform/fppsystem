@@ -24,10 +24,10 @@ export default {
       return Array.isArray(s) && s.length;
     },
     syncOfflineFarmersData() {
+      this.$store.dispatch('emptyFarmerData', 'new')
       let self = this;
       if (this.newFarmersOffline.length > 0) {
         let newData = this.newFarmersOffline.map(function (farmer) {
-          console.log(farmer.photo)
           self.dataURLtoFile(farmer.photo, farmer.photoFileName, 'photo');
           self.dataURLtoFile(farmer.fingerprint, farmer.fingerprintFileName, 'fingerPrint');
           self.dataURLtoFile(farmer.idCard, farmer.idCardFileName, 'idCard');
@@ -38,7 +38,7 @@ export default {
             delete farmer.photoFileName;
             delete farmer.fingerprintFileName;
             delete farmer.idCardFileName;
-          }, 15000);
+          }, 16000);
 
           return farmer
         })
@@ -50,6 +50,8 @@ export default {
           .catch((errors) => {
             this.errorMessage(errors.error);
           });
+      } else {
+        this.$store.dispatch('emptyFarmerData', 'new')
       }
     },
     syncOfflineEditedData() {

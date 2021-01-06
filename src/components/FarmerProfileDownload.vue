@@ -581,7 +581,7 @@ export default {
                 ],
               },
               {
-                width: 100,
+                width: 120,
                 stack: [
                   {
                     fontSize: 12,

@@ -125,7 +125,7 @@
                 <router-link
                   :to="{
                     name: 'Farmer Profile',
-                    query: { farmer: props.row },
+                    query: { farmer: props.row._id },
                   }"
                 >
                   <el-dropdown-item>

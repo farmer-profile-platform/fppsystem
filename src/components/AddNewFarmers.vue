@@ -391,10 +391,8 @@
                 </el-form-item>
               </el-col>
               <el-col :span="10">
-                <el-form-item label="Child's Age">
-                  <el-input type="number" v-model="child.dob">
-                    <template slot="append">years</template>
-                  </el-input>
+                <el-form-item label="Child's Year of Birth">
+                  <el-input type="number" v-model="child.dob" />
                 </el-form-item>
               </el-col>
               <el-col :span="3">

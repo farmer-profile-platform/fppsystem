@@ -205,7 +205,10 @@
                   </el-col>
                   <el-col :span="6">
                     <p>Age</p>
-                    <h5>{{ children.dob }} years</h5>
+                    <h5>
+                      {{ children.dob }} (
+                      {{ getAgeFromYear(children.dob) }} years )
+                    </h5>
                   </el-col>
                   <el-col :span="6"> </el-col>
                   <el-col :span="6"> </el-col>
@@ -359,7 +362,7 @@
                   width="50%"
                 >
                   <div>
-                    <DoubleChart :chartData="chartData" />
+                    <DoubleChart :chartData="chartData" v-if="showBarChart" />
                   </div>
                 </el-dialog>
               </el-col>
@@ -485,6 +488,7 @@
         <p>Edit field and make sure all required fields has data.</p>
       </template>
       <EditFarmerDetails
+        v-if="showEditFarmerModal"
         :farmer.sync="farmer"
         v-on:editedFarmer="farmerEdited"
       />
@@ -493,9 +497,9 @@
 </template>
 
 <script>
-import DoubleChart from '../../components/charts/DoubleChart';
-import dashboardService from '../../api/reports';
-import farmersService from '../../api/farmers';
+import DoubleChart from '@/components/charts/DoubleChart';
+import dashboardService from '@/api/reports';
+import farmersService from '@/api/farmers';
 import EditFarmerDetails from './EditFarmerDetails';
 
 export default {
@@ -522,13 +526,22 @@ export default {
   methods: {
     getFarmer() {
       this.loading = true;
-      this.farmer = this.$route.query.farmer;
-      this.farmer.name = this.farmer.firstName + ' ' + this.farmer.lastName;
-      this.farmer.created = this.farmer.createdAt
-        ? this.farmer.createdAt
-        : Date.now();
-      if (this.farmer._id) this.getFarmerAnalysis(this.farmer._id);
-      this.loading = false;
+      farmersService
+        .getFarmer(this.$route.query.farmer)
+        .then((response) => {
+          this.farmer = response.data;
+          this.farmer.name = this.farmer.firstName + ' ' + this.farmer.lastName;
+          this.farmer.created = this.farmer.createdAt
+            ? this.farmer.createdAt
+            : Date.now();
+          this.getFarmerAnalysis(this.farmer._id);
+          this.loading = false;
+        })
+        .catch((errors) => {
+          this.loading = false;
+          this.errorMessage(errors.error);
+          this.errorMessage('Farmer data failed to fetch');
+        });
     },
     getFarmerAnalysis(farmerId) {
       dashboardService
@@ -553,6 +566,11 @@ export default {
               delete element._id;
               return element;
             });
+
+            if (inputInfo.length !== harvestYieldIncome.length) {
+              inputInfo.unshift({ label: '', y: 0 });
+            }
+
             this.chartData.inputInfo = inputInfo;
           } else {
             this.chartData.inputInfo = [{ label: '', y: 0 }];

@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="dataLoading">
+  <div>
     <div class="mb-2">
       <el-button
         type="primary"
@@ -10,11 +10,13 @@
         Download
       </el-button>
     </div>
-    <el-row>
-      <el-col :span="24">
-        <div id="pdfContainer" class="pdfContainer"></div>
-      </el-col>
-    </el-row>
+    <div v-loading="dataLoading">
+      <el-row>
+        <el-col :span="24">
+          <div id="pdfContainer" class="pdfContainer"></div>
+        </el-col>
+      </el-row>
+    </div>
   </div>
 </template>
 
@@ -51,7 +53,9 @@ export default {
   },
   methods: {
     loadData() {
-      (this.incomeInfo = []), (this.harvestInfo = []);
+      this.dataLoading = true;
+      this.incomeInfo = [];
+      this.harvestInfo = [];
       this.supportsInfo = [];
       this.hasSupports = this.hasInputSupport(this.farmer.inputSupports);
 
@@ -70,7 +74,6 @@ export default {
         ]);
       }
       this.embedPDF();
-      this.dataLoading = false;
     },
     getTableTitle(title) {
       return {
@@ -685,6 +688,7 @@ export default {
       pdfMake.createPdf(this.getPdfDefinition()).download();
     },
     embedPDF() {
+      let self = this;
       // let fexts = {pdf: 'application/pdf', jpg: 'image/jpeg', png: 'image/png'}
       // console.log(this.getPdfDefinition())
       const pdfDocGenerator = pdfMake.createPdf(this.getPdfDefinition());
@@ -696,6 +700,7 @@ export default {
         const iframe = document.createElement('iframe');
         iframe.src = dataUrl;
         targetElement.appendChild(iframe);
+        self.dataLoading = false;
       });
     },
   },

@@ -67,6 +67,7 @@ export default {
     };
   },
   mounted() {
+    console.log(this.chartData);
     this.chart = new CanvasJS.Chart('chart-container', this.chartOptions);
     this.chart.render();
   },

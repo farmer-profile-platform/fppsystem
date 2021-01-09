@@ -19,12 +19,17 @@ export default {
     })
   },
   methods: {
+    getAgeFromYear(year) {
+      let date = new Date();
+      let yearNow = date.getFullYear();
+      let age = yearNow - year
+      return age;
+    },
     hasInputSupport(inputSupports) {
       let s = inputSupports;
       return Array.isArray(s) && s.length;
     },
     syncOfflineFarmersData() {
-      this.$store.dispatch('emptyFarmerData', 'new')
       let self = this;
       if (this.newFarmersOffline.length > 0) {
         let newData = this.newFarmersOffline.map(function (farmer) {

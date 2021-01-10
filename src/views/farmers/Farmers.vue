@@ -36,7 +36,7 @@
       >
         <el-table-column label="Basic Info" width="250">
           <template slot-scope="props">
-            <div class="d-flex">
+            <div class="d-flex clickable" @click="viewProfile(props.row._id)">
               <span style="margin-right: 10px;">
                 <img
                   :src="getImageFile(props.row.photo)"
@@ -289,6 +289,12 @@ export default {
     farmerAdded() {
       this.showAddFarmerModal = false;
       this.getFarmers();
+    },
+    viewProfile(id) {
+      this.$router.push({
+        name: 'Farmer Profile',
+        query: { farmer: id },
+      });
     },
     handleCurrentChange(page) {
       this.currentPage = page;

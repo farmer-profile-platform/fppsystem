@@ -52,8 +52,9 @@ export default {
           .then(() => {
             this.$store.dispatch('emptyFarmerData', 'new')
           })
-          .catch((errors) => {
-            this.errorMessage(errors.error);
+          .catch(() => {
+            this.$store.dispatch('emptyFarmerData', 'new')
+            this.errorMessage('Failed to save farmer offline, some information may be invalid.');
           });
       } else {
         this.$store.dispatch('emptyFarmerData', 'new')

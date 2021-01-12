@@ -7,14 +7,15 @@ import { mapGetters } from "vuex"
 export default {
   data() {
     return {
-      photo: '',
-      fingerPrint: '',
-      idCard: ''
+      photo: 'no-photo',
+      fingerPrint: 'no-photo',
+      idCard: 'no-photo'
     }
   },
   computed: {
     ...mapGetters({
       newFarmersOffline: 'getNewFarmersOffline',
+      files: 'getFarmerFiles',
       editedFarmersOffline: 'getEditedFarmersOffline'
     })
   },
@@ -33,36 +34,72 @@ export default {
       let self = this;
       if (this.newFarmersOffline.length > 0) {
         let newData = this.newFarmersOffline.map(function (farmer) {
-          if (farmer.photo || farmer.photoFileName || farmer.idCard) {
-            self.dataURLtoFile(farmer.photo, farmer.photoFileName, 'photo');
-            self.dataURLtoFile(farmer.fingerprint, farmer.fingerprintFileName, 'fingerPrint');
-            self.dataURLtoFile(farmer.idCard, farmer.idCardFileName, 'idCard');
 
-            setTimeout(function () {
-              farmer.photo = self.photo;
-              farmer.fingerprint = self.fingerPrint
-              farmer.idCard = self.idCard;
-              delete farmer.photoFileName;
-              delete farmer.fingerprintFileName;
-              delete farmer.idCardFileName;
-            }, 15000);
+          if (farmer.fingerprint !== "no-photo.jpg" && farmer.photo !== "no-photo.jpg") {
+            self.$store.dispatch('get_files', { "base64Url": farmer.fingerprint, "fileName": farmer.fingerprintFileName, "type": 'fingerPrint' }).then(() => {
+              farmer.fingerprint = self.files.fingerPrint;
+            })
+            self.$store.dispatch('get_files', { "base64Url": farmer.photo, "fileName": farmer.photoFileName, "type": 'photo' }).then(() => {
+              farmer.photo = self.files.photo;
+            })
+            self.$store.dispatch('get_files', { "base64Url": farmer.idCard, "fileName": farmer.idCardFileName, "type": 'idCard' }).then(() => {
+              farmer.idCard = self.files.idCard
+            })
           }
 
-          return farmer
+          console.log(self.files)
+          return farmer;
         })
+
         console.log(newData)
-        farmersService
-          .addFarmer(newData)
-          .then(() => {
-            this.$store.dispatch('emptyFarmerData', 'new')
-          })
-          .catch(() => {
-            this.$store.dispatch('emptyFarmerData', 'new')
-            this.errorMessage('Failed to save farmer offline, some information may be invalid.');
-          });
+        self.addNewData(newData)
+
       } else {
         this.$store.dispatch('emptyFarmerData', 'new')
       }
+    },
+    // dataURLtoFile(base64Url, fileName, type) {
+    //   let self = this;
+    //   const imageType = fileName.split('.')[1];
+
+    //   fetch(base64Url)
+    //     .then((res) => res.blob())
+    //     .then((blob) => {
+    //       const file = new File([blob], fileName, {
+    //         type: `image/${imageType}`,
+    //       });
+
+    //       const formData = new FormData();
+    //       formData.append('file', file);
+
+    //       farmersService.uploadFarmerFiles(formData)
+    //         .then((response) => {
+    //           if (type == 'photo') {
+    //             self.photo = response.data;
+    //           } else if (type == 'idCard') {
+    //             self.idCard = response.data;
+    //           } else if (type == 'fingerPrint') {
+    //             self.fingerPrint = response.data;
+    //           }
+    //           self.successNotification('Uploaded Successfully');
+    //         })
+    //         .catch(() => {
+    //           self.errorMessage('Image failed to upload');
+    //         });
+    //     });
+    // },
+    addNewData(farmerData) {
+      farmersService
+        .addFarmer(farmerData)
+        .then(() => {
+          this.$store.dispatch('emptyFarmerData', 'new')
+          this.$store.dispatch('emptyFiles')
+        })
+        .catch(() => {
+          this.$store.dispatch('emptyFarmerData', 'new')
+          this.$store.dispatch('emptyFiles')
+          this.errorMessage('Failed to save farmer offline, some information may be invalid.');
+        });
     },
     syncOfflineEditedData() {
       if (this.editedFarmersOffline.length > 0) {
@@ -89,36 +126,7 @@ export default {
       }
       return navigator.onLine;
     },
-    dataURLtoFile(base64Url, fileName, type) {
-      let self = this;
-      const imageType = fileName.split('.')[1];
 
-      fetch(base64Url)
-        .then((res) => res.blob())
-        .then((blob) => {
-          const file = new File([blob], fileName, {
-            type: `image/${imageType}`,
-          });
-
-          const formData = new FormData();
-          formData.append('file', file);
-
-          farmersService.uploadFarmerFiles(formData)
-            .then((response) => {
-              if (type == 'photo') {
-                self.photo = response.data;
-              } else if (type == 'idCard') {
-                self.idCard = response.data;
-              } else if (type == 'fingerPrint') {
-                self.fingerPrint = response.data;
-              }
-              self.successNotification('Uploaded Successfully');
-            })
-            .catch(() => {
-              self.errorMessage('Image failed to upload');
-            });
-        });
-    },
     ucwords: function (str) {
       if (typeof str !== 'undefined') {
         return str.toLowerCase().replace(/\b[a-z]/g, function (letter) {

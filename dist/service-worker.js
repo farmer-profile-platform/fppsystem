@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.73c6b403cde92e065bec75c11c5de455.js"
+  "/precache-manifest.107511fa41d9eacb6830457c7d42fc80.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "famer_pro_web"});

@@ -33,7 +33,6 @@ export default {
       let self = this;
       if (this.newFarmersOffline.length > 0) {
         let newData = this.newFarmersOffline.map(function (farmer) {
-
           if (farmer.photo || farmer.photoFileName || farmer.idCard) {
             self.dataURLtoFile(farmer.photo, farmer.photoFileName, 'photo');
             self.dataURLtoFile(farmer.fingerprint, farmer.fingerprintFileName, 'fingerPrint');

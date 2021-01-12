@@ -1134,12 +1134,12 @@ export default {
           });
         })
         .catch(() => {
-          this.errorMessage('Farmer not added');
+          this.errorMessage('Farmer not added, contact admin');
         });
     },
     addFarmer() {
       this.loading = true;
-      if (this.internetStatus == true) {
+      if (this.internetStatus === true) {
         farmersService
           .addFarmer(this.addFamerDetails)
           .then((response) => {
@@ -1148,9 +1148,9 @@ export default {
             this.successNotification('Success', 'Farmer added successfully');
             this.$emit('addedFarmer');
           })
-          .catch((errors) => {
+          .catch(() => {
             this.loading = false;
-            this.errorMessage(errors.error);
+            this.errorMessage('Failed to save farmer data, contact admin');
           });
       } else {
         this.loading = false;

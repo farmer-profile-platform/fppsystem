@@ -33,9 +33,12 @@ export default {
       let self = this;
       if (this.newFarmersOffline.length > 0) {
         let newData = this.newFarmersOffline.map(function (farmer) {
-          self.dataURLtoFile(farmer.photo, farmer.photoFileName, 'photo');
-          self.dataURLtoFile(farmer.fingerprint, farmer.fingerprintFileName, 'fingerPrint');
-          self.dataURLtoFile(farmer.idCard, farmer.idCardFileName, 'idCard');
+
+          if (farmer.photo || farmer.photoFileName || farmer.idCard) {
+            self.dataURLtoFile(farmer.photo, farmer.photoFileName, 'photo');
+            self.dataURLtoFile(farmer.fingerprint, farmer.fingerprintFileName, 'fingerPrint');
+            self.dataURLtoFile(farmer.idCard, farmer.idCardFileName, 'idCard');
+          }
           setTimeout(function () {
             farmer.photo = self.photo;
             farmer.fingerprint = self.fingerPrint
@@ -43,7 +46,7 @@ export default {
             delete farmer.photoFileName;
             delete farmer.fingerprintFileName;
             delete farmer.idCardFileName;
-          }, 16000);
+          }, 15000);
 
           return farmer
         })

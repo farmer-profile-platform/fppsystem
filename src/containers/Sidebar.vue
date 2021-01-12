@@ -26,7 +26,7 @@
     <hr />
     <el-menu :default-openeds="['1']">
       <router-link to="/dashboard">
-        <el-menu-item index="1">
+        <el-menu-item index="1" v-if="isAdmin">
           <i class="el-icon-s-home"></i>
           Dashboard
         </el-menu-item>

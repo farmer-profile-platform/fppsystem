@@ -37,18 +37,20 @@ export default {
             self.dataURLtoFile(farmer.photo, farmer.photoFileName, 'photo');
             self.dataURLtoFile(farmer.fingerprint, farmer.fingerprintFileName, 'fingerPrint');
             self.dataURLtoFile(farmer.idCard, farmer.idCardFileName, 'idCard');
+
+            setTimeout(function () {
+              farmer.photo = self.photo;
+              farmer.fingerprint = self.fingerPrint
+              farmer.idCard = self.idCard;
+              delete farmer.photoFileName;
+              delete farmer.fingerprintFileName;
+              delete farmer.idCardFileName;
+            }, 15000);
           }
-          setTimeout(function () {
-            farmer.photo = self.photo;
-            farmer.fingerprint = self.fingerPrint
-            farmer.idCard = self.idCard;
-            delete farmer.photoFileName;
-            delete farmer.fingerprintFileName;
-            delete farmer.idCardFileName;
-          }, 15000);
 
           return farmer
         })
+        console.log(newData)
         farmersService
           .addFarmer(newData)
           .then(() => {

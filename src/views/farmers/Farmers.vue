@@ -241,7 +241,6 @@ export default {
             this.tableLoading = false;
           });
       } else {
-        // this.$store.dispatch('emptyFarmerData', 'new');
         this.tableLoading = false;
         this.tableData = this.farmers;
         this.total = this.tableData.length;

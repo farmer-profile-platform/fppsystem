@@ -32,63 +32,25 @@ export default {
     syncOfflineFarmersData() {
       let self = this;
       if (this.newFarmersOffline.length > 0) {
-        let newData = this.newFarmersOffline.map(function (farmer) {
-
+        this.newFarmersOffline.forEach(function (farmer) {
           if (farmer.fingerprint !== "no-photo.jpg" && farmer.photo !== "no-photo.jpg") {
 
-            const imageType = farmer.photoFileName.split('.')[1];
+            self.dataURLtoFile(farmer.fingerprint, farmer.fingerprintFileName, 'fingerPrint')
+            self.dataURLtoFile(farmer.photo, farmer.photoFileName, 'photo')
 
-            fetch(farmer.photo)
-              .then((res) => res.blob())
-              .then((blob) => {
-                const file = new File([blob], farmer.photoFileName, {
-                  type: `image/${imageType}`,
-                });
+            self.dataURLtoFile(farmer.idCard, farmer.idCardFileName, 'idCard')
 
-                const formData = new FormData();
-                formData.append('file', file);
-
-                farmersService.uploadFarmerFiles(formData)
-                  .then((response) => {
-                    farmer.photo = response.data;
-                    self.successNotification('Uploaded Successfully');
-                    self.dataURLtoFile(farmer.fingerprint, farmer.fingerprintFileName, 'fingerPrint')
-                  })
-                  .catch(() => {
-                    self.errorMessage('Image failed to upload');
-                  });
-              });
-
-            // self.getPhotoFile(farmer.photo, farmer.photoFileName)
-            // self.getUserPosts(farmer.fingerprint, farmer.fingerprintFileName, 'fingerPrint')
-            // self.getFingerIdCardFile(farmer.idCard, farmer.idCardFileName)
-            self.getUserPosts(farmer.fingerprint, farmer.fingerprintFileName, 'fingerPrint')
-              .then((response) => {
-                console.log(response)
-              })
-              .catch((error) => {
-                console.log(error)
-              });
+            farmer.photo = 'img_' + farmer.photoFileName;
+            farmer.fingerprint = 'img_' + farmer.fingerprintFileName;
+            farmer.idCard = 'img_' + farmer.idCardFileName;
           }
+          self.addNewData(farmer)
           return farmer;
         })
-
-        console.log(newData)
-        // self.addNewData(newData)
-
       } else {
         this.$store.dispatch('emptyFarmerData', 'new')
       }
     },
-    // getPhotoFile(base64Url, fileName) {
-    //   this.dataURLtoFile(base64Url, fileName, 'photo')
-    // },
-    // getFingerPrintFile(base64Url, fileName) {
-    //   this.dataURLtoFile(base64Url, fileName, 'fingerPrint')
-    // },
-    // getFingerIdCardFile(base64Url, fileName) {
-    //   this.dataURLtoFile(base64Url, fileName, 'idCard')
-    // },
     dataURLtoFile(base64Url, fileName, type) {
       let self = this;
       const imageType = fileName.split('.')[1];
@@ -105,19 +67,22 @@ export default {
 
           farmersService.uploadFarmerFiles(formData)
             .then((response) => {
-              if (type == 'idCard') {
-                self.idCard = response.data;
-                console.log('card', self.idCard)
+              if (type == 'photo') {
+                base64Url = response.data;
+              } else if (type == 'idCard') {
+                base64Url = response.data;
               } else if (type == 'fingerPrint') {
-                self.fingerPrint = response.data;
-                console.log('card', self.fingerPrint)
+                base64Url = response.data;
               }
               self.successNotification(`${type} Uploaded Successfully`);
             })
             .catch(() => {
-              self.errorMessage('Image failed to upload');
+              self.errorMessage(`${type} failed to upload`);
             });
         });
+      // return new Promise(function (resolve) {
+      //   resolve(userFiles.fingerPrint);
+      // })
     },
     addNewData(farmerData) {
       farmersService
@@ -130,43 +95,6 @@ export default {
           // this.$store.dispatch('emptyFiles')
           this.errorMessage('Failed to save farmer offline, some information may be invalid.');
         });
-    },
-    getUserPosts(base64Url, fileName, type) {
-      const userFiles = null
-      let self = this;
-      const imageType = fileName.split('.')[1];
-
-      fetch(base64Url)
-        .then((res) => res.blob())
-        .then((blob) => {
-          const file = new File([blob], fileName, {
-            type: `image/${imageType}`,
-          });
-
-          const formData = new FormData();
-          formData.append('file', file);
-
-          farmersService.uploadFarmerFiles(formData)
-            .then((response) => {
-              if (type == 'idCard') {
-                userFiles.idCard = response.data;
-              } else if (type == 'fingerPrint') {
-                userFiles.fingerPrint = response.data;
-              }
-              self.successNotification(`${type} Uploaded Successfully`);
-            })
-            .catch(() => {
-              self.errorMessage('Image failed to upload');
-            });
-        });
-
-      return new Promise(function (resolve, reject) {
-        if (userFiles !== null) {
-          resolve(userFiles);
-        } else {
-          reject('User file found');
-        }
-      });
     },
     syncOfflineEditedData() {
       if (this.editedFarmersOffline.length > 0) {

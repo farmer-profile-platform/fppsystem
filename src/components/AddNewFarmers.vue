@@ -145,8 +145,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="ID Number" prop="idCardNumber">
-                <el-input v-model="addFamerDetails.idCardNumber" />
+              <el-form-item label="ID Number" prop="id_number">
+                <el-input v-model="addFamerDetails.id_number" />
               </el-form-item>
             </el-col> </el-row
           ><br />
@@ -893,7 +893,7 @@ export default {
         fbo_position: '',
         fboMember_name: '',
         national_id: '',
-        idCardNumber: '',
+        id_number: '',
         photo: 'no-photo.jpg',
         fingerprint: 'no-photo.jpg',
         idCard: 'no-photo.jpg',

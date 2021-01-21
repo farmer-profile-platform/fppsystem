@@ -392,7 +392,12 @@
               </el-col>
               <el-col :span="10">
                 <el-form-item label="Child's Year of Birth">
-                  <el-input type="number" v-model="child.dob" />
+                  <el-date-picker
+                    v-model="child.dob"
+                    type="year"
+                    placeholder="Pick a year"
+                  >
+                  </el-date-picker>
                 </el-form-item>
               </el-col>
               <el-col :span="3">
@@ -510,11 +515,12 @@
             <el-row :gutter="20" v-for="(year, i) in harvest.years" :key="i">
               <el-col :span="5">
                 <el-form-item label="Year">
-                  <el-input
-                    type="number"
+                  <el-date-picker
                     v-model="year.year"
+                    type="year"
                     placeholder="2013"
-                  />
+                  >
+                  </el-date-picker>
                 </el-form-item>
               </el-col>
               <el-col :span="5">

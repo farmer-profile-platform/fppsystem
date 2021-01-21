@@ -19,10 +19,11 @@ export default {
     })
   },
   methods: {
-    getAgeFromYear(year) {
-      let date = new Date();
-      let yearNow = date.getFullYear();
-      let age = yearNow - year
+
+    getAgeFromYear(date) {
+      let newdate = new Date(date);
+      let year = newdate.getFullYear();
+      let age = 2021 - year
       return age;
     },
     hasInputSupport(inputSupports) {

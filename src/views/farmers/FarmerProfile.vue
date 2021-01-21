@@ -206,7 +206,7 @@
                   <el-col :span="6">
                     <p>Age</p>
                     <h5>
-                      {{ children.dob }} (
+                      {{ new Date(children.dob).getFullYear() }} (
                       {{ getAgeFromYear(children.dob) }} years )
                     </h5>
                   </el-col>

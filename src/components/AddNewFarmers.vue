@@ -515,12 +515,15 @@
             <el-row :gutter="20" v-for="(year, i) in harvest.years" :key="i">
               <el-col :span="5">
                 <el-form-item label="Year">
-                  <el-date-picker
+                  <el-select
                     v-model="year.year"
-                    type="year"
-                    placeholder="2013"
+                    style="width:100%; margin-top:-12px"
+                    placeholder="2021"
                   >
-                  </el-date-picker>
+                    <el-option label="2019" value="2019"></el-option>
+                    <el-option label="2020" value="2020"></el-option>
+                    <el-option label="2021" value="2021"></el-option>
+                  </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="5">

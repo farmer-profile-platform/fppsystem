@@ -204,7 +204,7 @@
                     <h5>{{ children.name }}</h5>
                   </el-col>
                   <el-col :span="6">
-                    <p>Age</p>
+                    <p>Year of Birth</p>
                     <h5>
                       {{ new Date(children.dob).getFullYear() }} (
                       {{ getAgeFromYear(children.dob) }} years )

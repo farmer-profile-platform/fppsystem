@@ -305,18 +305,6 @@ export default {
       return show
         ? {
             style: 'tableStyle',
-            // layout: {
-            //   // eslint-disable-next-line
-            //   hLineColor: function(i, node) {
-            //     return i === 0 ? '#2fa512' : '#eee';
-            //   },
-            //   vLineColor: function(i, node) {
-            //     return i === 0 && node.table.body.length === 0
-            //       ? '#2fa512'
-            //       : '#eee';
-            //   },
-            // },
-
             table: {
               widths: [100, '*', 200, '*'],
               headerRows: 2,

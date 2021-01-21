@@ -19,7 +19,6 @@ export default {
     })
   },
   methods: {
-
     getAgeFromYear(date) {
       let newdate = new Date(date);
       let year = newdate.getFullYear();

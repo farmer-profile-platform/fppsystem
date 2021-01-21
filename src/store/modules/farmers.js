@@ -6,7 +6,7 @@ const state = {
   editedFarmersOffline: [],
   supportedFarmers: [],
   internetStatus: true,
-  photo: '',
+  photo: '', 
 }
 
 const getters = {

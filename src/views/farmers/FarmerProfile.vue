@@ -139,7 +139,7 @@
               <h5>{{ farmer.fboMember_name }}</h5>
               <br />
               <p>ID Number</p>
-              <h5>{{ farmer.id_number }}</h5>
+              <h5>{{ farmer.idCardNumber }}</h5>
             </el-col>
             <el-col :span="6">
               <p>Signature/Thumbprint</p>

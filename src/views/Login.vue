@@ -61,7 +61,7 @@
         <br />
         <p style="text-align:center;">
           Only authorized company staff will have access. Log In details is
-          therefore 'Requested'. (v-2.0.6)
+          therefore 'Requested'. (v-2.0.8)
         </p>
       </el-col>
     </el-row>

@@ -288,7 +288,7 @@ export default {
         nationality: this.farmer.nationality,
         residence: this.farmer.townOfResidence,
         national_id: this.farmer.national_id,
-        id_number: this.farmer.id_number,
+        idCardNumber: this.farmer.idCardNumber,
         fpp_id: this.farmer.farmerId,
         years_farming: this.farmer.years_farming,
         num_children: this.farmer.num_children,
@@ -512,7 +512,7 @@ export default {
                     fontSize: 12,
                     margin: [0, 0, 0, 7],
                     bold: false,
-                    text: this.getProfileDetails('id_number'),
+                    text: this.getProfileDetails('idCardNumber'),
                   },
                   {
                     fontSize: 12,

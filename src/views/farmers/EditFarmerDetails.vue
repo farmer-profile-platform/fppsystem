@@ -135,8 +135,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="ID Number" prop="id_number">
-                <el-input v-model="editFamerDetails.id_number" />
+              <el-form-item label="ID Number" prop="idCardNumber">
+                <el-input v-model="editFamerDetails.idCardNumber" />
               </el-form-item>
             </el-col> </el-row
           ><br />
@@ -869,7 +869,7 @@ export default {
         fbo_position: '',
         fboMember_name: '',
         national_id: '',
-        id_number: '',
+        idCardNumber: '',
         photo: '',
         fingerprint: '',
         idCard: '',
@@ -1022,7 +1022,7 @@ export default {
       this.editFamerDetails.fbo_position = this.farmer.fbo_position;
       this.editFamerDetails.fboMember_name = this.farmer.fbo_position;
       this.editFamerDetails.national_id = this.farmer.national_id;
-      this.editFamerDetails.id_number = this.farmer.id_number;
+      this.editFamerDetails.idCardNumber = this.farmer.idCardNumber;
       this.editFamerDetails.photo = this.farmer.photo;
       this.editFamerDetails.fingerprint = this.farmer.fingerprint;
       this.editFamerDetails.idCard = this.farmer.idCard;

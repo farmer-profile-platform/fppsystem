@@ -183,7 +183,7 @@ export default {
     },
     getHostName() {
       let hn = window.location.hostname
-      let uploadUrl = hn == 'localhost' ? "http://127.0.0.1:5000/uploads/" : "https://hopemorganfirm.com/uploads/"
+      let uploadUrl = hn == 'localhost' ? "http://127.0.0.1:5000/uploads/" : "https://fppapi.icu/uploads/"
       return uploadUrl;
     },
     checkEmptyArray(data) {

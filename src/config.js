@@ -12,15 +12,14 @@ function getApiUrl() {
 const API_URL = getApiUrl();
 
 export default {
-  APP_URL: API_URL,
-  LOGIN_URL: '/api/v1/auth/login',
-  REGISTER_URL: '/api/v1/auth/register',
-  LOGGED_IN_USER_URL: '/api/v1/auth/current-user',
-  LOGOUT_USER_URL: '/api/v1/auth/logout',
-  FARMERS_URL: '/api/v1/farmers',
-  USERS_URL: '/api/v1/users',
-  REPORTS_URL: '/api/v1/dashboard-reports',
-  ACTIVITIES_URL: '/api/v1/activities',
-  SUPPORTS_URL: '/api/v1/supports',
-  FSPS_URL: '/api/v1/fsps'
+  LOGIN_URL: API_URL + 'auth/login',
+  REGISTER_URL: API_URL + 'auth/register',
+  LOGGED_IN_USER_URL: API_URL + 'auth/current-user',
+  LOGOUT_USER_URL: API_URL + 'auth/logout',
+  FARMERS_URL: API_URL + 'farmers',
+  USERS_URL: API_URL + 'users',
+  REPORTS_URL: API_URL + 'dashboard-reports',
+  ACTIVITIES_URL: API_URL + 'activities',
+  SUPPORTS_URL: API_URL + 'supports',
+  FSPS_URL: API_URL + 'fsps'
 }

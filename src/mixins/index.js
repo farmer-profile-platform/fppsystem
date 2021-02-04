@@ -48,7 +48,7 @@ export default {
           return farmer;
         })
       } else {
-        this.$store.dispatch('emptyFarmerData', 'new')
+        this.$store.dispatch('emptyFarmerData')
       }
     },
     dataURLtoFile(base64Url, fileName, type) {
@@ -88,27 +88,12 @@ export default {
       farmersService
         .addFarmer(farmerData)
         .then(() => {
-          this.$store.dispatch('emptyFarmerData', 'new')
+          this.$store.dispatch('emptyFarmerData')
         })
         .catch(() => {
-          this.$store.dispatch('emptyFarmerData', 'new')
-          // this.$store.dispatch('emptyFiles')
+          this.$store.dispatch('emptyFarmerData')
           this.errorMessage('Failed to save farmer offline, some information may be invalid.');
         });
-    },
-    syncOfflineEditedData() {
-      if (this.editedFarmersOffline.length > 0) {
-        this.editedFarmersOffline.map(function (editedData) {
-          farmersService
-            .updateFarmer(editedData)
-            .then(() => { })
-            .catch((errors) => {
-              this.errorMessage(errors.error);
-            });
-          return editedData;
-        })
-        this.$store.dispatch('emptyFarmerData', 'edited')
-      }
     },
     checkInternet() {
       if (navigator.onLine) {

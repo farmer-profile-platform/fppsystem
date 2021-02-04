@@ -212,6 +212,7 @@ export default {
     ...mapGetters({
       farmers: 'getFarmers',
       internetStatus: 'internetStatus',
+      user: 'getUser',
     }),
   },
   watch: {
@@ -235,6 +236,7 @@ export default {
             this.tableData = response.data;
             this.$store.dispatch('getFarmerData', response.data);
             this.total = response.total;
+            this.updateBrowserCache();
           })
           .catch((errors) => {
             this.errorMessage(errors.error);
@@ -244,6 +246,28 @@ export default {
         this.tableLoading = false;
         this.tableData = this.farmers;
         this.total = this.tableData.length;
+      }
+    },
+    updateBrowserCache() {
+      let self = this;
+      if (localStorage.getItem('updated')) {
+        console.log('true');
+      } else {
+        this.$alert(
+          'We would like to update your FPP local cache to suit new FPP updates',
+          'Updates',
+          {
+            confirmButtonText: 'OK',
+            callback: (action) => {
+              localStorage.setItem('updated', false);
+              self.$store.dispatch('emptyFarmerData');
+              this.$message({
+                type: 'info',
+                message: `${action} successfully. You should log back in`,
+              });
+            },
+          }
+        );
       }
     },
     addInputSupport(farmerId, name) {

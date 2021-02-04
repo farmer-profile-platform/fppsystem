@@ -1,5 +1,5 @@
 <template>
-  <el-aside class="sidebar" style="width: 350px;">
+  <el-aside class="sidebar sideDrawer" style="width: 330px;">
     <div class="sidebar_top_logo">
       <img src="../assets/images/fpplogo.png" alt="logo" width="175px" />
       <p>Authorized Personnel</p>
@@ -26,7 +26,7 @@
     <hr />
     <el-menu :default-openeds="['1']">
       <router-link to="/dashboard">
-        <el-menu-item index="1" v-if="isAdmin">
+        <el-menu-item index="1">
           <i class="el-icon-s-home"></i>
           Dashboard
         </el-menu-item>

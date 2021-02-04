@@ -2,7 +2,7 @@
   <div>
     <div>
       <el-input
-        placeholder="Search activities by name"
+        placeholder="Search issues by user names"
         v-model="search"
         class="mt-3 mb-1"
       >
@@ -11,26 +11,28 @@
     </div>
 
     <el-card>
-      <el-table :data="activities" style="width: 100%" stripe>
-        <el-table-column label="Info">
+      <el-table :data="issues" style="width: 100%" stripe>
+        <el-table-column label="User">
           <template slot-scope="props">
-            <span>{{ props.row.name }}</span>
-            <br />
-            <span style="font-size:11px;">
-              By: <el-tag size="mini">{{ props.row.user.name }}</el-tag>
-            </span>
+            <span>{{ props.row.user.name }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="Date" align="center">
+
+        <el-table-column label="Type">
+          <template slot-scope="props">
+            <el-tag :type="getIssueType(props.row.type)">{{
+              props.row.type
+            }}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="Description">
+          <template slot-scope="props">
+            <span>{{ props.row.description }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="Reported" align="center">
           <template slot-scope="props">
             <span>{{ getDateFormat(props.row.createdAt) }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="Activity" align="center">
-          <template slot-scope="props">
-            <span :style="`color:${getActivityColor(props.row.action)};`">{{
-              props.row.action
-            }}</span>
           </template>
         </el-table-column>
         <el-table-column align="right">
@@ -41,7 +43,7 @@
               icon="el-icon-info"
               iconColor="red"
               title="Are you sure to delete this?"
-              @onConfirm="deleteActivity(props.row._id)"
+              @onConfirm="deleteIssue(props.row._id)"
             >
               <el-button
                 slot="reference"
@@ -70,7 +72,7 @@
 </template>
 
 <script>
-import activityService from '@/api/activities';
+import issueService from '@/api/issues';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -78,7 +80,7 @@ export default {
   data() {
     return {
       search: '',
-      activities: [],
+      issues: [],
       total: 0,
       currentPage: 1,
     };
@@ -89,29 +91,22 @@ export default {
     }),
   },
   created() {
-    this.getActivities();
+    this.getIssues();
   },
   methods: {
-    getActivities() {
-      activityService
-        .getActivities()
-        .then((response) => this.loadTable(response))
+    getIssues() {
+      issueService
+        .getIssues()
+        .then((response) => {
+          this.issues = response.data;
+          this.total = response.total;
+        })
         .catch((errors) => this.errorMessage(errors.error));
     },
-    loadTable(activity) {
-      let self = this;
-      let data = activity.data.map(function(act) {
-        act.user.name =
-          act.user._id === self.user._id ? 'Yourself' : act.user.name;
-        return act;
-      });
-      this.activities = data;
-      this.total = activity.total;
-    },
-    deleteActivity(id) {
-      activityService
-        .deleteActivity(id)
-        .then(() => this.getActivities())
+    deleteIssue(id) {
+      issueService
+        .deleteIssue(id)
+        .then(() => this.getIssues())
         .catch((errors) => this.errorMessage(errors.error));
     },
     handleCurrentChange(page) {

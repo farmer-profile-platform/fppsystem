@@ -150,6 +150,27 @@ export default {
       }
       return color
     },
+    getIssueType(type) {
+      let color;
+      switch (type) {
+        case 'App Malfunction':
+          color = "danger"
+          break;
+        case 'Offline Issue':
+          color = "warning"
+          break;
+        case 'Dashboard Issue':
+          color = "info"
+          break;
+        case 'Can\'t query data':
+          color = "danger"
+          break;
+        case 'Other':
+          color = "primary"
+          break;
+      }
+      return color
+    },
     addActivity(farmer, action) {
       let activity = {}
       activity.action = action

@@ -34,6 +34,7 @@ const routes = [
           tabs: [
             { name: 'Analysis', root: 'analysis', route: '/dashboard/analysis' },
             { name: 'Activity Log', root: 'activity', route: '/dashboard/activity' },
+            { name: 'Issues Reported', root: 'issues', route: '/dashboard/issues' },
           ],
         }
       },

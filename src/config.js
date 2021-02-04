@@ -21,5 +21,6 @@ export default {
   REPORTS_URL: API_URL + 'dashboard-reports',
   ACTIVITIES_URL: API_URL + 'activities',
   SUPPORTS_URL: API_URL + 'supports',
-  FSPS_URL: API_URL + 'fsps'
+  FSPS_URL: API_URL + 'fsps',
+  ISSUES_URL: API_URL + 'issues'
 }

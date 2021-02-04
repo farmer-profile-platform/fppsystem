@@ -206,6 +206,10 @@ export default {
       currentPage: 1,
       total: 3,
       search: '',
+      params: {
+        page: 1,
+        limit: 20,
+      },
     };
   },
   computed: {
@@ -230,7 +234,7 @@ export default {
       if (this.internetStatus) {
         this.syncOfflineFarmersData();
         farmersService
-          .getFarmers()
+          .getFarmers(this.params)
           .then((response) => {
             this.tableLoading = false;
             this.tableData = response.data;
@@ -263,7 +267,7 @@ export default {
               self.$store.dispatch('emptyFarmerData');
               this.$message({
                 type: 'info',
-                message: `${action} successfully. You should log back in`,
+                message: `${action} successfully`,
               });
             },
           }
@@ -321,6 +325,8 @@ export default {
     },
     handleCurrentChange(page) {
       this.currentPage = page;
+      this.params.page = page;
+      this.getFarmers();
     },
   },
 };

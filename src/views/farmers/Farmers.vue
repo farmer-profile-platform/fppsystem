@@ -204,7 +204,7 @@ export default {
       tableLoading: false,
       showAddFarmerModal: false,
       currentPage: 1,
-      total: 3,
+      total: 0,
       search: '',
       params: {
         page: 1,

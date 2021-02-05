@@ -15,4 +15,10 @@ export default {
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error))
   },
+  getUserReports(userId) {
+    let url = config.REPORTS_URL + '/user/' + userId
+    return apiService.get(url)
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error))
+  },
 }

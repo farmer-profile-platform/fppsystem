@@ -15,10 +15,21 @@ export default {
   computed: {
     ...mapGetters({
       newFarmersOffline: 'getNewFarmersOffline',
-      editedFarmersOffline: 'getEditedFarmersOffline'
     })
   },
   methods: {
+    getGreetings() {
+      let today = new Date()
+      let curHr = today.getHours()
+
+      if (curHr < 12) {
+        return 'Good Morning'
+      } else if (curHr < 18) {
+        return 'Good Afternoon'
+      } else {
+        return 'Good Evening'
+      }
+    },
     getAgeFromYear(date) {
       let newdate = new Date(date);
       let year = newdate.getFullYear();

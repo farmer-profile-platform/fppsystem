@@ -11,16 +11,22 @@
     </div>
 
     <el-card>
-      <el-table :data="issues" style="width: 100%" stripe>
+      <el-table
+        :data="issues"
+        style="width: 100%"
+        stripe
+        v-loading="tableLoading"
+      >
         <el-table-column label="User">
           <template slot-scope="props">
-            <span>{{ props.row.user.name }}</span>
+            <span v-if="isAdmin">{{ props.row.user.name }}</span>
+            <span v-else>{{ user.name }}</span>
           </template>
         </el-table-column>
 
         <el-table-column label="Type">
           <template slot-scope="props">
-            <el-tag :type="getIssueType(props.row.type)">{{
+            <el-tag size="mini" :type="getIssueType(props.row.type)">{{
               props.row.type
             }}</el-tag>
           </template>
@@ -35,7 +41,7 @@
             <span>{{ getDateFormat(props.row.createdAt) }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="right">
+        <el-table-column align="right" v-if="isAdmin">
           <template slot-scope="props">
             <el-popconfirm
               confirmButtonText="OK"
@@ -81,6 +87,7 @@ export default {
     return {
       search: '',
       issues: [],
+      tableLoading: false,
       total: 0,
       currentPage: 1,
     };
@@ -88,6 +95,7 @@ export default {
   computed: {
     ...mapGetters({
       user: 'getUser',
+      isAdmin: 'getAdmin',
     }),
   },
   created() {
@@ -95,13 +103,27 @@ export default {
   },
   methods: {
     getIssues() {
-      issueService
-        .getIssues()
-        .then((response) => {
-          this.issues = response.data;
-          this.total = response.total;
-        })
-        .catch((errors) => this.errorMessage(errors.error));
+      let self = this;
+      this.tableLoading = true;
+      if (this.isAdmin) {
+        issueService
+          .getIssues()
+          .then((response) => {
+            self.issues = response.data;
+            self.total = response.total;
+            self.tableLoading = false;
+          })
+          .catch((errors) => this.errorMessage(errors.error));
+      } else {
+        issueService
+          .getUserIssues(self.user.id)
+          .then((response) => {
+            self.issues = response.data;
+            self.total = response.total;
+            self.tableLoading = false;
+          })
+          .catch((errors) => this.errorMessage(errors.error));
+      }
     },
     deleteIssue(id) {
       issueService

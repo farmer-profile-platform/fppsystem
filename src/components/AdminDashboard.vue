@@ -82,7 +82,7 @@ import DoughnutChart from './charts/DoughnutChart';
 import { mapGetters } from 'vuex';
 
 export default {
-  name: 'adminDashboard',
+  name: 'AdminDashboard',
   components: {
     DashBoardCard,
     DoughnutChart,

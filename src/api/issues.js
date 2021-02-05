@@ -11,6 +11,12 @@ export default {
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error))
   },
+  getUserIssues(userId) {
+    let url = config.USERS_URL + '/' + userId + '/issues'
+    return apiService.get(url)
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error))
+  },
   addIssues(issue) {
     return apiService.post(config.ISSUES_URL, issue)
       .then((response) => Promise.resolve(response))
@@ -21,5 +27,5 @@ export default {
     return apiService.delete(url)
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error))
-  },
+  }
 }

@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import BarChart from './charts/BarChart';
+import BarChart from '@/components/charts/BarChart';
 
 export default {
   name: 'DashBoardCard',

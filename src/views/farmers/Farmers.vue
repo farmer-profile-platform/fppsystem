@@ -186,8 +186,8 @@
 </template>
 
 <script>
-import farmersService from '../../api/farmers';
-import AddNewFarmers from '../../components/AddNewFarmers';
+import farmersService from '@/api/farmers';
+import AddNewFarmers from './AddNewFarmers';
 const AppHandler = () => import('../../handlers/AppHandler');
 
 import { mapGetters } from 'vuex';

@@ -9,8 +9,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import AdminDashboard from '../../components/AdminDashboard';
-import EditorDashboard from '../../components/EditorDashboard';
+import AdminDashboard from '@/components/dashboard/AdminDashboard';
+import EditorDashboard from '@/components/dashboard/EditorDashboard';
 
 export default {
   components: {

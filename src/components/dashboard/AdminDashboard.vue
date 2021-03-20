@@ -76,9 +76,9 @@
 </template>
 
 <script>
-import dashboardService from '../api/reports';
+import dashboardService from '@/api/reports';
 import DashBoardCard from './DashBoardCard';
-import DoughnutChart from './charts/DoughnutChart';
+import DoughnutChart from '@/components/charts/DoughnutChart';
 import { mapGetters } from 'vuex';
 
 export default {

@@ -370,8 +370,19 @@
           </div>
         </el-collapse-item>
 
+        <!-- Weather Deatails -->
+        <el-collapse-item title="Weather" name="6">
+          <div class="profile-tab-bg pt-0">
+            <el-row type="flex" justify="space-between">
+              <el-col :span="24">
+                <div v-html="weatherContent"></div>
+              </el-col>
+            </el-row>
+          </div>
+        </el-collapse-item>
+
         <!-- Farm input support -->
-        <el-collapse-item title="Farm Input Support" name="6">
+        <el-collapse-item title="Farm Input Support" name="7">
           <div
             class="profile-tab-bg pt-0"
             v-if="hasInputSupport(farmer.inputSupports)"
@@ -425,7 +436,7 @@
         </el-collapse-item>
 
         <!-- Bank Information -->
-        <el-collapse-item title="Bank Details" name="7">
+        <el-collapse-item title="Bank Details" name="8">
           <div class="profile-tab-bg pt-0">
             <div v-for="(bank, index) in farmer.bank" :key="index">
               <h5 class="mb-1 mt-1">
@@ -500,6 +511,7 @@
 import DoubleChart from '@/components/charts/DoubleChart';
 import dashboardService from '@/api/reports';
 import farmersService from '@/api/farmers';
+import weatherService from '@/api/weather';
 import EditFarmerDetails from './EditFarmerDetails';
 
 export default {
@@ -510,6 +522,7 @@ export default {
   },
   data() {
     return {
+      weatherContent: null,
       showBarChart: false,
       showEditFarmerModal: false,
       editTitle: '',
@@ -535,6 +548,7 @@ export default {
             ? this.farmer.createdAt
             : Date.now();
           this.getFarmerAnalysis(this.farmer._id);
+          this.getWeatherInfo();
           this.loading = false;
         })
         .catch((errors) => {
@@ -582,6 +596,15 @@ export default {
         .catch((errors) => {
           this.errorMessage(errors.error);
         });
+    },
+    getWeatherInfo() {
+      weatherService
+        .getWeatherDetails()
+        .then((response) => {
+          console.log(response);
+          // this.weatherContent = response;
+        })
+        .catch((errors) => this.errorMessage(errors.error));
     },
     showEditModal() {
       this.editTitle = 'Edit Farmer Details for ' + this.farmer.name;

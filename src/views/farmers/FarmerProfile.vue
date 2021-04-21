@@ -1,6 +1,10 @@
 <template>
-  <div v-loading="loading">
-    <el-card>
+  <div>
+    <div v-if="loading" style="text-align:center;">
+      <i class="el-icon-loading" style="font-size:50px; color:#2fa512;"> </i>
+    </div>
+
+    <el-card v-else>
       <el-row type="flex" class="row-bg" justify="space-between">
         <el-col :span="10" class="d-flex">
           <div>
@@ -511,7 +515,6 @@
 import DoubleChart from '@/components/charts/DoubleChart';
 import dashboardService from '@/api/reports';
 import farmersService from '@/api/farmers';
-import weatherService from '@/api/weather';
 import EditFarmerDetails from './EditFarmerDetails';
 
 export default {
@@ -527,7 +530,7 @@ export default {
       showEditFarmerModal: false,
       editTitle: '',
       activeTab: 'personal',
-      loading: false,
+      loading: true,
       farmer: {},
       chartData: {},
       chartLoaded: false,
@@ -538,20 +541,18 @@ export default {
   },
   methods: {
     getFarmer() {
-      this.loading = true;
       farmersService
         .getFarmer(this.$route.query.farmer)
-        .then((response) => {
+        .then(response => {
           this.farmer = response.data;
           this.farmer.name = this.farmer.firstName + ' ' + this.farmer.lastName;
           this.farmer.created = this.farmer.createdAt
             ? this.farmer.createdAt
             : Date.now();
           this.getFarmerAnalysis(this.farmer._id);
-          this.getWeatherInfo();
           this.loading = false;
         })
-        .catch((errors) => {
+        .catch(errors => {
           this.loading = false;
           this.errorMessage(errors.error);
           this.errorMessage('Farmer data failed to fetch');
@@ -560,23 +561,21 @@ export default {
     getFarmerAnalysis(farmerId) {
       dashboardService
         .getFarmerReports(farmerId)
-        .then((response) => {
+        .then(response => {
           let inputTotal = response.data.inputSupport;
 
-          let harvestYieldIncome = response.data.harvestIncome.map(
-            (element) => {
-              delete element._id;
-              return element;
-            }
-          );
+          let harvestYieldIncome = response.data.harvestIncome.map(element => {
+            delete element._id;
+            return element;
+          });
 
-          let harvestedBags = response.data.harvestedBags.map((element) => {
+          let harvestedBags = response.data.harvestedBags.map(element => {
             delete element._id;
             return element;
           });
 
           if (Array.isArray(inputTotal) && inputTotal.length) {
-            let inputInfo = inputTotal.map((element) => {
+            let inputInfo = inputTotal.map(element => {
               delete element._id;
               return element;
             });
@@ -593,18 +592,9 @@ export default {
           this.chartData.harvestIncome = harvestYieldIncome;
           this.chartData.harvestedBags = harvestedBags;
         })
-        .catch((errors) => {
+        .catch(errors => {
           this.errorMessage(errors.error);
         });
-    },
-    getWeatherInfo() {
-      weatherService
-        .getWeatherDetails()
-        .then((response) => {
-          console.log(response);
-          // this.weatherContent = response;
-        })
-        .catch((errors) => this.errorMessage(errors.error));
     },
     showEditModal() {
       this.editTitle = 'Edit Farmer Details for ' + this.farmer.name;
@@ -634,7 +624,7 @@ export default {
           this.successNotification('Success', 'Farmer deleted successfully');
           this.$router.go(-1);
         })
-        .catch((errors) => {
+        .catch(errors => {
           this.errorMessage(errors.error);
         });
     },

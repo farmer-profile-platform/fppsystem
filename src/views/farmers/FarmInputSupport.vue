@@ -13,7 +13,7 @@
       <el-table
         :data="
           tableData.filter(
-            (data) =>
+            data =>
               !search ||
               data.firstName.toLowerCase().includes(search.toLowerCase())
           )
@@ -95,7 +95,7 @@
                 <router-link
                   :to="{
                     name: 'Farmer Profile',
-                    query: { farmer: props.row },
+                    query: { farmer: props.row._id },
                   }"
                 >
                   <el-dropdown-item>
@@ -277,12 +277,12 @@ export default {
       this.tableLoading = true;
       farmersService
         .getFarmersWithSupport()
-        .then((response) => {
+        .then(response => {
           this.tableLoading = false;
           this.tableData = response.data;
           this.total = response.total;
         })
-        .catch((errors) => {
+        .catch(errors => {
           self.errorMessage(errors.error);
           self.tableLoading = false;
         });

@@ -1,5 +1,5 @@
 <template>
-  <el-aside class="sidebar" style="width: 350px;">
+  <el-aside class="sidebar sideDrawer" style="width: 330px;">
     <div class="sidebar_top_logo">
       <img src="../assets/images/fpplogo.png" alt="logo" width="175px" />
       <p>Authorized Personnel</p>
@@ -70,15 +70,76 @@
       <el-button size="mini" icon="el-icon-setting" type="text"
         >Settings</el-button
       >
-      <el-button type="text"
-        ><span style="color: #2fa512;">Get Help</span></el-button
+      <el-button type="text" @click="showHelpDialog = true"
+        ><span style="color: #2fa512;">Report</span></el-button
       >
     </div>
+
+    <el-dialog
+      title="Report an issue"
+      :visible.sync="showHelpDialog"
+      width="27%"
+    >
+      <div>
+        <el-form :model="issueReport" ref="issueReport" :rules="validation">
+          <el-row :gutter="10" style="margin-top: -20px;">
+            <el-col :md="24">
+              <el-form-item prop="type" label="Issue Type">
+                <el-select
+                  class="full-width mt_1 form-select"
+                  v-model.number="issueReport.type"
+                  placeholder="Select issue type"
+                >
+                  <el-option
+                    v-for="issue in issueTypes"
+                    :key="issue"
+                    :label="issue"
+                    :value="issue"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :md="24" style="margin-top: -10px;">
+              <el-form-item prop="action" label="Action">
+                <el-input
+                  v-model="issueReport.action"
+                  placeholder="adding farmer data"
+                  type="textarea"
+                  :rows="2"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :md="24" style="margin-top: -10px;">
+              <el-form-item prop="description" label="Description">
+                <el-input
+                  v-model="issueReport.description"
+                  placeholder="Describe issue or any app malfunction you've experinced."
+                  type="textarea"
+                  :rows="3"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button
+            type="primary"
+            size="mini"
+            class="full-width"
+            :loading="btnLoading"
+            icon="el-icon-question"
+            @click="reportIssue"
+            >Report Issue</el-button
+          >
+        </span>
+      </div>
+    </el-dialog>
   </el-aside>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import issueService from '@/api/issues';
 import RecentActivity from '@/components/RecentActivity';
 
 export default {
@@ -86,11 +147,76 @@ export default {
   components: {
     RecentActivity,
   },
+  data() {
+    return {
+      btnLoading: false,
+      showHelpDialog: false,
+      issueTypes: [
+        'App Malfunction',
+        'Offline Issue',
+        'Dashboard Issue',
+        "Can't query data",
+        'Other',
+      ],
+      issueReport: {
+        type: '',
+        description: '',
+        action: '',
+      },
+      validation: {
+        type: [
+          {
+            required: true,
+            message: 'Select issue type',
+            trigger: ['change'],
+          },
+        ],
+        description: [
+          {
+            required: true,
+            message: 'Description is required',
+            trigger: ['change'],
+          },
+        ],
+        action: [
+          {
+            required: true,
+            message: 'Help us know want you did.',
+            trigger: ['change'],
+          },
+        ],
+      },
+    };
+  },
   computed: {
     ...mapGetters({
       user: 'getUser',
       isAdmin: 'getAdmin',
     }),
+  },
+  methods: {
+    reportIssue() {
+      let self = this;
+      this.btnLoading = true;
+      this.$refs['issueReport'].validate((valid) => {
+        if (valid) {
+          console.log(this.issueReport);
+          issueService
+            .addIssues(this.issueReport)
+            .then(() => {
+              self.btnLoading = false;
+              self.showHelpDialog = false;
+              self.successNotification(
+                'Success',
+                'Issue reported successfully'
+              );
+            })
+            .catch((error) => self.errormessage(error.message));
+        } else {
+          return false;
+        }
+      });
+    },
   },
 };
 </script>

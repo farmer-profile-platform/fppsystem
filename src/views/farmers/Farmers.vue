@@ -36,7 +36,7 @@
       >
         <el-table-column label="Basic Info" width="250">
           <template slot-scope="props">
-            <div class="d-flex">
+            <div class="d-flex clickable" @click="viewProfile(props.row._id)">
               <span style="margin-right: 10px;">
                 <img
                   :src="getImageFile(props.row.photo)"
@@ -125,7 +125,7 @@
                 <router-link
                   :to="{
                     name: 'Farmer Profile',
-                    query: { farmer: props.row },
+                    query: { farmer: props.row._id },
                   }"
                 >
                   <el-dropdown-item>
@@ -186,8 +186,8 @@
 </template>
 
 <script>
-import farmersService from '../../api/farmers';
-import AddNewFarmers from '../../components/AddNewFarmers';
+import farmersService from '@/api/farmers';
+import AddNewFarmers from './AddNewFarmers';
 const AppHandler = () => import('../../handlers/AppHandler');
 
 import { mapGetters } from 'vuex';
@@ -204,14 +204,19 @@ export default {
       tableLoading: false,
       showAddFarmerModal: false,
       currentPage: 1,
-      total: 3,
+      total: 0,
       search: '',
+      params: {
+        page: 1,
+        limit: 20,
+      },
     };
   },
   computed: {
     ...mapGetters({
       farmers: 'getFarmers',
       internetStatus: 'internetStatus',
+      user: 'getUser',
     }),
   },
   watch: {
@@ -229,22 +234,44 @@ export default {
       if (this.internetStatus) {
         this.syncOfflineFarmersData();
         farmersService
-          .getFarmers()
+          .getFarmers(this.params)
           .then((response) => {
             this.tableLoading = false;
             this.tableData = response.data;
             this.$store.dispatch('getFarmerData', response.data);
             this.total = response.total;
+            this.updateBrowserCache();
           })
           .catch((errors) => {
             this.errorMessage(errors.error);
             this.tableLoading = false;
           });
       } else {
-        // this.$store.dispatch('emptyFarmerData', 'new');
         this.tableLoading = false;
         this.tableData = this.farmers;
         this.total = this.tableData.length;
+      }
+    },
+    updateBrowserCache() {
+      let self = this;
+      if (localStorage.getItem('updated')) {
+        console.log('true');
+      } else {
+        this.$alert(
+          'We would like to update your FPP local cache to suit new FPP updates',
+          'Updates',
+          {
+            confirmButtonText: 'OK',
+            callback: (action) => {
+              localStorage.setItem('updated', false);
+              self.$store.dispatch('emptyFarmerData');
+              this.$message({
+                type: 'info',
+                message: `${action} successfully`,
+              });
+            },
+          }
+        );
       }
     },
     addInputSupport(farmerId, name) {
@@ -290,8 +317,16 @@ export default {
       this.showAddFarmerModal = false;
       this.getFarmers();
     },
+    viewProfile(id) {
+      this.$router.push({
+        name: 'Farmer Profile',
+        query: { farmer: id },
+      });
+    },
     handleCurrentChange(page) {
       this.currentPage = page;
+      this.params.page = page;
+      this.getFarmers();
     },
   },
 };

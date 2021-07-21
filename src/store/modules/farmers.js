@@ -1,15 +1,12 @@
 const state = {
   farmers: [],
   newFarmersOffline: [],
-  editedFarmersOffline: [],
-  supportedFarmers: [],
   internetStatus: true,
 }
 
 const getters = {
   getFarmers: (state) => state.farmers,
   getNewFarmersOffline: (state) => state.newFarmersOffline,
-  getEditedFarmersOffline: (state) => state.editedFarmers,
   internetStatus: (state) => state.internetStatus
 }
 
@@ -20,8 +17,8 @@ const actions = {
   addFarmerOffline({ commit }, farmer) {
     commit('ADD_FARMER', farmer)
   },
-  emptyFarmerData({ commit }, type) {
-    commit('SET_FARMER_DATA_EMPTY', type)
+  emptyFarmerData({ commit }) {
+    commit('SET_FARMER_DATA_EMPTY')
   },
   update_internet_status({ commit }, status) {
     commit('UPDATE_INTERNET_STATUS', status)
@@ -36,16 +33,9 @@ const mutations = {
     state.newFarmersOffline.push(farmer);
     state.farmers.push(farmer);
   },
-  SET_FARMER_DATA_EMPTY: (state, type) => {
-    switch (type) {
-      case 'new':
-        state.farmers = []
-        state.newFarmersOffline = []
-        break;
-      case 'edited':
-        state.editedFarmersOffline = []
-        break;
-    }
+  SET_FARMER_DATA_EMPTY: (state) => {
+    state.farmers = []
+    state.newFarmersOffline = []
   },
   UPDATE_INTERNET_STATUS: (state, status) => {
     state.internetStatus = status;

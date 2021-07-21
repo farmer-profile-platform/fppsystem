@@ -2,7 +2,7 @@
   <div>
     <div>
       <el-input
-        placeholder="Search activities by farmer names"
+        placeholder="Search activities by name"
         v-model="search"
         class="mt-3 mb-1"
       >
@@ -11,13 +11,21 @@
     </div>
 
     <el-card>
-      <el-table :data="activities" style="width: 100%" stripe>
+      <el-table
+        :data="activities"
+        style="width: 100%"
+        stripe
+        v-loading="tableLoading"
+      >
         <el-table-column label="Info">
           <template slot-scope="props">
             <span>{{ props.row.name }}</span>
             <br />
-            <span style="font-size:11px;">
+            <span style="font-size:11px;" v-if="isAdmin">
               By: <el-tag size="mini">{{ props.row.user.name }}</el-tag>
+            </span>
+            <span style="font-size:11px;" v-else>
+              By: <el-tag size="mini">{{ user.name }}</el-tag>
             </span>
           </template>
         </el-table-column>
@@ -33,7 +41,7 @@
             }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="right">
+        <el-table-column align="right" v-if="isAdmin">
           <template slot-scope="props">
             <el-popconfirm
               confirmButtonText="OK"
@@ -70,7 +78,7 @@
 </template>
 
 <script>
-import activityService from '../../api/activities';
+import activityService from '@/api/activities';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -79,13 +87,19 @@ export default {
     return {
       search: '',
       activities: [],
+      tableLoading: false,
       total: 0,
       currentPage: 1,
+      query: {
+        page: 1,
+        limit: 20,
+      },
     };
   },
   computed: {
     ...mapGetters({
       user: 'getUser',
+      isAdmin: 'getAdmin',
     }),
   },
   created() {
@@ -93,10 +107,23 @@ export default {
   },
   methods: {
     getActivities() {
-      activityService
-        .getActivities()
-        .then((response) => this.loadTable(response))
-        .catch((errors) => this.errorMessage(errors.error));
+      let self = this;
+      this.tableLoading = true;
+      if (this.isAdmin) {
+        activityService
+          .getActivities(this.query)
+          .then((response) => this.loadTable(response))
+          .catch((errors) => this.errorMessage(errors.error));
+      } else {
+        activityService
+          .getUserActivity(self.user.id)
+          .then((response) => {
+            self.activities = response.data;
+            self.total = response.total;
+            self.tableLoading = false;
+          })
+          .catch((errors) => this.errorMessage(errors.error));
+      }
     },
     loadTable(activity) {
       let self = this;
@@ -107,6 +134,7 @@ export default {
       });
       this.activities = data;
       this.total = activity.total;
+      this.tableLoading = false;
     },
     deleteActivity(id) {
       activityService
@@ -116,6 +144,8 @@ export default {
     },
     handleCurrentChange(page) {
       this.currentPage = page;
+      this.query.page = page;
+      this.getActivities();
     },
   },
 };

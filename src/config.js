@@ -3,9 +3,9 @@ function getApiUrl() {
   if (hn === 'localhost') {
     return 'http://127.0.0.1:5000/api/v1/'
   } else if (hn == 'fppghana.com') {
-    return 'https://hopemorganfirm.com/api/v1/'
+    return 'https://fppapi.icu/api/v1/'
   } else {
-    return 'https://hopemorganfirm.com/api/v1/'
+    return 'https://fppapi.icu/api/v1/'
   }
 }
 
@@ -21,5 +21,6 @@ export default {
   REPORTS_URL: API_URL + 'dashboard-reports',
   ACTIVITIES_URL: API_URL + 'activities',
   SUPPORTS_URL: API_URL + 'supports',
-  FSPS_URL: API_URL + 'fsps'
+  FSPS_URL: API_URL + 'fsps',
+  ISSUES_URL: API_URL + 'issues'
 }

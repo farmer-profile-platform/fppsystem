@@ -1,6 +1,10 @@
 <template>
-  <div v-loading="loading">
-    <el-card>
+  <div>
+    <div v-if="loading" style="text-align:center;">
+      <i class="el-icon-loading" style="font-size:50px; color:#2fa512;"> </i>
+    </div>
+
+    <el-card v-else>
       <el-row type="flex" class="row-bg" justify="space-between">
         <el-col :span="10" class="d-flex">
           <div>
@@ -204,8 +208,11 @@
                     <h5>{{ children.name }}</h5>
                   </el-col>
                   <el-col :span="6">
-                    <p>Age</p>
-                    <h5>{{ children.dob }} years</h5>
+                    <p>Year of Birth</p>
+                    <h5>
+                      {{ new Date(children.dob).getFullYear() }} (
+                      {{ getAgeFromYear(children.dob) }} years )
+                    </h5>
                   </el-col>
                   <el-col :span="6"> </el-col>
                   <el-col :span="6"> </el-col>
@@ -359,7 +366,7 @@
                   width="50%"
                 >
                   <div>
-                    <DoubleChart :chartData="chartData" />
+                    <DoubleChart :chartData="chartData" v-if="showBarChart" />
                   </div>
                 </el-dialog>
               </el-col>
@@ -367,8 +374,19 @@
           </div>
         </el-collapse-item>
 
+        <!-- Weather Deatails -->
+        <el-collapse-item title="Weather" name="6">
+          <div class="profile-tab-bg pt-0">
+            <el-row type="flex" justify="space-between">
+              <el-col :span="24">
+                <div v-html="weatherContent"></div>
+              </el-col>
+            </el-row>
+          </div>
+        </el-collapse-item>
+
         <!-- Farm input support -->
-        <el-collapse-item title="Farm Input Support" name="6">
+        <el-collapse-item title="Farm Input Support" name="7">
           <div
             class="profile-tab-bg pt-0"
             v-if="hasInputSupport(farmer.inputSupports)"
@@ -422,7 +440,7 @@
         </el-collapse-item>
 
         <!-- Bank Information -->
-        <el-collapse-item title="Bank Details" name="7">
+        <el-collapse-item title="Bank Details" name="8">
           <div class="profile-tab-bg pt-0">
             <div v-for="(bank, index) in farmer.bank" :key="index">
               <h5 class="mb-1 mt-1">
@@ -485,6 +503,7 @@
         <p>Edit field and make sure all required fields has data.</p>
       </template>
       <EditFarmerDetails
+        v-if="showEditFarmerModal"
         :farmer.sync="farmer"
         v-on:editedFarmer="farmerEdited"
       />
@@ -493,9 +512,9 @@
 </template>
 
 <script>
-import DoubleChart from '../../components/charts/DoubleChart';
-import dashboardService from '../../api/reports';
-import farmersService from '../../api/farmers';
+import DoubleChart from '@/components/charts/DoubleChart';
+import dashboardService from '@/api/reports';
+import farmersService from '@/api/farmers';
 import EditFarmerDetails from './EditFarmerDetails';
 
 export default {
@@ -506,11 +525,12 @@ export default {
   },
   data() {
     return {
+      weatherContent: null,
       showBarChart: false,
       showEditFarmerModal: false,
       editTitle: '',
       activeTab: 'personal',
-      loading: false,
+      loading: true,
       farmer: {},
       chartData: {},
       chartLoaded: false,
@@ -521,38 +541,49 @@ export default {
   },
   methods: {
     getFarmer() {
-      this.loading = true;
-      this.farmer = this.$route.query.farmer;
-      this.farmer.name = this.farmer.firstName + ' ' + this.farmer.lastName;
-      this.farmer.created = this.farmer.createdAt
-        ? this.farmer.createdAt
-        : Date.now();
-      if (this.farmer._id) this.getFarmerAnalysis(this.farmer._id);
-      this.loading = false;
+      farmersService
+        .getFarmer(this.$route.query.farmer)
+        .then(response => {
+          this.farmer = response.data;
+          this.farmer.name = this.farmer.firstName + ' ' + this.farmer.lastName;
+          this.farmer.created = this.farmer.createdAt
+            ? this.farmer.createdAt
+            : Date.now();
+          this.getFarmerAnalysis(this.farmer._id);
+          this.loading = false;
+        })
+        .catch(errors => {
+          this.loading = false;
+          this.errorMessage(errors.error);
+          this.errorMessage('Farmer data failed to fetch');
+        });
     },
     getFarmerAnalysis(farmerId) {
       dashboardService
         .getFarmerReports(farmerId)
-        .then((response) => {
+        .then(response => {
           let inputTotal = response.data.inputSupport;
 
-          let harvestYieldIncome = response.data.harvestIncome.map(
-            (element) => {
-              delete element._id;
-              return element;
-            }
-          );
+          let harvestYieldIncome = response.data.harvestIncome.map(element => {
+            delete element._id;
+            return element;
+          });
 
-          let harvestedBags = response.data.harvestedBags.map((element) => {
+          let harvestedBags = response.data.harvestedBags.map(element => {
             delete element._id;
             return element;
           });
 
           if (Array.isArray(inputTotal) && inputTotal.length) {
-            let inputInfo = inputTotal.map((element) => {
+            let inputInfo = inputTotal.map(element => {
               delete element._id;
               return element;
             });
+
+            if (inputInfo.length !== harvestYieldIncome.length) {
+              inputInfo.unshift({ label: '', y: 0 });
+            }
+
             this.chartData.inputInfo = inputInfo;
           } else {
             this.chartData.inputInfo = [{ label: '', y: 0 }];
@@ -561,7 +592,7 @@ export default {
           this.chartData.harvestIncome = harvestYieldIncome;
           this.chartData.harvestedBags = harvestedBags;
         })
-        .catch((errors) => {
+        .catch(errors => {
           this.errorMessage(errors.error);
         });
     },
@@ -593,7 +624,7 @@ export default {
           this.successNotification('Success', 'Farmer deleted successfully');
           this.$router.go(-1);
         })
-        .catch((errors) => {
+        .catch(errors => {
           this.errorMessage(errors.error);
         });
     },

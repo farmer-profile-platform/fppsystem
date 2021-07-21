@@ -4,14 +4,21 @@ import config from '../config'
 export default {
   name: 'activityService',
 
-  getActivities() {
-    return apiService.get(config.ACTIVITIES_URL)
+  getActivities(query) {
+    return apiService.get(config.ACTIVITIES_URL, query)
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error))
   },
 
   getActivity(id) {
     let url = config.ACTIVITIES_URL + '/' + id
+    return apiService.get(url)
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error))
+  },
+
+  getUserActivity(userId) {
+    let url = config.USERS_URL + '/' + userId + '/activities'
     return apiService.get(url)
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error))

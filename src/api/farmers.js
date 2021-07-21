@@ -6,8 +6,8 @@ export default {
   components: {
     apiService
   },
-  getFarmers() {
-    return apiService.get(config.FARMERS_URL)
+  getFarmers(query) {
+    return apiService.get(config.FARMERS_URL, query)
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error))
   },

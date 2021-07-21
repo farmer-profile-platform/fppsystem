@@ -14,7 +14,8 @@ export default {
   },
   handleError(response) {
     let r = Object.assign({}, response)
-    let payload = r.response.data
+    let payload = r.response.data;
+    console.log(payload);
     return payload
   },
   get(url, params = {}) {

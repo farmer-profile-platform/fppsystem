@@ -61,7 +61,7 @@
         <br />
         <p style="text-align:center;">
           Only authorized company staff will have access. Log In details is
-          therefore 'Requested'. (v-2.0.0)
+          therefore 'Requested'. (v-2.2.3)
         </p>
       </el-col>
     </el-row>
@@ -125,14 +125,14 @@ export default {
     login() {
       let self = this;
       this.btnLoading = true;
-      this.$refs['loginForm'].validate((valid) => {
+      this.$refs['loginForm'].validate(valid => {
         if (valid) {
           authService
             .login(this.loginForm)
-            .then((response) => {
+            .then(response => {
               self.set_user(response);
             })
-            .catch((errors) => {
+            .catch(errors => {
               console.log(errors);
               self.errorMessage('Error with authentication');
               self.btnLoading = false;
@@ -150,12 +150,12 @@ export default {
         .then(() => {
           authService
             .getLoggedInUser()
-            .then((response) => {
+            .then(response => {
               self.$store.dispatch('get_user', response.data);
               self.btnLoading = false;
               self.$router.push('/dashboard');
             })
-            .catch((errors) => {
+            .catch(errors => {
               self.errorMessage(errors.error);
               self.btnLoading = false;
             });

@@ -7,77 +7,60 @@ import { mapGetters } from "vuex"
 export default {
   data() {
     return {
-      photo: '',
-      fingerPrint: '',
-      idCard: ''
+      photo: 'no-photo',
+      fingerPrint: 'no-photo',
+      idCard: 'no-photo'
     }
   },
   computed: {
     ...mapGetters({
       newFarmersOffline: 'getNewFarmersOffline',
-      editedFarmersOffline: 'getEditedFarmersOffline'
     })
   },
   methods: {
+    getGreetings() {
+      let today = new Date()
+      let curHr = today.getHours()
+
+      if (curHr < 12) {
+        return 'Good Morning'
+      } else if (curHr < 18) {
+        return 'Good Afternoon'
+      } else {
+        return 'Good Evening'
+      }
+    },
+    getAgeFromYear(date) {
+      let newdate = new Date(date);
+      let year = newdate.getFullYear();
+      let age = 2021 - year
+      return age;
+    },
     hasInputSupport(inputSupports) {
       let s = inputSupports;
       return Array.isArray(s) && s.length;
     },
     syncOfflineFarmersData() {
-      this.$store.dispatch('emptyFarmerData', 'new')
       let self = this;
       if (this.newFarmersOffline.length > 0) {
-        let newData = this.newFarmersOffline.map(function (farmer) {
-          self.dataURLtoFile(farmer.photo, farmer.photoFileName, 'photo');
-          self.dataURLtoFile(farmer.fingerprint, farmer.fingerprintFileName, 'fingerPrint');
-          self.dataURLtoFile(farmer.idCard, farmer.idCardFileName, 'idCard');
-          setTimeout(function () {
-            farmer.photo = self.photo;
-            farmer.fingerprint = self.fingerPrint
-            farmer.idCard = self.idCard;
-            delete farmer.photoFileName;
-            delete farmer.fingerprintFileName;
-            delete farmer.idCardFileName;
-          }, 16000);
+        this.newFarmersOffline.forEach(function (farmer) {
+          if (farmer.fingerprint !== "no-photo.jpg" && farmer.photo !== "no-photo.jpg") {
 
-          return farmer
+            self.dataURLtoFile(farmer.fingerprint, farmer.fingerprintFileName, 'fingerPrint')
+            self.dataURLtoFile(farmer.photo, farmer.photoFileName, 'photo')
+
+            self.dataURLtoFile(farmer.idCard, farmer.idCardFileName, 'idCard')
+
+            farmer.photo = 'img_' + farmer.photoFileName;
+            farmer.fingerprint = 'img_' + farmer.fingerprintFileName;
+            farmer.idCard = 'img_' + farmer.idCardFileName;
+          }
+          self.addNewData(farmer)
+          return farmer;
         })
-        farmersService
-          .addFarmer(newData)
-          .then(() => {
-            this.$store.dispatch('emptyFarmerData', 'new')
-          })
-          .catch((errors) => {
-            this.errorMessage(errors.error);
-          });
       } else {
-        this.$store.dispatch('emptyFarmerData', 'new')
+        this.$store.dispatch('emptyFarmerData')
       }
-    },
-    syncOfflineEditedData() {
-      if (this.editedFarmersOffline.length > 0) {
-        this.editedFarmersOffline.map(function (editedData) {
-          farmersService
-            .updateFarmer(editedData)
-            .then(() => { })
-            .catch((errors) => {
-              this.errorMessage(errors.error);
-            });
-          return editedData;
-        })
-        this.$store.dispatch('emptyFarmerData', 'edited')
-      }
-    },
-    checkInternet() {
-      if (navigator.onLine) {
-        this.$store.dispatch('update_internet_status', navigator.onLine);
-      } else {
-        alert(
-          'Hey! Looks like there is no connection which will retrict you in performing some tasks. Its advisable to not logout from system untill you have connection back.'
-        );
-        this.$store.dispatch('update_internet_status', navigator.onLine);
-      }
-      return navigator.onLine;
     },
     dataURLtoFile(base64Url, fileName, type) {
       let self = this;
@@ -96,18 +79,43 @@ export default {
           farmersService.uploadFarmerFiles(formData)
             .then((response) => {
               if (type == 'photo') {
-                self.photo = response.data;
+                base64Url = response.data;
               } else if (type == 'idCard') {
-                self.idCard = response.data;
+                base64Url = response.data;
               } else if (type == 'fingerPrint') {
-                self.fingerPrint = response.data;
+                base64Url = response.data;
               }
-              self.successNotification('Uploaded Successfully');
+              self.successNotification(`${type} Uploaded Successfully`);
             })
             .catch(() => {
-              self.errorMessage('Image failed to upload');
+              self.errorMessage(`${type} failed to upload`);
             });
         });
+      // return new Promise(function (resolve) {
+      //   resolve(userFiles.fingerPrint);
+      // })
+    },
+    addNewData(farmerData) {
+      farmersService
+        .addFarmer(farmerData)
+        .then(() => {
+          this.$store.dispatch('emptyFarmerData')
+        })
+        .catch(() => {
+          this.$store.dispatch('emptyFarmerData')
+          this.errorMessage('Failed to save farmer offline, some information may be invalid.');
+        });
+    },
+    checkInternet() {
+      if (navigator.onLine) {
+        this.$store.dispatch('update_internet_status', navigator.onLine);
+      } else {
+        alert(
+          'Hey! Looks like there is no connection which will retrict you in performing some tasks. Its advisable to not logout from system untill you have connection back.'
+        );
+        this.$store.dispatch('update_internet_status', navigator.onLine);
+      }
+      return navigator.onLine;
     },
     ucwords: function (str) {
       if (typeof str !== 'undefined') {
@@ -153,6 +161,27 @@ export default {
       }
       return color
     },
+    getIssueType(type) {
+      let color;
+      switch (type) {
+        case 'App Malfunction':
+          color = "danger"
+          break;
+        case 'Offline Issue':
+          color = "warning"
+          break;
+        case 'Dashboard Issue':
+          color = "info"
+          break;
+        case 'Can\'t query data':
+          color = "danger"
+          break;
+        case 'Other':
+          color = "primary"
+          break;
+      }
+      return color
+    },
     addActivity(farmer, action) {
       let activity = {}
       activity.action = action
@@ -171,7 +200,7 @@ export default {
     },
     getHostName() {
       let hn = window.location.hostname
-      let uploadUrl = hn == 'localhost' ? "http://127.0.0.1:5000/uploads/" : "https://hopemorganfirm.com/uploads/"
+      let uploadUrl = hn == 'localhost' ? "http://127.0.0.1:5000/uploads/" : "https://fppapi.icu/uploads/"
       return uploadUrl;
     },
     checkEmptyArray(data) {

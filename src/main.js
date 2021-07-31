@@ -7,6 +7,10 @@ import { store } from "./store/";
 import "@/assets/css/base.css";
 import "./plugins/element/index.js";
 
+global.jQuery = require('../node_modules/jquery');
+var $ = global.jQuery;
+window.$ = $;
+
 Vue.mixin(mixin)
 Vue.config.productionTip = false;
 

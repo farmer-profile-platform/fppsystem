@@ -245,7 +245,7 @@
               </el-col>
               <el-col :span="5">
                 <p>GEO Location</p>
-                <h5>{{ farmer.farm_location }}</h5>
+                <h5 id="geo">{{ farmer.farm_location }}</h5>
               </el-col>
             </el-row>
             <br />
@@ -376,10 +376,41 @@
 
         <!-- Weather Deatails -->
         <el-collapse-item title="Weather" name="6">
-          <div class="profile-tab-bg pt-0">
+          <div id="weather-row" class="profile-tab-bg pt-0" style="text-align:center;">
             <el-row type="flex" justify="space-between">
-              <el-col :span="24">
-                <div v-html="weatherContent"></div>
+              <el-col :span="4">
+                <p>Weather State</p>
+                <h5 id="weather"></h5>
+              </el-col>
+              <el-col :span="4">
+                <p>Weather Condition</p>
+                <h5 id="condition"></h5>
+              </el-col>
+              <el-col :span="4">
+                <p>Humidity</p>
+                <h5 id="humidity"></h5>
+              </el-col>
+            </el-row>
+            <el-row >
+              <el-col :span="8">
+                <p>True Color</p>
+                <img style="width:100%" src="" id="truecolor"/>
+              </el-col>
+              <el-col :span="8">
+                <p>False Color</p>
+                <img style="width:100%" src="" id="falsecolor"/>
+              </el-col>
+              <el-col :span="8">
+                <p>NDVI</p>
+                <img style="width:100%" src="" id="ndvi"/>
+              </el-col>
+              <el-col :span="12">
+                <p>EVI</p>
+                <img style="width:100%" src="" id="evi"/>
+              </el-col>
+              <el-col :span="12">
+                <p>EVI2</p>
+                <img style="width:100%" src="" id="evi2"/>
               </el-col>
             </el-row>
           </div>
@@ -516,7 +547,10 @@ import DoubleChart from '@/components/charts/DoubleChart';
 import dashboardService from '@/api/reports';
 import farmersService from '@/api/farmers';
 import EditFarmerDetails from './EditFarmerDetails';
-
+import jQuery from '../../../node_modules/jquery';
+var $ = jQuery;
+window.$ = $;
+const weather = require('@/api/weather');
 export default {
   name: 'FarmerProfile',
   components: {
@@ -525,7 +559,7 @@ export default {
   },
   data() {
     return {
-      weatherContent: null,
+      weatherContent: {"data":"test"},
       showBarChart: false,
       showEditFarmerModal: false,
       editTitle: '',
@@ -550,6 +584,7 @@ export default {
             ? this.farmer.createdAt
             : Date.now();
           this.getFarmerAnalysis(this.farmer._id);
+          this.weatherData();
           this.loading = false;
         })
         .catch(errors => {
@@ -557,6 +592,40 @@ export default {
           this.errorMessage(errors.error);
           this.errorMessage('Farmer data failed to fetch');
         });
+    },
+    weatherData(){
+    (function($) {
+      $(document).ready(function() {
+        $('#weather-row').hide();
+        console.log($('#geo').html());
+        var gps = $('#geo').html();
+        if(gps != ""){
+          var geo = String($('#geo').html()).split(',');
+          var lat = geo[0];
+          var lon = geo[1];
+          console.log(geo[0])
+          var coordinates = [[-121.1958,37.6683],[-121.1779,37.6687],[-121.1773,37.6792],[-121.1958,37.6792],[-121.1958,37.6683]];
+          try{
+            weather.getFarmWeather(coordinates,'1500336000','1508976000',lat,lon,function(data){
+                  $('#weather').html(data.weather);
+                  $('#condition').html(data.condition);
+                  $('#humidity').html(data.humidity);
+                  $('#truecolor').attr("src",data.truecolor);
+                  $('#falsecolor').attr("src",data.falsecolor);
+                  $('#ndvi').attr("src",data.ndvi);
+                  $('#evi').attr("src",data.evi);
+                  $('#evi2').attr("src",data.evi2);
+                  $('#weather-row').show();
+            });
+          }catch(err){
+            console.log(err);
+            $('#weather-row').html('No Internet Connection');
+          }
+        }else{
+          $('#weather-row').html('No GEO Location found');
+        }
+      });
+    })(jQuery);
     },
     getFarmerAnalysis(farmerId) {
       dashboardService

@@ -12,6 +12,7 @@
 const API_URL = '/api/';
 
 export default {
+  API_BASE: API_URL,
   LOGIN_URL: API_URL + 'auth/login',
   REGISTER_URL: API_URL + 'auth/register',
   LOGGED_IN_USER_URL: API_URL + 'auth/current-user',

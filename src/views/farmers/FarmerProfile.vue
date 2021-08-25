@@ -643,15 +643,7 @@ export default {
             var geo = String($('#geo').html()).split(',');
             var lat = geo[0];
             var lon = geo[1];
-            var BK_URL;
-            let hn = window.location.hostname;
-            if (hn === 'localhost') {
-              BK_URL = 'http://127.0.0.1:5000/';
-            } else if (hn == 'fppghana.com') {
-              BK_URL = 'https://api.fppghana.com/';
-            } else {
-              BK_URL = 'https://api.fppghana.com/';
-            }
+            var BK_URL = '/';
             var Httpreq = new XMLHttpRequest();
             Httpreq.open('GET', BK_URL + 'coordinates.json', false);
             Httpreq.setRequestHeader('Access-Control-Allow-Origin', '*');

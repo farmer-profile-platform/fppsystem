@@ -462,6 +462,29 @@
               </el-form-item>
             </el-col>
           </el-row>
+
+          <el-row :gutter="20">
+            <el-col :span="10">
+              <el-form-item label="Cordinates">
+                <el-select
+                  v-model="editFamerDetails.farm_cordinates"
+                  multiple
+                  filterable
+                  allow-create
+                  default-first-option
+                  placeholder="Add cordinates"
+                >
+                  <el-option
+                    v-for="item in editFamerDetails.farm_cordinates"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
           <hr />
           <br />
           <h3 class="mb-1">
@@ -891,6 +914,7 @@ export default {
         farmLandOwnershipType: '',
         num_farmLands: '',
         farm_location: '',
+        farm_cordinates: [],
         fsp_type: 'Rural Bank',
         spouse: [
           {
@@ -1043,6 +1067,7 @@ export default {
       this.editFamerDetails.years_farming = this.farmer.years_farming;
       this.editFamerDetails.farmLandOwnershipType = this.farmer.farmLandOwnershipType;
       this.editFamerDetails.farm_location = this.farmer.farm_location;
+      this.editFamerDetails.farm_cordinates = this.farmer.farm_cordinates;
       this.editFamerDetails.num_children = this.farmer.num_children;
       this.editFamerDetails.years_farming = this.farmer.years_farming;
       this.editFamerDetails.num_farmLands = this.farmer.num_farmLands;
@@ -1057,17 +1082,17 @@ export default {
     },
     updateFarmerDetails() {
       this.loading = true;
-      this.$refs['editFamerDetails'].validate((valid) => {
+      this.$refs['editFamerDetails'].validate(valid => {
         if (valid) {
           farmersService
             .updateFarmer(this.editFamerDetails)
-            .then((response) => {
+            .then(response => {
               this.addActivity(response.data, 'Edited');
               this.loading = false;
               this.successNotification('Success', 'Farmer edited successfully');
               this.$emit('editedFarmer');
             })
-            .catch((errors) => {
+            .catch(errors => {
               this.loading = false;
               this.errorMessage(errors.error);
             });
@@ -1090,7 +1115,7 @@ export default {
           ? 'credit'
           : '';
 
-      fspService.getFsps(this.queryParams).then((response) => {
+      fspService.getFsps(this.queryParams).then(response => {
         this.fsps = response.data;
         this.fspLoading = false;
       });
@@ -1102,7 +1127,7 @@ export default {
       formData.append('file', files[0]);
       farmersService
         .uploadFarmerFiles(formData)
-        .then((response) => {
+        .then(response => {
           if (type == 'photo') {
             self.editFamerDetails.photo = response.data;
           } else if (type == 'idCard') {
@@ -1112,7 +1137,7 @@ export default {
           }
           self.successNotification('Uploaded Successfully');
         })
-        .catch((errors) => {
+        .catch(errors => {
           self.errorMessage(errors.error);
         });
     },

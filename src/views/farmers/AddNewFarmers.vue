@@ -473,6 +473,28 @@
               </el-form-item>
             </el-col>
           </el-row>
+          <el-row :gutter="20">
+            <el-col :span="10">
+              <el-form-item label="Cordinates">
+                <el-select
+                  v-model="addFamerDetails.farm_cordinates"
+                  multiple
+                  filterable
+                  allow-create
+                  default-first-option
+                  placeholder="Add cordinates"
+                >
+                  <el-option
+                    v-for="item in addFamerDetails.farm_cordinates"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
           <hr />
           <br />
           <h3 class="mb-1">
@@ -911,6 +933,7 @@ export default {
         farmLandOwnershipType: '',
         num_farmLands: 0,
         farm_location: '',
+        farm_cordinates: [],
         fsp_type: 'Rural Bank',
         spouse: [
           {
@@ -1050,11 +1073,11 @@ export default {
 
       fspService
         .getFsps(this.queryParams)
-        .then((response) => {
+        .then(response => {
           this.fsps = response.data;
           this.fspLoading = false;
         })
-        .catch((errors) => {
+        .catch(errors => {
           this.errorMessage(errors.error);
           this.fspLoading = false;
         });
@@ -1074,7 +1097,7 @@ export default {
       if (this.internetStatus == true) {
         farmersService
           .uploadFarmerFiles(formData)
-          .then((response) => {
+          .then(response => {
             if (type == 'photo') {
               self.addFamerDetails.photo = response.data;
             } else if (type == 'idCard') {
@@ -1084,7 +1107,7 @@ export default {
             }
             self.successNotification('Uploaded Successfully');
           })
-          .catch((errors) => {
+          .catch(errors => {
             self.errorMessage(errors.error);
           });
       } else {
@@ -1133,7 +1156,7 @@ export default {
         }
       )
         .then(() => {
-          this.$refs['addFamerDetails'].validate((valid) => {
+          this.$refs['addFamerDetails'].validate(valid => {
             if (valid) {
               this.addFarmer();
             } else {
@@ -1151,7 +1174,7 @@ export default {
       if (this.internetStatus === true) {
         farmersService
           .addFarmer(this.addFamerDetails)
-          .then((response) => {
+          .then(response => {
             this.addActivity(response.data, 'Added');
             this.loading = false;
             this.successNotification('Success', 'Farmer added successfully');

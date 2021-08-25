@@ -680,7 +680,7 @@ export default {
       // let fexts = {pdf: 'application/pdf', jpg: 'image/jpeg', png: 'image/png'}
       // console.log(this.getPdfDefinition())
       const pdfDocGenerator = pdfMake.createPdf(this.getPdfDefinition());
-      pdfDocGenerator.getDataUrl((dataUrl) => {
+      pdfDocGenerator.getDataUrl(dataUrl => {
         const targetElement = document.querySelector('#pdfContainer');
         while (targetElement.firstChild) {
           targetElement.removeChild(targetElement.firstChild);

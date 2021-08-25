@@ -5,7 +5,7 @@ import farmersService from '../api/farmers';
 import { mapGetters } from "vuex"
 
 export default {
-  data() {
+  data () {
     return {
       photo: 'no-photo',
       fingerPrint: 'no-photo',
@@ -18,7 +18,7 @@ export default {
     })
   },
   methods: {
-    getGreetings() {
+    getGreetings () {
       let today = new Date()
       let curHr = today.getHours()
 
@@ -30,17 +30,17 @@ export default {
         return 'Good Evening'
       }
     },
-    getAgeFromYear(date) {
+    getAgeFromYear (date) {
       let newdate = new Date(date);
       let year = newdate.getFullYear();
       let age = 2021 - year
       return age;
     },
-    hasInputSupport(inputSupports) {
+    hasInputSupport (inputSupports) {
       let s = inputSupports;
       return Array.isArray(s) && s.length;
     },
-    syncOfflineFarmersData() {
+    syncOfflineFarmersData () {
       let self = this;
       if (this.newFarmersOffline.length > 0) {
         this.newFarmersOffline.forEach(function (farmer) {
@@ -62,7 +62,7 @@ export default {
         this.$store.dispatch('emptyFarmerData')
       }
     },
-    dataURLtoFile(base64Url, fileName, type) {
+    dataURLtoFile (base64Url, fileName, type) {
       let self = this;
       const imageType = fileName.split('.')[1];
 
@@ -95,7 +95,7 @@ export default {
       //   resolve(userFiles.fingerPrint);
       // })
     },
-    addNewData(farmerData) {
+    addNewData (farmerData) {
       farmersService
         .addFarmer(farmerData)
         .then(() => {
@@ -106,7 +106,7 @@ export default {
           this.errorMessage('Failed to save farmer offline, some information may be invalid.');
         });
     },
-    checkInternet() {
+    checkInternet () {
       if (navigator.onLine) {
         this.$store.dispatch('update_internet_status', navigator.onLine);
       } else {
@@ -126,7 +126,7 @@ export default {
         return str
       }
     },
-    getDateFormat(currentDate) {
+    getDateFormat (currentDate) {
       if (currentDate) {
         const date = new Date(currentDate)
         const dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'short', day: '2-digit' })
@@ -137,7 +137,7 @@ export default {
         return 'None';
       }
     },
-    getActivityColor(action) {
+    getActivityColor (action) {
       let color;
       switch (action) {
         case 'Support Added':
@@ -161,7 +161,7 @@ export default {
       }
       return color
     },
-    getIssueType(type) {
+    getIssueType (type) {
       let color;
       switch (type) {
         case 'App Malfunction':
@@ -182,7 +182,7 @@ export default {
       }
       return color
     },
-    addActivity(farmer, action) {
+    addActivity (farmer, action) {
       let activity = {}
       activity.action = action
       activity.name = farmer.name;
@@ -193,20 +193,20 @@ export default {
         .then(() => { })
         .catch((errors) => this.errorMessage(errors.error));
     },
-    getPercentageData(data, total) {
+    getPercentageData (data, total) {
       let percentage = data / total * 100
       percentage = Math.round(percentage)
       return percentage;
     },
-    getHostName() {
+    getHostName () {
       let hn = window.location.hostname
-      let uploadUrl = hn == 'localhost' ? "http://127.0.0.1:5000/uploads/" : "https://fppapi.icu/uploads/"
+      let uploadUrl = hn == 'localhost' ? "http://127.0.0.1:5000/uploads/" : "https://fppghana.com/uploads/"
       return uploadUrl;
     },
-    checkEmptyArray(data) {
+    checkEmptyArray (data) {
       return is.empty(data)
     },
-    getImageFile(pic) {
+    getImageFile (pic) {
       const url = this.getHostName()
       if (pic == "no-photo.jpg") {
         return url + 'photo_default.png'
@@ -218,13 +218,13 @@ export default {
         return url + pic
       }
     },
-    userProfile(userId, name) {
+    userProfile (userId, name) {
       this.$router.push({
         name: 'User Profile',
         params: { id: userId, name: name },
       });
     },
-    successMessage(message) {
+    successMessage (message) {
       this.$message({
         showClose: true,
         message: message,
@@ -232,14 +232,14 @@ export default {
         duration: 2000
       });
     },
-    successNotification(title, message) {
+    successNotification (title, message) {
       this.$notify({
         title: title,
         message: message,
         type: 'success'
       });
     },
-    errorMessage(message) {
+    errorMessage (message) {
       this.$message({
         showClose: true,
         message: message,
@@ -247,28 +247,28 @@ export default {
         duration: 3000
       });
     },
-    infoMessage(message) {
+    infoMessage (message) {
       this.$message({
         showClose: true,
         message: message,
         duration: 2000
       });
     },
-    addDuplicateField(dataArray, type) {
+    addDuplicateField (dataArray, type) {
       dataArray.push({});
       this.infoMessage(`Added another ${type}`);
     },
-    getuserAge(dob) {
+    getuserAge (dob) {
       var diff_ms = Date.now() - new Date(dob).getTime();
       var age_dt = new Date(diff_ms);
 
       return Math.abs(age_dt.getUTCFullYear() - 1970);
     },
-    capitalize(word) {
+    capitalize (word) {
       if (typeof word !== 'string') return ''
       return word.charAt(0).toUpperCase() + word.slice(1)
     },
-    logout() {
+    logout () {
       let self = this
       self.$store.dispatch('logout');
       self.$router.push("/login")

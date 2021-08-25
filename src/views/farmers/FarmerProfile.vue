@@ -384,6 +384,7 @@
             id="weather-row"
             class="profile-tab-bg pt-0"
             style="text-align:center;"
+            v-loading="weatherLoading"
           >
             <el-row type="flex" justify="space-between">
               <el-col :span="1">
@@ -569,6 +570,8 @@ import dashboardService from '@/api/reports';
 import farmersService from '@/api/farmers';
 import EditFarmerDetails from './EditFarmerDetails';
 import jQuery from '../../../node_modules/jquery';
+import coordinates from '@/assets/coordinates.json';
+
 var $ = jQuery;
 window.$ = $;
 const weather = require('@/api/weather');
@@ -590,6 +593,8 @@ export default {
       farmer: {},
       chartData: {},
       chartLoaded: false,
+      farmerCordinates: coordinates,
+      weatherLoading: true,
     };
   },
   created() {
@@ -634,6 +639,7 @@ export default {
       }, 800);
     },
     weatherData() {
+      let self = this;
       (function($) {
         $(document).ready(function() {
           $('#weather-row').hide();
@@ -643,16 +649,16 @@ export default {
             var geo = String($('#geo').html()).split(',');
             var lat = geo[0];
             var lon = geo[1];
-            var BK_URL = '/';
-            var Httpreq = new XMLHttpRequest();
-            Httpreq.open('GET', BK_URL + 'coordinates.json', false);
-            Httpreq.setRequestHeader('Access-Control-Allow-Origin', '*');
-            Httpreq.setRequestHeader('Content-type', 'application/json');
-            Httpreq.withCredentials = false;
-            Httpreq.send(null);
+            // var BK_URL = '/';
+            // var Httpreq = new XMLHttpRequest();
+            // Httpreq.open('GET', BK_URL + 'coordinates.json', false);
+            // Httpreq.setRequestHeader('Access-Control-Allow-Origin', '*');
+            // Httpreq.setRequestHeader('Content-type', 'application/json');
+            // Httpreq.withCredentials = false;
+            // Httpreq.send(null);
             var farmer = $('#FarmerName').html();
             var coordinates = null;
-            let json = JSON.parse(Httpreq.responseText);
+            let json = self.farmerCordinates;
             for (let i = 0; i < json.length; i++) {
               if (json[i].name == farmer) {
                 coordinates = json[i].coordinates;
@@ -681,6 +687,7 @@ export default {
                   'margin: 10px;border: 1px solid black;background: white;border-radius: 5px;'
                 );
                 $('#weather-row').show();
+                self.weatherLoading = false;
               });
             } else {
               weather.getweather(lat, lon, function(data) {
@@ -699,9 +706,11 @@ export default {
                 $('#weather-row').show();
                 $('#sattellite-row').hide();
               });
+              self.weatherLoading = false;
             }
           } else {
             $('#weather-row').html('No GEO Location found');
+            self.weatherLoading = false;
           }
         });
       })(jQuery);

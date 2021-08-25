@@ -2,7 +2,7 @@ var request = require('../../node_modules/request');
 const getimage = (start, end, polyid, callback) => {
   var options = {
     'method': 'GET',
-    'url': 'http://api.agromonitoring.com/agro/1.0/image/search?start=' + start + '&end=' + end + '&polyid=' + polyid + '&appid=fa22c15b2ec8bc88d3655480ab5ee305&resolution_min=1000px&resolution_max=3000px&coverage_max=100&coverage_min=80',
+    'url': 'https://api.agromonitoring.com/agro/1.0/image/search?start=' + start + '&end=' + end + '&polyid=' + polyid + '&appid=fa22c15b2ec8bc88d3655480ab5ee305&resolution_min=1000px&resolution_max=3000px&coverage_max=100&coverage_min=80',
     'headers': {
     }
   };

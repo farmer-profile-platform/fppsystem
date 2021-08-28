@@ -41,7 +41,7 @@ export default {
     let url = config.UPLOAD_FILE_URL;
     return axios.get(url)
       .then((response) => self.uploadImageUrl(response.data, file))
-      .catch((error) => this.errorMessage(error.error))
+      .catch((error) => Promise.reject(error))
   },
   async uploadImageUrl (presignedUrl, image) {
     // console.log(presignedUrl.url)
@@ -52,7 +52,8 @@ export default {
         'Content-Type': image.type,
       }
     })
-    console.log('Result: ', result)
+    console.log('Result: ', result);
+    return Promise.resolve(presignedUrl.key);
   },
   deleteFarmer (id) {
     let url = config.FARMERS_URL + '/' + id

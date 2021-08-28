@@ -251,7 +251,8 @@ export default {
       this.$message({
         showClose: true,
         message: message,
-        duration: 2000
+        duration: 2000,
+        type: 'info'
       });
     },
     addDuplicateField (dataArray, type) {

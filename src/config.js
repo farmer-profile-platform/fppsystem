@@ -23,5 +23,6 @@ export default {
   ACTIVITIES_URL: API_URL + 'activities',
   SUPPORTS_URL: API_URL + 'supports',
   FSPS_URL: API_URL + 'fsps',
-  ISSUES_URL: API_URL + 'issues'
+  ISSUES_URL: API_URL + 'issues',
+  UPLOAD_FILE_URL: API_URL + 'file-upload'
 }

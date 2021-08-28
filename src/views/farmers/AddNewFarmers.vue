@@ -1089,62 +1089,61 @@ export default {
     updateImage(e, type) {
       let self = this;
       const files = e.target.files;
-      const formData = new FormData();
-      formData.append('file', files[0]);
-
-      // console.log(files[0]);
+      // const formData = new FormData();
+      // formData.append('file', files[0]);
 
       if (this.internetStatus == true) {
         farmersService
-          .uploadFarmerFiles(formData)
+          .uploadFiles(files[0])
           .then(response => {
-            if (type == 'photo') {
-              self.addFamerDetails.photo = response.data;
-            } else if (type == 'idCard') {
-              self.addFamerDetails.idCard = response.data;
-            } else if (type == 'fingerPrint') {
-              self.addFamerDetails.fingerprint = response.data;
-            }
+            // if (type == 'photo') {
+            //   self.addFamerDetails.photo = response.data;
+            // } else if (type == 'idCard') {
+            //   self.addFamerDetails.idCard = response.data;
+            // } else if (type == 'fingerPrint') {
+            //   self.addFamerDetails.fingerprint = response.data;
+            // }
+            console.log(type, response);
             self.successNotification('Uploaded Successfully');
           })
           .catch(errors => {
             self.errorMessage(errors.error);
           });
       } else {
-        let file = files[0];
-        // let urlSrc = URL.createObjectURL(file);
-        self.updateImageOffline(type, file);
+        // let file = files[0];
+        // self.updateImageOffline(type, file);
+        this.errorMessage('Images will not be saved offline');
       }
     },
-    updateImageOffline(type, file) {
-      let self = this;
-      let reader = new FileReader();
-      reader.readAsDataURL(file);
-      if (file['size'] < 2111775) {
-        if (type == 'photo') {
-          reader.onloadend = () => {
-            self.addFamerDetails.photo = reader.result;
-            self.addFamerDetails.photoFileName = file['name'];
-          };
-        } else if (type == 'idCard') {
-          reader.onloadend = () => {
-            self.addFamerDetails.idCard = reader.result;
-            self.addFamerDetails.idCardFileName = file['name'];
-          };
-        } else if (type == 'fingerPrint') {
-          reader.onloadend = () => {
-            self.addFamerDetails.fingerprint = reader.result;
-            self.addFamerDetails.fingerprintFileName = file['name'];
-          };
-        }
-        this.successNotification('Uploaded Successfully');
-      } else {
-        this.$alert('Use images less than 2megabyte', 'Error', {
-          confirmButtonText: 'OK',
-          type: 'warning',
-        });
-      }
-    },
+    // updateImageOffline(type, file) {
+    //   let self = this;
+    //   let reader = new FileReader();
+    //   reader.readAsDataURL(file);
+    //   if (file['size'] < 2111775) {
+    //     if (type == 'photo') {
+    //       reader.onloadend = () => {
+    //         self.addFamerDetails.photo = reader.result;
+    //         self.addFamerDetails.photoFileName = file['name'];
+    //       };
+    //     } else if (type == 'idCard') {
+    //       reader.onloadend = () => {
+    //         self.addFamerDetails.idCard = reader.result;
+    //         self.addFamerDetails.idCardFileName = file['name'];
+    //       };
+    //     } else if (type == 'fingerPrint') {
+    //       reader.onloadend = () => {
+    //         self.addFamerDetails.fingerprint = reader.result;
+    //         self.addFamerDetails.fingerprintFileName = file['name'];
+    //       };
+    //     }
+    //     this.successNotification('Uploaded Successfully');
+    //   } else {
+    //     this.$alert('Use images less than 2megabyte', 'Error', {
+    //       confirmButtonText: 'OK',
+    //       type: 'warning',
+    //     });
+    //   }
+    // },
     confirmFarmerAddition() {
       this.$confirm(
         'Are you sure you want add data to famers profile',

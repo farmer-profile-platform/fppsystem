@@ -198,16 +198,11 @@ export default {
       percentage = Math.round(percentage)
       return percentage;
     },
-    getHostName () {
-      let hn = window.location.hostname
-      let uploadUrl = hn == 'localhost' ? "http://127.0.0.1:5000/uploads/" : "https://fppghana.com/uploads/"
-      return uploadUrl;
-    },
     checkEmptyArray (data) {
       return is.empty(data)
     },
     getImageFile (pic) {
-      const url = this.getHostName()
+      const url = " https://fpp-farmer-files.s3.amazonaws.com/"
       if (pic == "no-photo.jpg") {
         return url + 'photo_default.png'
       } else if (pic.includes('blob:')) {

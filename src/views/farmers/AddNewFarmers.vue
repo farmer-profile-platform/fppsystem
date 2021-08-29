@@ -1089,20 +1089,18 @@ export default {
     updateImage(e, type) {
       let self = this;
       const files = e.target.files;
-      // const formData = new FormData();
-      // formData.append('file', files[0]);
 
       if (this.internetStatus == true) {
         farmersService
           .uploadFiles(files[0])
           .then(response => {
-            // if (type == 'photo') {
-            //   self.addFamerDetails.photo = response.data;
-            // } else if (type == 'idCard') {
-            //   self.addFamerDetails.idCard = response.data;
-            // } else if (type == 'fingerPrint') {
-            //   self.addFamerDetails.fingerprint = response.data;
-            // }
+            if (type == 'photo') {
+              self.addFamerDetails.photo = response;
+            } else if (type == 'idCard') {
+              self.addFamerDetails.idCard = response;
+            } else if (type == 'fingerPrint') {
+              self.addFamerDetails.fingerprint = response;
+            }
             console.log(type, response);
             self.successNotification('Uploaded Successfully');
           })
@@ -1146,7 +1144,7 @@ export default {
     // },
     confirmFarmerAddition() {
       this.$confirm(
-        'Are you sure you want add data to famers profile',
+        'Are you sure you want add data to farmers profile',
         'Warning',
         {
           confirmButtonText: 'OK',

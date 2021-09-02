@@ -1,8 +1,12 @@
 var request = require('../../node_modules/request');
+
+const API_KEY = "e1b9de980a1789795ec635bc73f35d78";
+const WAPI_KEY = "48d2e3342544663f3f966ccb2bd91b5a";
+
 const getimage = (start, end, polyid, callback) => {
   var options = {
     'method': 'GET',
-    'url': 'https://api.agromonitoring.com/agro/1.0/image/search?start=' + start + '&end=' + end + '&polyid=' + polyid + '&appid=fa22c15b2ec8bc88d3655480ab5ee305&resolution_min=1000px&resolution_max=3000px&coverage_max=100&coverage_min=80',
+    'url': 'https://api.agromonitoring.com/agro/1.0/image/search?start=' + start + '&end=' + end + '&polyid=' + polyid + '&appid='+API_KEY+'&resolution_min=1000px&resolution_max=3000px&coverage_max=100&coverage_min=80',
     'headers': {
     }
   };
@@ -29,37 +33,45 @@ const getweather = (lat, lon, callback) => {
   });
 }
 
-const getpoly = (coordinates, callback) => {
-  var options = {
-    'method': 'POST',
-    'url': 'https://api.agromonitoring.com/agro/1.0/polygons?appid=fa22c15b2ec8bc88d3655480ab5ee305',
-    'headers': {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      "name": "Farm Polygon",
-      "geo_json": {
-        "type": "Feature",
-        "properties": {},
-        "geometry": {
-          "type": "Polygon",
-          "coordinates": [
-            coordinates
-          ]
+const getpoly = (coordinates,farmer,polyid, callback) => {
+  if(polyid == null){
+    var options = {
+      'method': 'POST',
+      'url': 'https://api.agromonitoring.com/agro/1.0/polygons?appid='+API_KEY,
+      'headers': {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "name": farmer+" Farm",
+        "geo_json": {
+          "type": "Feature",
+          "properties": {},
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              coordinates
+            ]
+          }
         }
+      })
+    };
+  }else{
+    var options = {
+      'method': 'GET',
+      'url': 'http://api.agromonitoring.com/agro/1.0/polygons/'+polyid+'?appid='+API_KEY,
+      'headers': {
       }
-    })
-
-  };
+    }
+  }
   request(options, function (error, response) {
     if (error) throw new Error(error);
     return callback(JSON.parse(response.body.toString()));
   });
 }
 
-const getFarmWeather = (coordinates, lat, lon, callback) => {
+const getFarmWeather = (coordinates, lat, lon, farmer, polyid, callback) => {
   var poly = null;
-  getpoly(coordinates, function (data) {
+  getpoly(coordinates,farmer,polyid, function (data) {
     poly = data;
     var start = "1581811200";//poly.created_at
     var end = Math.floor(Date.now() / 1000);

@@ -658,18 +658,23 @@ export default {
             // Httpreq.send(null);
             var farmer = $('#FarmerName').html();
             var coordinates = null;
+            var farmname = farmer+" Farm";
+            var polyid = null;
             let json = self.farmerCordinates;
             for (let i = 0; i < json.length; i++) {
               if (json[i].name == farmer) {
                 coordinates = json[i].coordinates;
+                polyid = json[i].polygon;
                 break;
               }
             }
+            console.log(farmname);
+            console.log(polyid);
             console.log(farmer);
             console.log(coordinates);
             //var coordinates = [[-121.1958,37.6683],[-121.1779,37.6687],[-121.1773,37.6792],[-121.1958,37.6792],[-121.1958,37.6683]];
             if (coordinates != null) {
-              weather.getFarmWeather(coordinates, lat, lon, function(data) {
+              weather.getFarmWeather(coordinates, lat, lon, farmname, polyid, function(data) {
                 $('#weather').html(data.weather);
                 $('#condition').html(data.condition);
                 $('#weathericon').attr(

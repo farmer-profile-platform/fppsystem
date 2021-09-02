@@ -22,7 +22,7 @@ const getimage = (start, end, polyid, callback) => {
 const getweather = (lat, lon, callback) => {
   var options = {
     'method': 'GET',
-    'url': 'https://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&appid=6af62b6820f3d797f057348fdad9eaa1',
+    'url': 'https://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&appid='+WAPI_KEY,
     'headers': {
     }
   };

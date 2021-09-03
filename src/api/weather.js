@@ -97,6 +97,7 @@ const searchpolygon = (farmer,callback) =>{
 		if (error) throw new Error(error);
 		var json = JSON.parse(response.body.toString());
 		var results = null;
+    var result = null;
 		for (let i = 0; i < json.length; i++) {
 		  if (json[i].name == farmer) {
 			results = json[i];

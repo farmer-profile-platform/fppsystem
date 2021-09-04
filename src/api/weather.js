@@ -70,7 +70,7 @@ const getpoly = (coordinates, farmer, polyid, callback) => {
         console.log('%c Fetching polygon', 'color: purple; font-weight: bold;');
         options = {
           'method': 'GET',
-          'url': 'http://api.agromonitoring.com/agro/1.0/polygons/' + polyid + '?appid=' + API_KEY,
+          'url': 'https://api.agromonitoring.com/agro/1.0/polygons/' + polyid + '?appid=' + API_KEY,
           'headers': {
           }
         }

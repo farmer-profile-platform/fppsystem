@@ -43,7 +43,7 @@ const getpoly = (coordinates, farmer, polyid, callback) => {
     } else {
       console.log('%c Farmer polygon not found online', 'color: purple; font-weight: bold;');
       var options;
-      if (polyid == null) {
+      if (polyid == null || polyid == '') {
         console.log('%c Creating new polygon...', 'color: purple; font-weight: bold;');
         options = {
           'method': 'POST',

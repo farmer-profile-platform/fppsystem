@@ -77,7 +77,7 @@ const getpoly = (coordinates, farmer, polyid, callback) => {
       }
       request(options, function (error, response) {
         if (error) throw new Error(error);
-        if (polyid == null) { console.log('%c Polygon created', 'color: purple; font-weight: bold;'); }
+        if (polyid == null || polyid == '') { console.log('%c Polygon created', 'color: purple; font-weight: bold;'); }
         else { console.log('%c Polygon fetched', 'color: purple; font-weight: bold;'); }
         return callback(JSON.parse(response.body.toString()));
       });

@@ -118,7 +118,7 @@ const getFarmWeather = (coordinates, lat, lon, farmer, polyid, callback) => {
   var poly = null;
   getpoly(coordinates, farmer, polyid, function (data) {
     poly = data;
-    var start = "1627776000";//Sunday, August 1, 2021 12:00:00 AM
+    var start = "1581811200";//poly.created_at
     var end = Math.floor(Date.now() / 1000);
     getimage(start, end, poly.id, function (data) {
       var satellite = data;

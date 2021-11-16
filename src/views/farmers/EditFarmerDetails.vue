@@ -1123,17 +1123,16 @@ export default {
     updateImage(e, type) {
       let self = this;
       const files = e.target.files;
-      const formData = new FormData();
-      formData.append('file', files[0]);
+
       farmersService
-        .uploadFarmerFiles(formData)
+        .uploadFiles(files[0])
         .then(response => {
           if (type == 'photo') {
-            self.editFamerDetails.photo = response.data;
+            self.editFamerDetails.photo = response;
           } else if (type == 'idCard') {
-            self.editFamerDetails.idCard = response.data;
+            self.editFamerDetails.idCard = response;
           } else if (type == 'fingerPrint') {
-            self.editFamerDetails.fingerprint = response.data;
+            self.editFamerDetails.fingerprint = response;
           }
           self.successNotification('Uploaded Successfully');
         })

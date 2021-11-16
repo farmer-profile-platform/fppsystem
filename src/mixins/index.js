@@ -204,7 +204,7 @@ export default {
     getImageFile (pic) {
       const url = " https://fpp-farmer-files.s3.amazonaws.com/"
       if (pic == "no-photo.jpg") {
-        return url + 'photo_default.png'
+        return url + 'avatar.jpg'
       } else if (pic.includes('blob:')) {
         return pic
       } else if (pic.includes('data:')) {

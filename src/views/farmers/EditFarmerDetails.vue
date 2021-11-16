@@ -1134,6 +1134,7 @@ export default {
           } else if (type == 'fingerPrint') {
             self.editFamerDetails.fingerprint = response;
           }
+          console.log(type, response);
           self.successNotification('Uploaded Successfully');
         })
         .catch(errors => {

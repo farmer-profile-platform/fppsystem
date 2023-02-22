@@ -27,10 +27,10 @@ import pdfMake from 'pdfmake/build/pdfmake';
 // pdfMake.vfs = pdfFonts.pdfMake.vfs;
 pdfMake.fonts = {
   Montserrat: {
-    normal: 'https://fppghana.com/fonts/Raleway-Regular.ttf',
-    bold: 'https://fppghana.com/fonts/Raleway-Bold.ttf',
-    italics: 'https://fppghana.com/fonts/Raleway-Italic.ttf',
-    bolditalics: 'https://fppghana.com/fonts/Raleway-MediumItalic.ttf',
+    normal: 'http://localhost:5000/fonts/Raleway-Regular.ttf',
+    bold: 'http://localhost:5000/fonts/Raleway-Bold.ttf',
+    italics: 'http://localhost:5000/fonts/Raleway-Italic.ttf',
+    bolditalics: 'http://localhost:5000/fonts/Raleway-MediumItalic.ttf',
   },
 };
 
@@ -292,7 +292,7 @@ export default {
         fpp_id: this.farmer.farmerId,
         years_farming: this.farmer.years_farming,
         num_children: this.farmer.num_children,
-        photo: this.getImageFile(this.farmer.photo),
+        photo: '',
         farm_location: this.farmer.farm_location,
         joined: this.getDateFormat(this.farmer.createdAt),
         marital_status: this.farmer.marital_status,
@@ -634,9 +634,9 @@ export default {
           },
           self.addTable(self.supportsInfo),
         ],
-        images: {
-          snow: this.getProfileDetails('photo'),
-        },
+        // images: {
+        //   // snow: this.getProfileDetails('photo'),
+        // },
         styles: {
           topsection: {
             margin: [0, 10, 0, 40],
